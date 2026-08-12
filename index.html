@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Antojitos</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+    <header>
+        <nav class="navbar">
+            <div href="index.html" class="logo">Anto<span class="tienda">Jitos</span></div>
+            <ul class="menu" id="menu">
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="menu.html">Menú</a></li>
+                <li><a href="rastreo.html">Rastreo</a></li>
+                <li><a href="contacto.html">Contacto</a></li>                
+            </ul>
+            <div class="hamburguesa-menu" id="hamburguesa-menu">
+                =
+            </div>
+            <div class="carrito-icon">
+                <i class="fa-solid fa-cart-shopping"></i>
+                <span class="carrito-count">0</span>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <section class="hero">
+            <div class="hero-contenido">
+                <h1>AntoJitos</h1>
+                <h2>Fast Food</h2>
+                <p>Tus comidas rápidas favoritas, en un solo lugar.</p>
+                <a href="menu.html"><button class="hero-btn">Ver más</button></a>
+            </div>
+        </section>
+        <section class="populares">
+            <h1>Lo más pedido</h1>
+            <div class="carrusel-populares">
+                <button class="flecha flecha-izquierda" id="anterior">❮</button>
+                <div id="populares-inicio" class="cards-contenedor"></div>
+                <button class="flecha flecha-derecha" id="siguiente">❯</button>
+            </div>
+        </section>
+        <section class="identidad">
+        <h2>¿Por qué Anto<span class="tienda">Jitos</span>?</h2>
+        <div class="cards-container">
+            <div class="card">
+                <div class="icon">🍔</div>
+                <h3>Ingredientes frescos</h3>
+                <p>Productos de calidad  que garantizan un sabor único y delicioso.</p>
+            </div>
+            <div class="card">
+                <div class="icon">⚡</div>
+                <h3>Preparado al momento</h3>
+                <p>Todo es preparado al momento de recibir tu pedido.</p>
+            </div>
+            <div class="card">
+                <div class="icon">❤️</div>
+                <h3>Hecho con cariño</h3>
+                <p>Todo esta hecho con cariño para satisfacer tus antojos.</p>
+            </div>
+            <div class="card">
+                <div class="icon">🏠</div>
+                <h3>Servicio a domicilio</h3>
+                <p>Tenemos domicilio gratuito para que disfrutes de nuestros productos en la comodidad de tu hogar.</p>
+            </div>
+        </div>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2026 <span id="footer-nombre"></span> - Todos los derechos reservados.</p>
+        <div class="footer-info">
+            <p><strong>Nit:</strong> <span id="footer-nit"></span></p>
+            <p><strong>Telefono:</strong> <span id="footer-telefono"></span></p>
+            <p><strong>Dirección:</strong> <span id="footer-direccion"></span></p>
+            <p><strong>Horario de apertura:</strong> <span id="footer-apertura"></span></p>
+            <p><strong>Horario de cierre:</strong> <span id="footer-cierre"></span></p>
+            <p><strong>Atención:</strong> <span id="footer-dias"></span></p>
+            
+        </div>
+    </footer>
+</body>
+<script src="/js/script.js"></script>
+<script src="/js/navbar-cliente.js"></script>
+<script src="/js/index.js"></script>
+</html>

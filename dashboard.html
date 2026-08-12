@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="css/stylesPanel.css"> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <!-- Sidebar / Menú Lateral de Administración -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">Anto<span class="tienda">Jitos</span></div>
+            <button class="btn-cerrar-sidebar" id="btn-cerrar-sidebar">&times;</button>
+        </div>
+
+        <!-- Lista de navegación -->
+        <ul class="sidebar-menu">
+            <li>
+                <a href="#" class="menu-link active">
+                    <span class="icono">📊</span> Dashboard
+                </a>
+            </li>
+
+            <!-- Grupo desplegable para Catálogo / Inventario -->
+            <li class="menu-group">
+                <details>
+                    <summary class="menu-link">
+                        <span class="icono">📦</span> Inventario
+                    </summary>
+                    <ul class="sub-menu">
+                        <li><a href="productos.html">Productos</a></li>
+                        <li><a href="insumos.html">Insumos</a></li>
+                        <li><a href="categorias.html">Categorías</a></li>
+                    </ul>
+                </details>
+            </li>
+
+            <li>
+                <a href="pedidos_panel.html" class="menu-link">
+                    <span class="icono">🛍️</span> Pedidos
+                </a>
+            </li>
+            <li>
+                <a href="facturacion.html" class="menu-link">
+                    <span class="icono">📄</span> Facturación
+                </a>
+            </li>
+            <li>
+                <a href="configuracion.html" class="menu-link">
+                    <span class="icono">⚙️</span> Configuración
+                </a>
+            </li>
+        </ul>
+    </aside>
+
+<!-- Botón flotante o superior de hamburguesa para pantallas móviles -->
+<div class="hamburguesa-menu" id="hamburguesa-menu">
+    ☰
+</div>
+    </header>
+    <main>
+        <section class="encabezado">
+            <h1>Dashboard</h1>
+        </section>
+        <div class="dashboard-container">
+
+            <!-- Sección de alertas críticas -->
+            <div id="contenedor-alertas" class="dashboard-alert-box" style="display: none;">
+                <div class="alert-header">               
+                    <span class="alert-icon">⚠️</span>
+                    <h3>Alertas de Inventario: Stock Crítico</h3>
+                </div>
+                <div class="alert-body">
+                    <p>Los siguientes insumos han alcanzado o superado el límite mínimo establecido:</p>
+                    <ul id="lista-alertas" class="alert-list"></ul>
+                </div>
+            </div>
+        </div>
+
+        <section class="estadisticas">
+            <div class="card">
+                <h3>Pedidos hoy</h3>
+                <p id="pedidos-hoy">0</p>
+            </div>
+            <div class="card">
+                <h3>Pendientes</h3>
+                <p id="pedidos-pendientes">0</p>
+            </div>
+            <div class="card">
+                <h3>Ingresos hoy</h3>
+                <p id="ingresos-hoy">$0</p>
+            </div>
+        </section>
+
+        <section class="productos-populares">
+            <h3>Productos más vendidos</h3>
+            <ul id="lista-populares"></ul>
+        </section>
+    </main>
+    <footer class="f-contacto">
+        <p>&copy; 2026 <span>AntoJitos</span> - Todos los derechos reservados.</p>
+    </footer>
+    <script src="/js/dashboard.js"></script>
+    <script src="/js/script.js"></script>
+</body>
+</html>

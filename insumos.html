@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insumos</title>
+    <link rel="stylesheet" href="css/stylesPanel.css"> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+</head>
+<body>
+    <header>
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+        <div class="logo">Anto<span class="tienda">Jitos</span></div>
+        <button class="btn-cerrar-sidebar" id="btn-cerrar-sidebar">&times;</button>
+    </div>
+
+    <!-- Lista de navegación -->
+    <ul class="sidebar-menu">
+        <li>
+            <a href="dashboard.html" class="menu-link">
+                <span class="icono">📊</span> Dashboard
+            </a>
+        </li>
+
+        <!-- Grupo desplegable para Catálogo / Inventario -->
+        <li class="menu-group">
+            <details>
+                <summary class="menu-link active">
+                    <span class="icono">📦</span> Inventario
+                </summary>
+                <ul class="sub-menu">
+                    <li><a href="productos.html">Productos</a></li>
+                    <li><a href="#">Insumos</a></li>
+                    <li><a href="categorias.html">Categorías</a></li>
+                </ul>
+            </details>
+        </li>
+
+        <li>
+            <a href="pedidos_panel.html" class="menu-link">
+                <span class="icono">🛍️</span> Pedidos
+            </a>
+        </li>
+        <li>
+            <a href="facturacion.html" class="menu-link">
+                <span class="icono">📄</span> Facturación
+            </a>
+        </li>
+        <li>
+            <a href="configuracion.html" class="menu-link">
+                <span class="icono">⚙️</span> Configuración
+            </a>
+        </li>
+    </ul>
+</aside>
+<!-- Botón flotante o superior de hamburguesa para pantallas móviles -->
+<div class="hamburguesa-menu" id="hamburguesa-menu">
+    ☰
+</div>
+    </header>
+    <main>
+        <section class="ingreso-insumos">
+            <h1>Gestion de Insumos/Inventario</h1>
+            <h2>Registro de Insumos</h2>
+            <form id="formulario"> 
+                <fieldset class="nuevo-insumo">
+                    <legend>Ingreso de Insumos</legend>
+                    <div class="campo>">
+                        <label for="nombre">Nombre Insumo</label>
+                        <input type="text" id="nombre" name="nombre" placeholder="Nombre" required>
+                    </div>
+                    <div class="campo>">
+                        <label for="unidad">Unidad de medida</labe>
+                        <select id="unidad" name="unidad" required>
+                            <option value="kg">Kilogramo (kg)</option>
+                            <option value="g">Gramo (g)</option>
+                            <option value="l">Litro (l)</option>
+                            <option value="ml">Mililitro (ml)</option>
+                            <option value="unidad">Unidad</option>
+                            <option value="libra">Libra</option>
+                            <option value="arroba">Arroba</option>    
+                        </select>    
+                    </div>
+                    <div class="campo>">
+                        <label for="cantidad">Cantidad Disponible</label>
+                        <input type="number" id="cantidad" name="cantidad" placeholder="Cantidad disponible" required>
+                    </div>
+                    <div class="campo>">
+                        <label for="stock">Stock minimo</label>
+                        <input type="number" id="stock" name="stock" placeholder="Stock minimo" required>
+                    </div>
+                    <div class="botones>">
+                        <button class="registrar-insumo-btn" type="submit" id="registrar-insumo" name="registrar-insumo"><span class="material-symbols-outlined">check_circle</span>Registrar</button> 
+                        <button class="limpiar-btn" type="button" id="limpiar-btn" name="limpiar-btn"><span class="material-symbols-outlined">cleaning_services</span>Limpiar</button>  
+                    </div>
+
+                </fieldset>
+            </form>       
+
+        </section>
+        <section class="tabla-insumos">
+            <table border="1">
+                <h2>Listado Actual de Insumos</h2>
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Nombre</th>
+                        <th>Unidad de medida</th>
+                        <th>Cantidad disponible</th>
+                        <th>Stock minimo</th>
+                        <th>Fecha actualización</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="tablaBody"></tbody>
+            </table>
+        </section>
+        <!-- Modal Actualizar -->
+         <div id="modalActualizar" style="display: none;">
+            <div class="modal-contenido">
+                <h2>Actualizar Insumo</h2>
+                <input type="hidden" id="modal-id">
+                <label>Nombre</label>
+                <input type="text" id="modal-nombre">
+                <label>Unidad de medida</label>
+                <input type="text" id="modal-unidad">
+                <label >Cantidad disponible</label>
+                <input type="number" id="modal-cantidad" disabled>
+                <label>Stock minimo</label>
+                <input type="number" id="modal-stock">
+                <button onclick="guardarActualizacion()"><span class="material-symbols-outlined">save</span>Guardar</button>
+                <button onclick="cerrarModal()"><span class="material-symbols-outlined">cancel</span>Cancelar</button>
+            </div>
+
+         </div>
+          <!-- Modal Entrada -->
+         <div id="modalEntrada" style="display: none;">
+            <div class="modal-contenido">
+                <h2>Registrar entrada</h2>
+                <input type="hidden" id="modal-entrada-id">
+                <label>Nombre</label>
+                <input type="text" id="modal-entrada-nombre" readonly>
+                <label>Stock actual</label>
+                    <div class="campo-stock">
+                        <input type="number" id="modal-entrada-stock-actual" readonly>
+                        <span id="modal-entrada-unidad"></span>
+                    </div>
+                <label >Cantidad</label>
+                <input type="number" id="modal-entrada-cantidad" min="1" required>
+                <label>Motivo</label>
+                <textarea id="modal-entrada-motivo" rows="3" placeholder="Ej: comprar a proveedor" required></textarea>
+                <button onclick="guardarEntrada()"><span class="material-symbols-outlined">check_circle</span>entrada</button>
+                <button onclick="cerrarModal()"><span class="material-symbols-outlined">cancel</span>Cancelar</button>
+            </div>
+
+         </div>
+
+          <!-- Modal Salida -->
+         <div id="modalSalida" style="display: none;">
+            <div class="modal-contenido">
+                <h2>Registrar salida</h2>
+                <input type="hidden" id="modal-salida-id">
+                <label>Nombre</label>
+                <input type="text" id="modal-salida-nombre" readonly>
+                <label>Stock actual</label>
+                    <div class="campo-stock">
+                        <input type="number" id="modal-salida-stock-actual" readonly>
+                        <span id="modal-salida-unidad"></span>
+                    </div>
+                <label >Cantidad</label>
+                <input type="number" id="modal-salida-cantidad" min="1" required>
+                <label>Motivo</label>
+                <textarea id="modal-salida-motivo" rows="3" placeholder="Ej: producto en mal estado" required></textarea>
+                <button onclick="guardarSalida()"><span class="material-symbols-outlined">check_circle</span>Registrar salida</button>
+                <button onclick="cerrarModal()"><span class="material-symbols-outlined">cancel</span>Cancelar</button>
+            </div>
+
+         </div>
+    </main>
+    <footer class="f-contacto">
+        <p>&copy; 2026 <span>AntoJitos</span> - Todos los derechos reservados.</p>
+    </footer> 
+    <script src="/js/insumos.js"></script>
+    <script>
+        cargarDatos();
+    </script>
+    <script src="/js/script.js"></script>
+</body>
+
+</html>

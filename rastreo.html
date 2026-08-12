@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Antojitos - Rastrea tu Pedido</title>
+    <!-- Si usas FontAwesome para los iconos como en el panel, lo puedes dejar aquí -->
+    <link rel="stylesheet" href="css/styles.css"> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div href="#" class="logo">Anto<span class="tienda">Jitos</span></div>
+            <ul class="menu" id="menu">
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="menu.html">Menú</a></li>
+                <li><a href="rastreo.html">Rastreo</a></li>
+                <li><a href="contacto.html">Contacto</a></li>                
+            </ul>
+                <div class="hamburguesa-menu" id="hamburguesa-menu">
+                =
+            </div>
+        </nav>
+    </header>
+
+    <div class="rastreo-container">
+        <h2>¿Dónde está tu antojo? 🛵</h2>
+        <p class="descripcion">Ingresa el número de tu pedido para ver su estado en tiempo real.</p>
+        
+        <div class="buscar-box">
+            <input type="number" id="num-pedido" placeholder="Ej. 4" min="1">
+            <button onclick="buscarPedidoClientSide()">Rastrear</button>
+        </div>
+
+        <!-- Bloque de resultados (Oculto por defecto) -->
+        <div id="resultado-rastreo" class="resultado-box">
+            <div class="info-pedido">
+                <div><strong>Pedido:</strong> #<span id="txt-id-pedido">0</span></div>
+                <div class="estado-actual">Estado: <span id="txt-estado">Pendiente</span></div>
+            </div>
+            
+            <!-- Línea de tiempo visual -->
+            <div class="timeline" id="timeline-container">
+                <div id="step-pendiente" class="step">
+                    <div class="step-icon"><i class="fa-solid fa-clock"></i></div>
+                    <div class="step-text">Recibido</div>
+                </div>
+                <div id="step-preparacion" class="step">
+                    <div class="step-icon"><i class="fa-solid fa-fire-burner"></i></div>
+                    <div class="step-text">En cocina</div>
+                </div>
+                <div id="step-listo" class="step">
+                    <div class="step-icon"><i class="fa-solid fa-box-archive"></i></div>
+                    <div class="step-text">Listo</div>
+                </div>
+                <div id="step-entregado" class="step">
+                    <div class="step-icon"><i class="fa-solid fa-truck-fast"></i></div>
+                    <div class="step-text">Entregado</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 <span id="footer-nombre"></span> - Todos los derechos reservados.</p>
+        <div class="footer-info">
+            <p><strong>Nit:</strong> <span id="footer-nit"></span></p>
+            <p><strong>Telefono:</strong> <span id="footer-telefono"></span></p>
+            <p><strong>Dirección:</strong> <span id="footer-direccion"></span></p>
+            <p><strong>Horario de apertura:</strong> <span id="footer-apertura"></span></p>
+            <p><strong>Horario de cierre:</strong> <span id="footer-cierre"></span></p>
+            <p><strong>Atención:</strong> <span id="footer-dias"></span></p>
+            
+        </div>
+    </footer>
+
+</body>
+    <script src="/js/rastreo_cliente.js"></script>
+    <script src="/js/script.js"></script>
+    <script src="/js/navbar-cliente.js"></script>
+    
+</html>

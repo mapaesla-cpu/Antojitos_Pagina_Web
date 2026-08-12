@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facturación</title>
+    <link rel="stylesheet" href="css/stylesPanel.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+    <header>
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+        <div class="logo">Anto<span class="tienda">Jitos</span></div>
+        <button class="btn-cerrar-sidebar" id="btn-cerrar-sidebar">&times;</button>
+    </div>
+
+    <!-- Lista de navegación -->
+    <ul class="sidebar-menu">
+        <li>
+            <a href="dashboard.html" class="menu-link">
+                <span class="icono">📊</span> Dashboard
+            </a>
+        </li>
+
+        <!-- Grupo desplegable para Catálogo / Inventario -->
+        <li class="menu-group">
+            <details>
+                <summary class="menu-link">
+                    <span class="icono">📦</span> Inventario
+                </summary>
+                <ul class="sub-menu">
+                    <li><a href="productos.html">Productos</a></li>
+                    <li><a href="insumos.html">Insumos</a></li>
+                    <li><a href="categorias.html">Categorías</a></li>
+                </ul>
+            </details>
+        </li>
+
+        <li>
+            <a href="pedidos_panel.html" class="menu-link">
+                <span class="icono">🛍️</span> Pedidos
+            </a>
+        </li>
+        <li>
+            <a href="#" class="menu-link active">
+                <span class="icono">📄</span> Facturación
+            </a>
+        </li>
+        <li>
+            <a href="configuracion.html" class="menu-link">
+                <span class="icono">⚙️</span> Configuración
+            </a>
+        </li>
+    </ul>
+</aside>
+<!-- Botón flotante o superior de hamburguesa para pantallas móviles -->
+<div class="hamburguesa-menu" id="hamburguesa-menu">
+    ☰
+</div>
+    </header>
+
+    <main>
+        <section class="encabezado">
+            <h1>Facturación</h1>
+            <input type="text" id="buscador" placeholder="Buscar por Nº factura o cliente..." 
+                oninput="buscarFactura()">
+        </section>
+
+        <section class="tabla-facturas">
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>Nº Factura</th>
+                        <th>Fecha</th>
+                        <th>Cliente</th>
+                        <th>Total</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="tablaBody">
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Modal Factura -->
+        <div id="modalFactura" style="display:none;">
+            <div class="modal-contenido" id="contenido-factura">
+                <div class="factura-header">
+                    <h2>AntoJitos</h2>
+                    <h3>Nit: 12345678-9</h3>
+                    <p>Sur de Cali, Colombia</p>
+                    <hr>
+                    <h3>FACTURA DE VENTA</h3>
+                    <p><strong>Nº:</strong> <span id="factura-numero"></span></p>
+                    <p><strong>Fecha:</strong> <span id="factura-fecha"></span></p>
+                </div>
+
+                <div class="factura-cliente">
+                    <p><strong>Cliente:</strong> <span id="factura-cliente"></span></p>
+                    <p><strong>Teléfono:</strong> <span id="factura-telefono"></span></p>
+                    <p><strong>Tipo entrega:</strong> <span id="factura-tipo"></span></p>
+                </div>
+
+                <table border="1" class="factura-tabla">
+                    <thead>
+                        <tr>
+                            <th>Producto</th>
+                            <th>Cant.</th>
+                            <th>Precio unit.</th>
+                            <th>Subtotal</th>
+                        </tr>
+                    </thead>
+                    <tbody id="factura-productos">
+                    </tbody>
+                </table>
+
+                <div class="factura-totales">
+                    <p><strong>Subtotal:</strong> <span id="factura-subtotal"></span></p>
+                    <p><strong>IVA (19%):</strong> <span id="factura-impuesto"></span></p>
+                    <p><strong>Total:</strong> <span id="factura-total"></span></p>
+                </div>
+
+                <div class="factura-nota">
+                    <p>⚠️ Documento generado por el sistema de Antojitos. 
+                    No corresponde a una factura electrónica válida por la DIAN.</p>
+                </div>
+
+                <div class="factura-botones">
+                    <button onclick="imprimirFactura()">
+                        <i class="fa-solid fa-print"></i> Imprimir
+                    </button>
+                    <button onclick="cerrarFactura()">
+                        <i class="fa-solid fa-xmark"></i> Cerrar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="f-contacto">
+        <p>&copy; 2026 <span>AntoJitos</span> - Todos los derechos reservados.</p>
+    </footer>
+
+    <script src="/js/facturacion.js"></script>
+    <script src="/js/script.js"></script>
+</body>
+</html>

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menú</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+    <header>
+        <nav class="navbar">
+            <div href="index.html" class="logo">Anto<span class="tienda">Jitos</span></div>
+            <ul class="menu" id="menu">
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="menu.html">Menú</a></li>
+                <li><a href="rastreo.html">Rastreo</a></li>
+                <li><a href="contacto.html">Contacto</a></li>
+            </ul>
+            <div class="hamburguesa-menu" id="hamburguesa-menu">
+                =
+            </div>
+            <div class="carrito-icon" onclick="abrirCarrito()">
+                <i class="fa-solid fa-cart-shopping"></i>
+                <span class="carrito-count" id="carrito-count">0</span>
+            </div>
+        </nav>
+    </header>
+    <!--Cards de productos - Se cargan de forma automatica-->
+    <main>
+        <section class="menu-encabezado">
+            <h1>Nuestros Menú</h1>
+            <p>Elige tu antojo favorito</p>
+        </section>
+        <div id="filtros"></div>
+        <div id="producto-menu"></div>
+    </main>
+
+<!--Panel carrito-->
+
+    <div id="panel-carrito" class="panel-carrito cerrado">
+        <div class="carrito-header">
+            <h2>🛒 Tu Pedido</h2>
+            <button onclick="cerrarCarrito()">Cerrar</button>
+        </div>
+        <div id="carrito-items">
+            <!--Los productos se agregan aqui dinámicamente-->
+        </div>
+        <div class="carrito-footer">
+            <p>Total: <span id="carrito-total">$0</span></p>
+            <button class="btn-confirmar" onclick="confirmarPedido()">Confirmar Pedido</button>
+        </div>
+
+    </div>
+
+    <!--fondo negro detrás del panel-->
+    <div id="overlay" class="overlay" onclick="cerrarCarrito()"></div>
+    <!--Modal confirmar pedido-->
+    <div id="modal-pedido" style="display: none;">
+        <div class="modal-contenido">
+            <h2>Confirmar Pedido</h2>
+            <div class="form-group">
+                <label>Nombre</label>
+                <input type="text" id="pedido-nombre" placeholder="Tu nombre" required>
+            </div>
+
+            <div class="form-group">
+                <label>Teléfono</label>
+                <input type="number" id="pedido-telefono" placeholder="Tu teléfono" required>
+            </div>
+            
+            <div class="form-group">
+                <label>Correo</label>
+                <input type="email" id="pedido-correo" placeholder="Tu correo" required>
+            </div>
+
+            <div class="form-group">
+                <label for="pedido-tipo-entrega">Tipo de entrega</label>
+                <select id="pedido-tipo-entrega">
+                    <option value="" disabled selected>Selecciona una opción...</option>
+                    <option value="local">En el local</option>
+                    <option value="para llevar">Para llevar</option>
+                    <option value="domicilio">Domicilio</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <div id="campo-direccion" style="display: none;">
+                    <label>Dirección</label>
+                    <input type="text" id="pedido-direccion" placeholder="Tu dirección">
+                </div>
+            </div>
+
+             <div class="form-group">
+                <label>Nota</label>
+                <textarea id="pedido-nota" placeholder="¿Alguna nota especial?"></textarea>
+            </div>
+
+            <div class="form-group">
+                <p><strong>Total: <span id="modal-total">0</span></strong></p>
+            </div>
+
+            <div class="form-group">
+                <button onclick="enviarPedido()">Confirmar</button>
+                <button onclick="cerrarModalPedido()">Cancelar</button>
+            </div>
+
+        </div>
+    </div>
+    <footer>
+        <p>&copy; 2026 <span id="footer-nombre"></span> - Todos los derechos reservados.</p>
+        <div class="footer-info">
+            <p><strong>Nit:</strong> <span id="footer-nit"></span></p>
+            <p><strong>Telefono:</strong> <span id="footer-telefono"></span></p>
+            <p><strong>Dirección:</strong> <span id="footer-direccion"></span></p>
+            <p><strong>Horario de apertura:</strong> <span id="footer-apertura"></span></p>
+            <p><strong>Horario de cierre:</strong> <span id="footer-cierre"></span></p>
+            <p><strong>Atención:</strong> <span id="footer-dias"></span></p>
+            
+        </div>
+    </footer>
+    <script src="/js/script.js"></script>
+    <script src="/js/navbar-cliente.js"></script>
+    <script src="./js/menu.js"></script>
+</body>
+
+</html>

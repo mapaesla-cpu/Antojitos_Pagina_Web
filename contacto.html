@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contacto Antojitos</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div href="index.html" class="logo">Anto<span class="tienda">Jitos</span></div>
+            <ul class="menu" id="menu">
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="menu.html">Menú</a></li>
+                <li><a href="rastreo.html">Rastreo</a></li>
+                <li><a href="contacto.html">Contacto</a></li>
+            </ul>
+            <div class="hamburguesa-menu" id="hamburguesa-menu">
+                =
+            </div>
+        </nav>
+    </header>
+    <main>
+        <section class="contacto">    
+            <form id="formulario-contacto" class="formulario-contacto">
+                <fieldset>
+                    <legend>Formulario de Contacto</legend>
+                    <label for="nombre">Nombre</label>
+                    <input type="text" id="contacto-nombre" name="contacto-nombre" placeholder="Nombre" required>
+                        
+                    <label for="email">Correo</label>
+                    <input type="email" id="contacto-email" name="contacto-email" placeholder="Correo" required>
+                        
+                    <label for="telefono">Telefono</label>
+                    <input type="telefono" id="contacto-telefono" name="contacto-telefono" placeholder="Telefono" minlength="6" required>
+
+                    <label for="contacto-mensaje">Comentarios:</label>
+                    <textarea id="contacto-mensaje" name="contacto-mensaje" rows="4" cols="50">
+
+                    </textarea>
+                    <label class="terminos">
+                        <input type="checkbox" id="contacto-terminos" name="contacto-terminos" required >
+                        <p>Acepto términos y condiciones</p>
+                    </label>
+                        
+                    <button class="enviar-btn" type="submit" id="enviar" name="enviar">Enviar</button>                   
+                </fieldset>
+            </form>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2026 <span id="footer-nombre"></span> - Todos los derechos reservados.</p>
+        <div class="footer-info">
+            <p><strong>Nit:</strong> <span id="footer-nit"></span></p>
+            <p><strong>Telefono:</strong> <span id="footer-telefono"></span></p>
+            <p><strong>Dirección:</strong> <span id="footer-direccion"></span></p>
+            <p><strong>Horario de apertura:</strong> <span id="footer-apertura"></span></p>
+            <p><strong>Horario de cierre:</strong> <span id="footer-cierre"></span></p>
+            <p><strong>Atención:</strong> <span id="footer-dias"></span></p>
+            
+        </div>
+    </footer>
+</body>
+<script src="/js/navbar-cliente.js"></script>
+<script src="/js/script.js"></script>
+<script src="/js/contacto.js"></script>
+</html>

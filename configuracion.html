@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configuración</title>
+    <link rel="stylesheet" href="css/stylesPanel.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+    <header>
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+        <div class="logo">Anto<span class="tienda">Jitos</span></div>
+        <button class="btn-cerrar-sidebar" id="btn-cerrar-sidebar">&times;</button>
+    </div>
+
+    <!-- Lista de navegación -->
+    <ul class="sidebar-menu">
+        <li>
+            <a href="dashboard.html" class="menu-link">
+                <span class="icono">📊</span> Dashboard
+            </a>
+        </li>
+
+        <!-- Grupo desplegable para Catálogo / Inventario -->
+        <li class="menu-group">
+            <details>
+                <summary class="menu-link">
+                    <span class="icono">📦</span> Inventario
+                </summary>
+                <ul class="sub-menu">
+                    <li><a href="productos.html">Productos</a></li>
+                    <li><a href="insumos.html">Insumos</a></li>
+                    <li><a href="categorias.html">Categorías</a></li>
+                </ul>
+            </details>
+        </li>
+
+        <li>
+            <a href="pedidos_panel.html" class="menu-link">
+                <span class="icono">🛍️</span> Pedidos
+            </a>
+        </li>
+        <li>
+            <a href="facturacion.html" class="menu-link">
+                <span class="icono">📄</span> Facturación
+            </a>
+        </li>
+        <li>
+            <a href="#" class="menu-link active">
+                <span class="icono">⚙️</span> Configuración
+            </a>
+        </li>
+    </ul>
+</aside>
+<!-- Botón flotante o superior de hamburguesa para pantallas móviles -->
+<div class="hamburguesa-menu" id="hamburguesa-menu">
+    ☰
+</div>
+    </header>
+
+    <main>
+        <section class="encabezado">
+            <h1>Configuración</h1>
+        </section>
+
+        <!-- Datos del negocio -->
+        <section class="config-seccion">
+            <h2>Datos del Negocio</h2>
+            <div class="campo">
+                <label>Nombre del negocio</label>
+                <input type="text" id="config-nombre">
+            </div>
+            <div class="campo">
+                <label>NIT</label>
+                <input type="text" id="config-nit">
+            </div>
+            <div class="campo">
+                <label>Teléfono</label>
+                <input type="text" id="config-telefono">
+            </div>
+            <div class="campo">
+                
+                <label>Dirección</label>
+                <input type="text" id="config-direccion">
+            </div>
+            <div class="campo">
+                <label>Horario apertura</label>
+                <input type="time" id="config-apertura">
+            </div>
+            <div class="campo">
+                <label>Horario cierre</label>
+                <input type="time" id="config-cierre">
+            </div>
+            <div class="campo">
+                <label>Días de atención</label>
+                <input type="text" id="config-dias" placeholder="Ej: Lunes a Domingo">
+            </div>
+            <button onclick="guardarConfig()">Guardar cambios</button>
+        </section>
+
+        <!-- Cambiar contraseña -->
+        <section class="config-seccion">
+            <h2>Cambiar Contraseña</h2>
+            <div class="campo">
+                <label>Contraseña actual</label>
+                <input type="password" id="password-actual">
+            </div>
+            <div class="campo">
+                <label>Nueva contraseña</label>
+                <input type="password" id="password-nueva">
+            </div>
+            <div class="campo">
+                <label>Confirmar nueva contraseña</label>
+                <input type="password" id="password-confirmar">
+            </div>
+            <button onclick="cambiarPassword()">Cambiar contraseña</button>
+        </section>
+        <br>
+        <div>
+            <button onclick="cerrarSesion()">Cerrar Sesión</button>
+        </div>
+    </main>
+
+    <footer class="f-contacto">
+        <p>&copy; 2026 <span>AntoJitos</span> - Todos los derechos reservados.</p>
+    </footer>
+
+    <script src="/js/configuracion.js"></script>
+    <script src="/js/script.js"></script>
+</body>
+</html>

@@ -1,0 +1,733 @@
+:root {
+    --rojo: #E8221A; /* Botones */
+    --naranja: #F97316; /* Titulos principales / logo */
+    --amarillo: #FACC15; /* Logo */
+    --verde: #22C55E; /* Botones/Hover */
+    --oscuro: #1A1A1A; /* fondos de seccion */
+    --navbar: #1E1B18; /*barra de navegacion*/
+    --crema: #FFF8F0; /* Fondo */
+    --blanco: #FFFFFF; /* Parrafos */
+    --grisoscuro: #333; /* Botones */
+    --grisclaro: #666; /* Parrafos */
+    --alerta: #E8221A;
+    --fondo-alerta: #fff5f5;
+    --borde-alerta: #feb2b2;
+    --text-alerta: #9b2c2c;
+    --color-texto: #2d3748;
+    --color-borde-badge: #9b2c2c;
+    --color-fondo-badge: #fed7d7;
+    --glass-bg: rgba(255, 255, 255, 0.15);
+    --glass-border-color: rgba(255, 255, 255, 0.3);
+    --glass-shadow-strong: 0 8px 32px 0 rgba(0, 0, 0, 0.15);
+    --glass-shadow-light: 0 4px 20px 0 rgba(0, 0, 0, 0.1);
+}
+/* Reset básico*/
+*{
+    margin: 0;
+    box-sizing: border-box;
+}
+
+/* =======================Botones y etiquetas============================*/
+
+/* =======================Body============================*/
+body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--crema);
+    color: var(--oscuro);
+    overflow-x: hidden;
+}
+h1 {
+    color: var(--naranja);
+}
+h2 {
+    color: var(--amarillo);
+}
+
+/* =======================Barra de navegación============================*/
+header {
+    background-color: var(--crema);
+    box-shadow: 0 2px 5px rgb(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 20px;
+    gap: 20px;
+}
+nav a.activo {
+    border-bottom: 2px solid var(--amarillo);
+}
+
+/* Layout Principal del Sidebar */
+.sidebar {
+    width: 250px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #241E1D; /* Tu color base o el oscuro preferido */
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    padding: 20px 15px;
+    box-sizing: border-box;
+    z-index: 1000;
+    transition: transform 0.3s ease;
+}
+
+/* Encabezado y Logo */
+.sidebar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+.tienda {
+    color: #FF9F1C; /* Ajusta con tu color de acento */
+}
+
+.btn-cerrar-sidebar {
+    display: none; /* Se activa en móviles */
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 1.8rem;
+    cursor: pointer;
+}
+
+/* Estilos de la Lista */
+.sidebar-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar-menu li {
+    margin-bottom: 8px;
+}
+
+.menu-link {
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+    color: #E5E7EB;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.menu-link:hover, .menu-link.active {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+}
+
+/* Iconos integrados */
+.icono {
+    margin-right: 12px;
+}
+
+/* Submenú Desplegable (Inventario) */
+details summary {
+    list-style: none;
+}
+
+details summary::-webkit-details-marker {
+    display: none;
+}
+
+.sub-menu {
+    list-style: none;
+    padding-left: 35px;
+    margin-top: 5px;
+}
+
+.sub-menu a {
+    display: block;
+    padding: 8px 0;
+    color: #9CA3AF;
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: color 0.2s;
+}
+
+.sub-menu a:hover {
+    color: #ffffff;
+}
+
+/* Ajuste del contenido principal de la página */
+/* Agrega este margin-left a tu contenedor <main> o body en Escritorio */
+main {
+    margin-left: 250px;
+    padding: 20px;
+}
+
+/* --- Adaptabilidad Móvil --- */
+@media (max-width: 768px) {
+    .sidebar {
+        transform: translateX(-100%); /* Se oculta a la izquierda */
+        transition: transform 0.3s ease-in-out; 
+    }
+
+    .sidebar.active {
+        transform: translateX(0); /* Aparece al presionar la hamburguesa */
+    }
+
+    .btn-cerrar-sidebar {
+        display: block;
+    }
+
+    main {
+        margin-left: 0;
+    }
+
+    .hamburguesa-menu {
+        position: fixed;
+        top: 15px;
+        left: 15px;
+        font-size: 1.8rem;
+        cursor: pointer;
+        z-index: 999;
+        background: #241E1D;
+        color: #fff;
+        padding: 5px 12px;
+        border-radius: 6px;
+    }
+}
+
+.logo{
+    flex-shrink: 0;
+    text-decoration: none;  
+    font-family: 'Libre Baskerville', Georgia, 'Times New Roman', Times, serif;
+    font-size: 2.5rem;
+    font-weight: bold;
+    letter-spacing: -0,5px;
+    color: var(--amarillo);
+    user-select: none;
+    white-space: nowrap;
+}
+.logo .tienda {color: var(--naranja);}
+
+.menu {
+    display: flex;
+    list-style: none;
+    gap: 20px;
+}
+
+.menu li a {
+    text-decoration: none;
+    color: var(--blanco);
+    font-size: larger;
+}
+
+.menu li a:hover {
+    border-bottom: 2px solid var(--blanco);
+    color: var(--naranja);
+}
+
+.nav ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+
+.nav ul li {
+    cursor: pointer;
+}
+.hamburguesa-menu {
+    display: none;
+    font-size: 25px;
+    cursor: pointer;
+}
+
+.nav-acciones {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.nav-acciones input[type="search"] {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    outline: none;
+    font-size: 0.9rem;
+    width: 200px;
+}
+
+@media (max-width: 768) {
+    .menu {
+        position: absolute;
+        top: 60px;
+        left: 0;
+        width: 100%;
+        background: var(--oscuro);
+        flex-direction: column;
+        align-items: center;
+        display: none;
+    }
+    .menu.active {
+        display: flex;
+    }
+    .hamburguesa-menu {
+        display: block;
+    }
+}
+section{
+    background: var(--crema);
+    border-radius: 4px;
+    width: 100%;
+}
+
+/* =======================Footer============================*/
+footer {
+    background: var(--oscuro);
+    color: #999;
+    text-align: center;
+    padding: 1.5rem;
+    font-size: .85rem;
+    margin-top: 60px;
+}
+footer span {color: var(--amarillo); font-weight: 700;}
+
+.f-contacto {
+    margin-top: 0px;
+}
+/* =======================Formulario============================*/
+
+.ingreso-insumo {
+    width: 90%;
+    max-width: 1200px;
+    margin: auto;
+    background-color: #f4f4f4;
+}
+.nuevo-insumo {
+    background: #f4f4f4;
+    border: none;
+    border-radius: 15px;
+    padding: 20px;
+
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+.ingreso-categoria {
+    width: 90%;
+    max-width: 1200px;
+    margin: auto;
+    background-color: #f4f4f4;
+}
+.nueva-categoria {
+    background: #f4f4f4;
+    border: none;
+    border-radius: 15px;
+    padding: 20px;
+
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 10px;
+}
+.campo {
+    display: flex;
+    flex-direction: column;
+}
+
+select{
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    color: grey;
+    font-family: 'Nunito', sans-serif;
+}
+
+label{
+    display: block;
+    margin-top: 10px;
+    color: grey;
+    font-family: 'Nunito', sans-serif;
+}
+
+fieldset{
+    border: none;
+    padding: 30px;
+    background-color: #f4f4f4;
+    border-radius: 10px;
+}
+
+legend{
+    position: relative;
+    top: 20px;
+    font-size: 25px;
+    text-align: center;
+    font-family: 'Nunito', sans-serif;
+    color: var(--grisclaro);
+}
+input, button, select{
+    width: 100%;
+    padding: 10px;
+    margin-top: 20px;
+    margin-bottom: 15px;
+}
+
+input{
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+h1{
+    margin-bottom: 20px;
+    text-align: center;
+}
+.botones {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    grid-column: 1 / -1;
+}
+
+button {
+    border-radius: 5px;
+    size: 8px;
+    background-color: var(--rojo);
+    color: var(--blanco);
+    border: none;
+    cursor: pointer;
+    border-radius: 8px;
+    margin-top: 10px;
+    width: 100px;
+    padding: 12px 22px;
+    font-weight: bold; 
+    font-family: Arial, sans-serif; 
+    transition: all 0.3s ease-in-out;
+}
+button:hover { background-color: var(--verde);}
+
+.tabla-insumos {
+    margin-top: 40px;
+    background-color: #f4f4f4;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0px 0px 15px rgb(0, 0, 0, 0.3); 
+}
+
+.tabla-insumos h2 {
+    margin-top: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    background: #1f2937;
+    padding: 15px;
+    text-align: center;
+    color: var(--blanco);
+}
+
+td {
+    padding: 15px;
+    text-align: center;
+    border-bottom: 1px solid #374151;
+}
+tr:hover {
+    background: var(--grisclaro);
+}
+.btn-editar, .btn-eliminar, .btn-editar-categoria, .btn-eliminar {
+    border-radius: 5px;
+    size: 8px;
+    background-color: var(--rojo);
+    color: var(--blanco);
+    border: none;
+    cursor: pointer;
+    border-radius: 8px;
+    margin-top: 10px;
+    width: 100px;
+    padding: 12px 22px;
+    font-weight: bold; 
+    transition: all 0.3s ease-in-out;
+}
+
+textarea{
+    border: 1px solid #ccc;
+}
+input, textarea{
+    width: 100%;
+    padding: 10px;
+    margin-top: 20px;
+    margin-bottom: 15px;
+}
+
+/* =======================Dashboard============================*/
+/* =======================Dashboard============================*/
+main {
+    padding: 20px;
+}
+.dashboard-alert-box {
+    background-color: #fff5f5; /* Fondo rojizo/salmón muy suave */
+    border: 1px solid #feb2b2;
+    border-left: 6px solid #e53e3e; /* Borde rojo fuerte que llama la atención */
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    font-family: 'Segoe UI', system-ui, sans-serif;
+}
+
+.alert-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+
+.alert-icon {
+    font-size: 22px;
+}
+
+.dashboard-alert-box h3 {
+    margin: 0;
+    color: var(--alerta); /* Texto rojo oscuro */
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.alert-body p {
+    margin: 0 0 12px 0;
+    color: var(--text-alerta);
+    font-size: 14px;
+}
+
+.alert-list {
+    margin: 0;
+    padding-left: 20px;
+    color: var(--color-texto);
+}
+
+.alert-list li {
+    margin-bottom: 8px;
+    font-size: 15px;
+}
+
+.alert-list strong {
+    color: var(--color-borde-badge);
+}
+
+.alert-list span.stock-badge {
+    background-color: var(--color-fondo-badge);
+    color: var(--color-borde-badge);
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 13px;
+}
+
+.estadisticas {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.card {
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.05);
+    text-align: center;
+}
+
+.card h3 {
+    margin-bottom: 15px;
+    color: var(--naranja);
+    font-size: 1.2rem;
+}
+
+.card p {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: var(--oscuro);
+}
+
+.productos-populares {
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+.productos-populares h3 {
+    margin-bottom: 20px;
+    color: var(--naranja);
+    font-size: 1.5rem;
+}
+
+.productos-populares ul {
+    list-style: none;
+}
+
+.productos-populares li {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid var();
+    font-size: 1.1rem;
+}
+
+.productos-populares li:last-child {
+    border-bottom: none;
+}
+
+.productos-populares li span {
+    font-weight: bold;
+    color: var(--verde);
+}
+
+/* =======================Responsive============================*/
+@media (max-width: 768px) {
+    .estadisticas {
+        grid-template-columns: 1fr;
+    }
+    
+    nav {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    
+    .menu {
+        position: absolute;
+        top: 80px;
+        left: 0;
+        width: 100%;
+        background-color: var(--oscuro);
+        flex-direction: column;
+        align-items: center;
+        display: none;
+        padding: 10px 0;
+    }
+    
+    .menu.active {
+        display: flex;
+    }
+    
+    .hamburguesa-menu {
+        display: block;
+        position: absolute;
+        right: 20px;
+        top: 25px;
+    }
+}
+
+.factura-contenedor {
+    background-color: #fff;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 30px;
+    border: 1px solid #ddd;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.factura-header {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 2px solid var(--oscuro);
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+}
+
+.factura-header .datos-empresa {
+    text-align: center;
+}
+
+.factura-header .datos-factura {
+    text-align: right;
+}
+
+.factura-cliente {
+    margin-bottom: 30px;
+}
+
+.factura-detalles table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 30px;
+}
+
+.factura-detalles th, .factura-detalles td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+}
+
+.factura-detalles th {
+    background-color: var(--grisoscuro);
+    color: white;
+}
+
+.factura-detalles tfoot td {
+    border: none;
+    text-align: right;
+}
+
+.texto-derecha {
+    text-align: right;
+}
+
+.factura-footer {
+    text-align: center;
+    font-size: 14px;
+    color: #777;
+    border-top: 1px solid #ddd;
+    padding-top: 20px;
+}
+
+/* Reglas específicas para imprimir la factura correctamente */
+@media print {
+    body {
+        background-color: #fff;
+    }
+    .factura-contenedor {
+        border: none;
+        box-shadow: none;
+        padding: 0;
+    }
+}
+.acciones  {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    padding: 5px;
+    justify-items: center;
+    width: 8
+
+}
+
+.acciones button{
+    min-width: 100px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+td:last-child {
+    width: 220px;
+    min-width: 200px;
+    text-align: center;
+}
