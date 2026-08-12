@@ -1,52 +1,61 @@
+/* ==========================================================================
+   Variables Globales y Configuración del Tema
+   ========================================================================== */
 :root {
-    --rojo: #E8221A; /* Botones */
-    --naranja: #F97316; /* Titulos principales / logo */
-    --amarillo: #FACC15; /* Logo */
-    --verde: #22C55E; /* Botones/Hover */
-    --oscuro: #1A1A1A; /* fondos de seccion */
-    --navbar: #1E1B18; /*barra de navegacion*/
-    --crema: #FFF8F0; /* Fondo */
-    --blanco: #FFFFFF; /* Parrafos */
-    --grisoscuro: #333; /* Botones */
-    --grisclaro: #666; /* Parrafos */
-    --alerta: #E8221A;
-    --fondo-alerta: #fff5f5;
-    --borde-alerta: #feb2b2;
-    --text-alerta: #9b2c2c;
-    --color-texto: #2d3748;
-    --color-borde-badge: #9b2c2c;
-    --color-fondo-badge: #fed7d7;
+    --rojo: #E8221A;             /* Color principal para botones y alertas */
+    --naranja: #F97316;          /* Color para títulos principales y logotipo */
+    --amarillo: #FACC15;         /* Color complementario para el logotipo */
+    --verde: #22C55E;            /* Color para botones de confirmación y estados de éxito */
+    --oscuro: #1A1A1A;           /* Color de fondo principal para secciones oscuras */
+    --navbar: #1E1B18;           /* Fondo de la barra de navegación */
+    --crema: #FFF8F0;            /* Fondo general claro de la página */
+    --blanco: #FFFFFF;           /* Color del texto en fondos oscuros y contenedores de tarjetas */
+    --grisoscuro: #333;          /* Fondos de botones secundarios */
+    --grisclaro: #666;           /* Color para textos de párrafos generales */
+    --alerta: #E8221A;           /* Color de error y alertas de stock */
+    --fondo-alerta: #fff5f5;     /* Fondo de contenedores de alerta */
+    --borde-alerta: #feb2b2;     /* Borde para contenedores de alerta */
+    --text-alerta: #9b2c2c;      /* Texto de error destacado */
+    --color-texto: #2d3748;      /* Texto oscuro secundario */
+    --color-borde-badge: #9b2c2c;/* Borde de insignias */
+    --color-fondo-badge: #fed7d7;/* Fondo de insignias */
+    
+    /* Configuración para efectos Glassmorphism (Vidrio Esmerilado) */
     --glass-bg: rgba(255, 255, 255, 0.15);
     --glass-border-color: rgba(255, 255, 255, 0.3);
     --glass-shadow-strong: 0 8px 32px 0 rgba(0, 0, 0, 0.15);
     --glass-shadow-light: 0 4px 20px 0 rgba(0, 0, 0, 0.1);
 }
-/* Reset básico*/
-*{
+
+/* ==========================================================================
+   Reset Básico y Estilos Generales
+   ========================================================================== */
+* {
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
+    box-sizing: border-box; /* Asegura un cálculo correcto de anchos y altos */
 }
 
-/* =======================Botones y etiquetas============================*/
-
-/* =======================Body============================*/
+/* Estilos globales de la página */
 body {
     font-family: 'Nunito', sans-serif;
     background: var(--crema);
     color: var(--oscuro);
-    overflow-x: hidden;
+    overflow-x: hidden; /* Evita el scroll horizontal */
 }
 
-/* =======================Barra de navegación============================*/
+/* ==========================================================================
+   Cabecera y Barra de Navegación
+   ========================================================================== */
 header {
     background-color: var(--crema);
     box-shadow: 0 2px 5px rgb(0, 0, 0, 0.1);
-    position: sticky;
+    position: sticky; /* Cabecera fija en la parte superior al hacer scroll */
     top: 0;
     z-index: 100;
 }
 
+/* Contenedor interno de la barra de navegación */
 nav {
     display: flex;
     align-items: center;
@@ -54,6 +63,8 @@ nav {
     padding: 15px 20px;
     gap: 20px;
 }
+
+/* Estilo para la barra de navegación en paneles y menú alternativo */
 .navbar {
     display: flex;
     justify-content: space-around;
@@ -62,11 +73,14 @@ nav {
     background: var(--navbar);
     border-bottom: 1px solid rgb(255, 255, 255, 0.8);
 }
+
+/* Indicador visual de página activa */
 nav a.activo {
     border-bottom: 2px solid var(--amarillo);
 }
 
-.logo{
+/* Estilo del logotipo de la tienda */
+.logo {
     flex-shrink: 0;
     text-decoration: none;  
     font-family: 'Libre Baskerville', Georgia, 'Times New Roman', Times, serif;
@@ -77,25 +91,33 @@ nav a.activo {
     user-select: none;
     white-space: nowrap;
 }
-.logo .tienda {color: var(--naranja);}
 
+/* Parte destacada del nombre del negocio en el logotipo */
+.logo .tienda {
+    color: var(--naranja);
+}
+
+/* Lista de enlaces de navegación */
 .menu {
     display: flex;
     list-style: none;
     gap: 20px;
 }
 
+/* Estilo de los enlaces individuales del menú */
 .menu li a {
     text-decoration: none;
     color: var(--blanco);
     font-size: larger;
 }
 
+/* Efectos de hover sobre los enlaces del menú */
 .menu li a:hover {
     border-bottom: 2px solid var(--blanco);
     color: var(--naranja);
 }
 
+/* Estilos de navegación adicionales */
 .nav ul {
     list-style: none;
     display: flex;
@@ -105,18 +127,22 @@ nav a.activo {
 .nav ul li {
     cursor: pointer;
 }
+
+/* Botón de menú hamburguesa (para pantallas pequeñas) */
 .hamburguesa-menu {
     display: none;
     font-size: 25px;
     cursor: pointer;
 }
 
+/* Sección derecha de la barra de navegación (Buscador y Carrito) */
 .nav-acciones {
     display: flex;
     align-items: center;
     gap: 15px;
 }
 
+/* Campo de búsqueda del menú */
 .nav-acciones input[type="search"] {
     padding: 8px 12px;
     border: 1px solid #ddd;
@@ -126,6 +152,9 @@ nav a.activo {
     width: 200px;
 }
 
+/* ==========================================================================
+   Icono y Contador del Carrito de Compras
+   ========================================================================== */
 .carrito {
     text-decoration: none;
     color: var(--blanco);
@@ -134,31 +163,34 @@ nav a.activo {
 }
 
 .carrito-icon {
-  position: relative;
-  cursor: pointer;
+    position: relative;
+    cursor: pointer;
 }
 
 .carrito-icon i {
-  font-size: 1.4rem;
-  color: var(--blanco);
+    font-size: 1.4rem;
+    color: var(--blanco);
 }
 
+/* Indicador numérico de cantidad de productos en el carrito */
 .carrito-count {
-  position: absolute;
-  top: -8px;
-  right: -8px;
-  background: var(--naranja);
-  color: var(--blanco);
-  font-size: 0.65rem;
-  font-weight: 800;
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: var(--naranja);
+    color: var(--blanco);
+    font-size: 0.65rem;
+    font-weight: 800;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
-@media (max-width: 768) {
+
+/* Adaptación responsive del menú de navegación */
+@media (max-width: 768px) {
     .menu {
         position: absolute;
         top: 60px;
@@ -176,6 +208,10 @@ nav a.activo {
         display: block;
     }
 }
+
+/* ==========================================================================
+   Panel Lateral del Carrito de Compras
+   ========================================================================== */
 .panel-carrito {
     position: fixed;
     top: 0;
@@ -186,16 +222,17 @@ nav a.activo {
     color: #000;
     padding: 20px;
     z-index: 1000;
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease; /* Transición suave al abrir/cerrar */
     display: flex;
     flex-direction: column;
 }
 
+/* Ocultar el panel del carrito moviéndolo fuera de pantalla */
 .panel-carrito.cerrado {
     transform: translateX(100%);
-
 }
 
+/* Cabecera del panel del carrito */
 .carritp-header {
     display: flex;
     justify-content: space-between;
@@ -203,12 +240,14 @@ nav a.activo {
     margin-bottom: 20px;
 }
 
+/* Pie de página del panel del carrito */
 .carrito-footer {
     margin-top: auto;
     border-top: 1px solid #444;
     padding-top: 15px;
 }
 
+/* Fondo translúcido para oscurecer la página al abrir el carrito */
 .overlay {
     display: none;
     position: fixed;
@@ -220,11 +259,13 @@ nav a.activo {
     z-index: 999;
 }
 
+/* Contenedor con scroll para la lista de productos seleccionados */
 #carrito-items {
     flex: 1;
     overflow: auto;
 }
 
+/* Botón para procesar o confirmar la compra */
 .btn-confirmar {
     width: 100%;
     padding: 12px;
@@ -235,6 +276,8 @@ nav a.activo {
     cursor: pointer;
     font-size: 16px;
 }
+
+/* Fila de producto individual dentro del panel del carrito */
 .carrito-item {
     display: flex;
     flex-direction: row;
@@ -243,33 +286,39 @@ nav a.activo {
     padding: 10px 0;
     border-bottom: 1px solid #444;
 }
- .carrito-item img {
+
+/* Miniatura de imagen del producto en el carrito */
+.carrito-item img {
     width: 50px;
     height: 50px;
     object-fit: cover;
     border-radius: 5px;
- }
+}
 
- .carrito-item button {
+/* Botones para eliminar o modificar cantidades en el carrito */
+.carrito-item button {
     width: 25px;
     height: 25px;
     border-radius: 50%;
     border: 1px solid #000;
-    background:  var(--blanco);
+    background: var(--blanco);
     color: #000;
     cursor: pointer;
     font-size: 14px;
- }
- .carrito-item span {
-    padding: 0 8px;
- }
+}
 
- .cantidad-control{
+.carrito-item span {
+    padding: 0 8px;
+}
+
+/* Controles numéricos para aumentar o disminuir la cantidad */
+.cantidad-control {
     display: flex;
     align-items: center;
     gap: 5px;
- }
- .cantidad-control button {
+}
+
+.cantidad-control button {
     width: 25px;
     height: 25px;
     border-radius: 50%;
@@ -279,12 +328,16 @@ nav a.activo {
     cursor: pointer;
     font-size: 16px;
     line-height: 1;
- }
- .cantidad-control span {
+}
+
+.cantidad-control span {
     min-width: 20px;
     text-align: center;
- }
-/* =======================Hero============================*/
+}
+
+/* ==========================================================================
+   Sección Hero (Banner Principal)
+   ========================================================================== */
 .hero {
     position: relative;
     flex-direction: column;
@@ -298,6 +351,8 @@ nav a.activo {
     background-repeat: no-repeat;
     background-size: cover;
 }
+
+/* Capa de contraste oscura sobre la imagen del Hero */
 .hero::before {
     content: "";
     background: rgba(0, 0, 0, 0.3);
@@ -305,23 +360,28 @@ nav a.activo {
     inset: 0;
     z-index: 0;
 }
-.hero-contenido{
+
+/* Contenedor del texto informativo del Hero */
+.hero-contenido {
     position: relative;
     color: var(--blanco);
     text-align: left;
     max-width: 500px;
     z-index: 2;
 }
-.hero-contenido h1{
+
+.hero-contenido h1 {
     font-size: 64px;
     margin-bottom: 15px;
 }
-.hero-contenido p{
+
+.hero-contenido p {
     margin-bottom: 20px;
     font-size: 20px;
 }
 
-.hero-btn{
+/* Botón de llamado a la acción del Hero */
+.hero-btn {
     border-radius: 5px;
     size: 10px;
     background-color: var(--rojo);
@@ -336,36 +396,43 @@ nav a.activo {
     padding: 10px 30px;
     font-size: 20px;
 }
-.hero-btn:hover{
+
+.hero-btn:hover {
     transform: translateY(-3px);
-    background-color: var(--verde) ;
+    background-color: var(--verde);
 }
 
-/* =======================Productos card============================*/
-section{
+/* ==========================================================================
+   Contenedores de Tarjetas de Productos y Secciones
+   ========================================================================== */
+section {
     background: var(--oscuro);
     width: 100%;
     padding: 40px 0;
-    
 }
-.contenedor-productos{
+
+.contenedor-productos {
     position: relative;
     width: 100%;
     padding: 50px;
 }
-.contenedor-productos h2{
+
+.contenedor-productos h2 {
     margin-bottom: 14px;
 }
 
+/* Grid layout para las tarjetas de productos */
 .contenido-contendor-productos {
     display: grid;
     flex-wrap: wrap;
     gap: 30px;
-    grid-template-columns: repeat(3,1fr);
+    grid-template-columns: repeat(3, 1fr);
     grid-auto-rows: 400px;
     justify-content: center;
     justify-items: center;
 }
+
+/* Estilo individual para las tarjetas de productos */
 .producto-card {
     width: 300px;
     flex-shrink: 0;
@@ -379,62 +446,68 @@ section{
     display: flex;
     flex-direction: column;
     object-fit: cover;
-
 }
+
 .producto-card:hover {
     transform: translateY(-5px);
 }
+
 .producto-card img {
     width: 100%;
     height: 200px;
     object-fit: cover;
     border-radius: 10px;
 }
-.contenedor-productos h1{
+
+.contenedor-productos h1 {
     color: var(--naranja);
 }
+
 .producto-card h2 {
     margin: 10px 0 5px;
     color: var(--naranja);
 }
+
 .producto-card h3 {
     color: var(--rojo);
     font-weight: bold;
 }
+
 .producto-card p {
-     font-size: 14px;
+    font-size: 14px;
     color: var(--grisclaro);
     line-height: 1.4;
     margin: 10px 5px 15px;
     min-height: 58px;
 }
 
-
-.titulo-categoria{
-    margin: 0 0 25px 0 ;
+/* Indicador/Título lateral para cada categoría en el menú */
+.titulo-categoria {
+    margin: 0 0 25px 0;
     padding-left: 18px;
     text-align: left;
     color: var(--naranja);
     font-size: 28px;
     font-family: 'Bebas Neue', sans-serif;
     border-left: 4px solid var(--rojo);
-
 }
-.categorias-section{
+
+.categorias-section {
     padding: 45px 40px 60px;
     position: relative;
 }
 
-#producto-menu.categorias-section{
+#producto-menu.categorias-section {
     padding: 45px 40px 60px;
     border-bottom: none;
 }
 
-#producto-menu.categorias-section:last-child{
+#producto-menu.categorias-section:last-child {
     border-bottom: none;
 }
 
-.categorias-section:not(:last-child)::after{
+/* Separadores degradados de categorías */
+.categorias-section:not(:last-child)::after {
     content: "";
     display: block;
     width: 70%;
@@ -442,6 +515,8 @@ section{
     margin: 50px auto 0;
     background: linear-gradient(to right, transparent, var(--naranja), var(--rojo), var(--naranja), transparent);
 }
+
+/* Barra de filtros de categoría en el menú */
 #filtros {
     display: flex;
     justify-content: center;
@@ -453,6 +528,7 @@ section{
     border-bottom: 1px solid rgba(0, 0, 0, 0.08);
 }
 
+/* Botones para alternar filtros */
 .btn-filtro {
     width: auto;
     background-color: var(--grisoscuro);
@@ -477,6 +553,9 @@ section{
     color: var(--blanco);
 }
 
+/* ==========================================================================
+   Menú Principal (Vista de Productos)
+   ========================================================================== */
 #producto-menu {
     background-color: var(--oscuro);
     padding-top: 40px 30px;
@@ -491,6 +570,7 @@ section{
     margin: 0 auto;
     padding: 0 30px;
 }
+
 #producto-menu .producto-card {
     width: 300px;
     border-radius: 16px;
@@ -498,12 +578,9 @@ section{
     background-color: var(--crema);
     padding: 12px;
     text-align: center;
-
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
-
     display: flex;
     flex-direction: column;
-
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -520,7 +597,7 @@ section{
 }
 
 #producto-menu .titulo-categoria {
-    max-width:  1200px;
+    max-width: 1200px;
     margin: 20px auto 25px;
     padding: 0 30px;
     text-align: left;
@@ -540,6 +617,7 @@ section{
     font-size: 19px;
     font-weight: bold;
 }
+
 #producto-menu .producto-card p {
     font-size: 14px;
     color: var(--grisclaro);
@@ -547,6 +625,8 @@ section{
     margin: 10px 5px 15px;
     min-height: 58px;
 }
+
+/* Botón para añadir producto al carrito */
 .btn-contenedor-productos {
     width: 100%;
     border: none;
@@ -567,6 +647,7 @@ section{
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
+/* Encabezado descriptivo en la página del menú */
 .menu-encabezado {
     text-align: center;
     padding: 60px 20px 35px;
@@ -584,15 +665,21 @@ section{
     color: var(--blanco);
     font-size: 18px;
 }
-/* =======================Carrusel Populares============================*/
-.populares{
+
+/* ==========================================================================
+   Carrusel de Productos Populares
+   ========================================================================== */
+.populares {
     padding: 50px 20px;
     text-align: center;
     background-color: var(--oscuro);
 }
-.populares h1{
+
+.populares h1 {
     color: var(--naranja);
 }
+
+/* Contenedor flexible de tarjetas para el carrusel */
 .cards-contenedor {
     display: flex !important;
     gap: 30px;
@@ -600,6 +687,7 @@ section{
     scroll-behavior: smooth;
     width: 100%;
 }
+
 .carrusel-populares {
     position: relative;
     display: flex;
@@ -607,27 +695,23 @@ section{
     width: 96%;
     margin: auto;
 }
+
+/* Flechas direccionales del carrusel */
 .flecha {
     position: absolute;
     top: 30%;
     z-index: 10;
-
     width: 45px;
     height: 45px;
-
     border: none;
     border-radius: 50%;
-
     background-color: var(--rojo);
     color: var(--blanco);
-
     font-size: 24px;
     cursor: pointer;
-
     display: flex;
     align-items: center;
     justify-content: center;
-
     transition: transform 0.2s;
 }
 
@@ -642,93 +726,100 @@ section{
 .flecha-derecha {
     right: 10px;
 }
-.populares h1{
-    color: var(--naranja);
-    text-align: center;
-}
-.cards-contenedor h2{
+
+.populares h1 {
     color: var(--naranja);
     text-align: center;
 }
 
+.cards-contenedor h2 {
+    color: var(--naranja);
+    text-align: center;
+}
 
-/* =======================Identidad============================*/
-/* Contenedor principal de la sección */
+/* ==========================================================================
+   Sección de Identidad del Negocio (Pilares)
+   ========================================================================== */
 .identidad {
-  text-align: center;
-  padding: 40px 20px;
-  font-family: system-ui, -apple-system, sans-serif;
-  background-color: var(--crema);
-  align-items: stretch;
+    text-align: center;
+    padding: 40px 20px;
+    font-family: system-ui, -apple-system, sans-serif;
+    background-color: var(--crema);
+    align-items: stretch;
 }
 
 .identidad h2 {
-  font-size: 36px;
-  margin-bottom: 40px;
-  color: var(--naranja);
+    font-size: 36px;
+    margin-bottom: 40px;
+    color: var(--naranja);
 }
 
-/* Grid para organizar los 4 pilares */
+/* Grid para los pilares de identidad corporativa */
 .cards-container {
-  display: grid;
-  grid-template-columns: repeat(4,1fr);
-  gap: 25px;
-  padding: 80px 50px;
-  justify-content: center;
-  align-items: center;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 25px;
+    padding: 80px 50px;
+    justify-content: center;
+    align-items: center;
 }
 
-/* Estilo individual de cada tarjeta */
+/* Estilo individual de tarjeta de pilar */
 .card {
-  padding: 20px;
-  border-radius: 12px;
-  background-color: #ffffff;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); 
-  transition: transform 0.2s ease;
-  height: 210px;
-  box-sizing: border-box;
+    padding: 20px;
+    border-radius: 12px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); 
+    transition: transform 0.2s ease;
+    height: 210px;
+    box-sizing: border-box;
 }
 
 .card:hover {
-  transform: translateY(-5px);
+    transform: translateY(-5px);
 }
 
 .card .icon {
-  font-size: 2.5rem;
-  margin-bottom: 12px;
+    font-size: 2.5rem;
+    margin-bottom: 12px;
 }
 
 .card h3 {
-  font-size: 1.2rem;
-  margin: 8px 0;
-  color: var(--naranja);
+    font-size: 1.2rem;
+    margin: 8px 0;
+    color: var(--naranja);
 }
 
 .card p {
-  font-size: 0.95rem;
-  color: var(--grisclaro);
-  margin: 0;
+    font-size: 0.95rem;
+    color: var(--grisclaro);
+    margin: 0;
 }
-/* =======================Categorías============================*/
+
+/* ==========================================================================
+   Vista de Categorías
+   ========================================================================== */
 .categorias-contenedor {
     padding: 100px;
     text-align: center;
     background-color: var(--crema);
 }
+
 .categorias-contenedor h2 {
     color: var(--naranja);
 }
 
+/* Grid flexible para las burbujas o bloques de categoría */
 .categorias-grid {
     display: flex;
-    /*Crea columnas automaticas que no sean menores a 150px*/
-    grid-template-columns: repeat (auto-fit, minmax(150px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     gap: 20px;
     padding: 20px;
     justify-content: center;
     align-items: stretch;
 }
 
+/* Bloque individual de cada categoría */
 .categoria-item {
     display: flex;
     flex-direction: column;
@@ -744,7 +835,7 @@ section{
     background-color: var(--oscuro);
 }
 
-.categoria-item img{
+.categoria-item img {
     width: 60px;
     height: 60px;
     margin-bottom: 10px;
@@ -755,7 +846,9 @@ section{
     box-shadow: 0 5px 15px rgb(0, 0, 0, 0.1);
 }
 
-/* =======================Footer============================*/
+/* ==========================================================================
+   Footer (Pie de Página)
+   ========================================================================== */
 footer {
     background: var(--oscuro);
     color: #999;
@@ -764,12 +857,18 @@ footer {
     font-size: .85rem;
     margin-top: 60px;
 }
-footer span {color: var(--amarillo); font-weight: 700;}
+
+footer span {
+    color: var(--amarillo);
+    font-weight: 700;
+}
 
 .f-contacto {
     margin-top: 0px;
 }
-.footer-info{
+
+/* Enlaces del Footer */
+.footer-info {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -778,8 +877,10 @@ footer span {color: var(--amarillo); font-weight: 700;}
     list-style: none;
     padding: 0;
 }
-/* =======================Contacto============================*/
 
+/* ==========================================================================
+   Formularios y Elementos de Interacción (Contacto/Pedidos)
+   ========================================================================== */
 .formulario-contacto {
     width: 500px;
     margin: auto;
@@ -787,30 +888,31 @@ footer span {color: var(--amarillo); font-weight: 700;}
     border-radius: 6px;
     padding: 0px;
     background-color: #f4f4f4;
-    
 }
 
 .contacto {
     background-color: var(--oscuro);
 }
-textarea{
+
+textarea {
     border: 1px solid #ccc;
 }
-label{
+
+label {
     display: block;
     margin-top: 10px;
     color: grey;
     font-family: 'Nunito', sans-serif;
 }
 
-fieldset{
+fieldset {
     border: none;
     padding: 30px;
     background-color: #f4f4f4;
     border-radius: 10px;
 }
 
-legend{
+legend {
     position: relative;
     top: 20px;
     font-size: 25px;
@@ -819,25 +921,26 @@ legend{
     color: var(--grisclaro);
     padding: 0 10px;
     margin-bottom: 10px;
-    
 }
-input, button, textarea{
+
+input, button, textarea {
     width: 100%;
     padding: 10px;
     margin-top: 20px;
     margin-bottom: 15px;
 }
 
-input{
+input {
     border: 1px solid #ccc;
     border-radius: 5px;
 }
 
-h1{
+h1 {
     margin-bottom: 20px;
     text-align: center;
 }
 
+/* Botón de envío del formulario de contacto */
 .enviar-btn {
     border-radius: 5px;
     size: 10px;
@@ -851,21 +954,24 @@ h1{
     font-weight: bold;  
     transition: all 0.3s ease-in-out;
 }
-.enviar-btn:hover{
+
+.enviar-btn:hover {
     background-color: var(--verde);
 }
+
 .contacto {
     background-color: var(--crema);
     min-height: 700px;
     border-radius: 0%;
 }
+
 .terminos p {
     justify-content: center;
     text-align: center;
-
 }
 
-.modal-contenido{
+/* Ventanas Modales */
+.modal-contenido {
     background-color: #fcfbfa;
     max-width: 500px;
     margin: 5% auto;
@@ -875,7 +981,7 @@ h1{
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.modal-contenido{
+.modal-contenido {
     color: var(--naranja);
     font-size: 24px;
     margin-bottom: 20px;
@@ -884,6 +990,7 @@ h1{
     font-weight: 600;
 }
 
+/* Agrupamiento para filas de formularios */
 .form-group {
     margin-bottom: 18px;
     display: flex;
@@ -897,22 +1004,23 @@ h1{
     color: #444;
 }
 
-.form-group input{
+.form-group input {
     padding: 10px 14px;
     border: 1px solid #ccc;
     border-radius: 6px;
     font-size: 15px;
     background-color: #fff;
-    transition: all 0,3s ease;
+    transition: all 0.3s ease;
     outline: none;
 }
 
-/* Efecto cuando el usuario da clic para escribir */
+/* Efecto focus al enfocar entradas de formulario */
 .form-group input:focus {
     border-color: var(--amarillo);
     box-shadow: 0 0 0 3px rgb(201, 76, 61, 0.2);
 }
 
+/* Campos de selección */
 .form-group select {
     padding: 10px 14px;
     border: 1px solid #ccc;
@@ -922,10 +1030,8 @@ h1{
     color: var(--grisoscuro);
     cursor: pointer;
     outline: none;
-    transition: all 0,3s ease;
-    /* Esto ayuda a que en Android/iOS no se vean estilos raros de fabrica*/
+    transition: all 0.3s ease;
     appearance: none;
-    
     background-repeat: no-repeat;
     background-position: right 14px;
     background-size: 16px;
@@ -937,6 +1043,7 @@ h1{
     box-shadow: 0 0 0 3px rgb(201, 76, 61, 0.2);
 }
 
+/* Áreas de texto */
 .form-group textarea {
     padding: 12px 14px;
     border: 1px solid #ccc;
@@ -946,12 +1053,10 @@ h1{
     color: var(--grisoscuro);
     outline: none;
     font-family: inherit;
-    transition: all 0,3s ease;
-    /* Control de tamaño*/
-    resize: vertical;
+    transition: all 0.3s ease;
+    resize: vertical; /* Permite sólo redimensionamiento vertical */
     min-height: 80px;
     max-height: 150px;
- 
 }
 
 .form-group textarea:focus {
@@ -959,7 +1064,8 @@ h1{
     box-shadow: 0 0 0 3px rgb(201, 76, 61, 0.2);
 }
 
-.form-group button{
+/* Botones en formularios */
+.form-group button {
     background-color: var(--rojo);
     color: #f4f4f4;
     border: none;
@@ -969,14 +1075,16 @@ h1{
     padding: 10px 15px;
     font-weight: bold;  
     transition: all 0.3s ease-in-out;
-    
-}
-.form-group button:hover{
-    transform: translateY(-3px);
-    background-color: var(--verde) ;
 }
 
-/* Rastreo*/
+.form-group button:hover {
+    transform: translateY(-3px);
+    background-color: var(--verde);
+}
+
+/* ==========================================================================
+   Sección de Rastreo de Pedido y Timeline
+   ========================================================================== */
 .rastreo-container {
     max-width: 600px;
     margin: 50px auto;
@@ -997,6 +1105,7 @@ h2 {
     margin-bottom: 30px;
 }
 
+/* Campo de búsqueda del código de pedido */
 .buscar-box {
     display: flex;
     gap: 10px;
@@ -1034,7 +1143,7 @@ h2 {
     background-color: var(--verde);
 }
 
-/* Contenedor de resultados animado u oculto inicialmente */
+/* Contenedor de resultados del rastreo */
 .resultado-box {
     display: none;
     border-top: 2px dashed #eee;
@@ -1043,6 +1152,7 @@ h2 {
     text-align: left;
 }
 
+/* Resumen del estado actual del pedido */
 .info-pedido {
     display: flex;
     justify-content: space-between;
@@ -1063,7 +1173,7 @@ h2 {
     text-transform: uppercase;
 }
 
-/* Línea de tiempo (Timeline) estilo Rappi/Domino's */
+/* Línea de tiempo visual del pedido */
 .timeline {
     display: flex;
     justify-content: space-between;
@@ -1072,7 +1182,7 @@ h2 {
     padding: 0 10px;
 }
 
-/* La barra gris del fondo */
+/* Línea horizontal de fondo en el timeline */
 .timeline::before {
     content: '';
     position: absolute;
@@ -1084,6 +1194,7 @@ h2 {
     z-index: 1;
 }
 
+/* Cada uno de los pasos o hitos en el timeline */
 .step {
     position: relative;
     z-index: 2;
@@ -1091,7 +1202,7 @@ h2 {
     flex: 1;
 }
 
-/* El círculo del estado */
+/* Círculo que representa cada hito */
 .step-icon {
     width: 44px;
     height: 44px;
@@ -1113,7 +1224,7 @@ h2 {
     color: #888;
 }
 
-/* Clases activas que se manejarán con JS */
+/* Estilos para el estado activo en el timeline */
 .step.active .step-icon {
     background-color: var(--color-principal);
     color: var(--verde);
@@ -1125,7 +1236,7 @@ h2 {
     font-weight: bold;
 }
 
-/* Clase especial por si el pedido es cancelado */
+/* Estado de cancelación del pedido */
 .step.cancelado .step-icon {
     background-color: var(--rojo);
     color: white;

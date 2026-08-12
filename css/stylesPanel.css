@@ -1,49 +1,59 @@
+/* ==========================================================================
+   Variables Globales y Configuración de Estilos (Panel de Administración)
+   ========================================================================== */
 :root {
-    --rojo: #E8221A; /* Botones */
-    --naranja: #F97316; /* Titulos principales / logo */
-    --amarillo: #FACC15; /* Logo */
-    --verde: #22C55E; /* Botones/Hover */
-    --oscuro: #1A1A1A; /* fondos de seccion */
-    --navbar: #1E1B18; /*barra de navegacion*/
-    --crema: #FFF8F0; /* Fondo */
-    --blanco: #FFFFFF; /* Parrafos */
-    --grisoscuro: #333; /* Botones */
-    --grisclaro: #666; /* Parrafos */
-    --alerta: #E8221A;
-    --fondo-alerta: #fff5f5;
-    --borde-alerta: #feb2b2;
-    --text-alerta: #9b2c2c;
-    --color-texto: #2d3748;
-    --color-borde-badge: #9b2c2c;
-    --color-fondo-badge: #fed7d7;
+    --rojo: #E8221A;             /* Color para botones de peligro, eliminación y alertas */
+    --naranja: #F97316;          /* Color para títulos de sección y logotipo */
+    --amarillo: #FACC15;         /* Color secundario de resalte y logotipo */
+    --verde: #22C55E;            /* Color para acciones de éxito o confirmación */
+    --oscuro: #1A1A1A;           /* Color de fondo para elementos oscuros del panel */
+    --navbar: #1E1B18;           /* Fondo de la barra de navegación del panel */
+    --crema: #FFF8F0;            /* Fondo general claro de la página */
+    --blanco: #FFFFFF;           /* Fondos de tarjetas y contenedores */
+    --grisoscuro: #333;          /* Color para cabeceras y elementos de control */
+    --grisclaro: #666;           /* Color de textos descriptivos y párrafos */
+    --alerta: #E8221A;           /* Color de error en cuadros de diálogo */
+    --fondo-alerta: #fff5f5;     /* Fondo de mensajes de alerta */
+    --borde-alerta: #feb2b2;     /* Borde para resaltar alertas de stock */
+    --text-alerta: #9b2c2c;      /* Texto descriptivo de alertas críticas */
+    --color-texto: #2d3748;      /* Color de fuente base oscuro */
+    --color-borde-badge: #9b2c2c;/* Color del borde de etiquetas de estado crítico */
+    --color-fondo-badge: #fed7d7;/* Fondo de las etiquetas de stock crítico */
+    
+    /* Configuración para el diseño Glassmorphism en paneles */
     --glass-bg: rgba(255, 255, 255, 0.15);
     --glass-border-color: rgba(255, 255, 255, 0.3);
     --glass-shadow-strong: 0 8px 32px 0 rgba(0, 0, 0, 0.15);
     --glass-shadow-light: 0 4px 20px 0 rgba(0, 0, 0, 0.1);
 }
-/* Reset básico*/
-*{
+
+/* ==========================================================================
+   Reset de Estilos y Estilos Base
+   ========================================================================== */
+* {
     margin: 0;
-    box-sizing: border-box;
+    box-sizing: border-box; /* Unifica el cálculo de márgenes y tamaños */
 }
 
-/* =======================Botones y etiquetas============================*/
-
-/* =======================Body============================*/
+/* Estructura general de la página del panel */
 body {
     font-family: 'Nunito', sans-serif;
     background: var(--crema);
     color: var(--oscuro);
-    overflow-x: hidden;
+    overflow-x: hidden; /* Evita que el contenido desborde lateralmente */
 }
+
 h1 {
     color: var(--naranja);
 }
+
 h2 {
     color: var(--amarillo);
 }
 
-/* =======================Barra de navegación============================*/
+/* ==========================================================================
+   Barra de Navegación de la Cabecera
+   ========================================================================== */
 header {
     background-color: var(--crema);
     box-shadow: 0 2px 5px rgb(0, 0, 0, 0.1);
@@ -59,18 +69,21 @@ nav {
     padding: 15px 20px;
     gap: 20px;
 }
+
 nav a.activo {
     border-bottom: 2px solid var(--amarillo);
 }
 
-/* Layout Principal del Sidebar */
+/* ==========================================================================
+   Layout Principal del Menú Lateral (Sidebar)
+   ========================================================================== */
 .sidebar {
     width: 250px;
     height: 100vh;
-    position: fixed;
+    position: fixed; /* Se mantiene en una posición fija en pantalla */
     top: 0;
     left: 0;
-    background-color: #241E1D; /* Tu color base o el oscuro preferido */
+    background-color: #241E1D; /* Color de fondo oscuro del sidebar */
     color: #ffffff;
     display: flex;
     flex-direction: column;
@@ -80,7 +93,7 @@ nav a.activo {
     transition: transform 0.3s ease;
 }
 
-/* Encabezado y Logo */
+/* Encabezado interno del menú lateral */
 .sidebar-header {
     display: flex;
     justify-content: space-between;
@@ -97,11 +110,12 @@ nav a.activo {
 }
 
 .tienda {
-    color: #FF9F1C; /* Ajusta con tu color de acento */
+    color: #FF9F1C; /* Color destacado del logotipo en el sidebar */
 }
 
+/* Botón para cerrar el menú lateral (sólo visible en móviles) */
 .btn-cerrar-sidebar {
-    display: none; /* Se activa en móviles */
+    display: none;
     background: none;
     border: none;
     color: #fff;
@@ -109,7 +123,7 @@ nav a.activo {
     cursor: pointer;
 }
 
-/* Estilos de la Lista */
+/* Lista de enlaces principales del menú lateral */
 .sidebar-menu {
     list-style: none;
     padding: 0;
@@ -120,6 +134,7 @@ nav a.activo {
     margin-bottom: 8px;
 }
 
+/* Enlace individual del menú lateral */
 .menu-link {
     display: flex;
     align-items: center;
@@ -132,23 +147,24 @@ nav a.activo {
     transition: background 0.2s ease, color 0.2s ease;
 }
 
+/* Estilo para el enlace activo o bajo el puntero */
 .menu-link:hover, .menu-link.active {
     background-color: rgba(255, 255, 255, 0.1);
     color: #ffffff;
 }
 
-/* Iconos integrados */
+/* Margen para iconos dentro del menú lateral */
 .icono {
     margin-right: 12px;
 }
 
-/* Submenú Desplegable (Inventario) */
+/* Submenús desplegables del menú lateral (acordeones) */
 details summary {
     list-style: none;
 }
 
 details summary::-webkit-details-marker {
-    display: none;
+    display: none; /* Oculta la flecha nativa de HTML5 en navegadores basados en Webkit */
 }
 
 .sub-menu {
@@ -170,22 +186,24 @@ details summary::-webkit-details-marker {
     color: #ffffff;
 }
 
-/* Ajuste del contenido principal de la página */
-/* Agrega este margin-left a tu contenedor <main> o body en Escritorio */
+/* ==========================================================================
+   Contenido Principal
+   ========================================================================== */
+/* Desplaza el contenido principal a la derecha para no solapar el sidebar */
 main {
     margin-left: 250px;
     padding: 20px;
 }
 
-/* --- Adaptabilidad Móvil --- */
+/* Adaptabilidad para pantallas móviles del sidebar */
 @media (max-width: 768px) {
     .sidebar {
-        transform: translateX(-100%); /* Se oculta a la izquierda */
+        transform: translateX(-100%); /* Oculta el sidebar por defecto */
         transition: transform 0.3s ease-in-out; 
     }
 
     .sidebar.active {
-        transform: translateX(0); /* Aparece al presionar la hamburguesa */
+        transform: translateX(0); /* Despliega el sidebar al presionar el menú hamburguesa */
     }
 
     .btn-cerrar-sidebar {
@@ -193,9 +211,10 @@ main {
     }
 
     main {
-        margin-left: 0;
+        margin-left: 0; /* Ocupa todo el ancho en móviles */
     }
 
+    /* Botón flotante para abrir el menú en móviles */
     .hamburguesa-menu {
         position: fixed;
         top: 15px;
@@ -207,10 +226,12 @@ main {
         color: #fff;
         padding: 5px 12px;
         border-radius: 6px;
+        display: block;
     }
 }
 
-.logo{
+/* Estilo alternativo del logotipo */
+.logo {
     flex-shrink: 0;
     text-decoration: none;  
     font-family: 'Libre Baskerville', Georgia, 'Times New Roman', Times, serif;
@@ -221,7 +242,10 @@ main {
     user-select: none;
     white-space: nowrap;
 }
-.logo .tienda {color: var(--naranja);}
+
+.logo .tienda {
+    color: var(--naranja);
+}
 
 .menu {
     display: flex;
@@ -249,6 +273,7 @@ main {
 .nav ul li {
     cursor: pointer;
 }
+
 .hamburguesa-menu {
     display: none;
     font-size: 25px;
@@ -270,7 +295,8 @@ main {
     width: 200px;
 }
 
-@media (max-width: 768) {
+/* Adaptación responsive alternativa */
+@media (max-width: 768px) {
     .menu {
         position: absolute;
         top: 60px;
@@ -288,13 +314,16 @@ main {
         display: block;
     }
 }
-section{
+
+section {
     background: var(--crema);
     border-radius: 4px;
     width: 100%;
 }
 
-/* =======================Footer============================*/
+/* ==========================================================================
+   Footer
+   ========================================================================== */
 footer {
     background: var(--oscuro);
     color: #999;
@@ -303,72 +332,83 @@ footer {
     font-size: .85rem;
     margin-top: 60px;
 }
-footer span {color: var(--amarillo); font-weight: 700;}
+
+footer span {
+    color: var(--amarillo);
+    font-weight: 700;
+}
 
 .f-contacto {
     margin-top: 0px;
 }
-/* =======================Formulario============================*/
 
+/* ==========================================================================
+   Formularios del Panel de Control
+   ========================================================================== */
 .ingreso-insumo {
     width: 90%;
     max-width: 1200px;
     margin: auto;
     background-color: #f4f4f4;
 }
+
+/* Contenedor de formulario en cuadrícula para ingresar insumos */
 .nuevo-insumo {
     background: #f4f4f4;
     border: none;
     border-radius: 15px;
     padding: 20px;
-
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 10px;
 }
+
 .ingreso-categoria {
     width: 90%;
     max-width: 1200px;
     margin: auto;
     background-color: #f4f4f4;
 }
+
+/* Contenedor de formulario de categoría en una columna */
 .nueva-categoria {
     background: #f4f4f4;
     border: none;
     border-radius: 15px;
     padding: 20px;
-
     display: grid;
     grid-template-columns: repeat(1, 1fr);
     gap: 10px;
 }
+
+/* Caja de campo individual (Etiqueta + Entrada) */
 .campo {
     display: flex;
     flex-direction: column;
 }
 
-select{
+select {
     border: 1px solid #ccc;
     border-radius: 5px;
     color: grey;
     font-family: 'Nunito', sans-serif;
 }
 
-label{
+label {
     display: block;
     margin-top: 10px;
     color: grey;
     font-family: 'Nunito', sans-serif;
 }
 
-fieldset{
+fieldset {
     border: none;
     padding: 30px;
     background-color: #f4f4f4;
     border-radius: 10px;
 }
 
-legend{
+legend {
     position: relative;
     top: 20px;
     font-size: 25px;
@@ -376,28 +416,31 @@ legend{
     font-family: 'Nunito', sans-serif;
     color: var(--grisclaro);
 }
-input, button, select{
+
+input, button, select {
     width: 100%;
     padding: 10px;
     margin-top: 20px;
     margin-bottom: 15px;
 }
 
-input{
+input {
     border: 1px solid #ccc;
     border-radius: 5px;
 }
 
-h1{
+h1 {
     margin-bottom: 20px;
     text-align: center;
 }
+
+/* Caja para botones de acción del formulario */
 .botones {
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 10px;
-    grid-column: 1 / -1;
+    grid-column: 1 / -1; /* Ocupa el ancho completo de la cuadrícula */
 }
 
 button {
@@ -415,8 +458,14 @@ button {
     font-family: Arial, sans-serif; 
     transition: all 0.3s ease-in-out;
 }
-button:hover { background-color: var(--verde);}
 
+button:hover { 
+    background-color: var(--verde);
+}
+
+/* ==========================================================================
+   Tablas de Visualización de Datos
+   ========================================================================== */
 .tabla-insumos {
     margin-top: 40px;
     background-color: #f4f4f4;
@@ -431,7 +480,7 @@ button:hover { background-color: var(--verde);}
 
 table {
     width: 100%;
-    border-collapse: collapse;
+    border-collapse: collapse; /* Remueve los espacios entre celdas */
 }
 
 th {
@@ -446,9 +495,13 @@ td {
     text-align: center;
     border-bottom: 1px solid #374151;
 }
+
+/* Efecto hover al pasar sobre filas de datos */
 tr:hover {
     background: var(--grisclaro);
 }
+
+/* Botones para gestionar filas de la tabla (Editar / Eliminar) */
 .btn-editar, .btn-eliminar, .btn-editar-categoria, .btn-eliminar {
     border-radius: 5px;
     size: 8px;
@@ -464,25 +517,29 @@ tr:hover {
     transition: all 0.3s ease-in-out;
 }
 
-textarea{
+textarea {
     border: 1px solid #ccc;
 }
-input, textarea{
+
+input, textarea {
     width: 100%;
     padding: 10px;
     margin-top: 20px;
     margin-bottom: 15px;
 }
 
-/* =======================Dashboard============================*/
-/* =======================Dashboard============================*/
+/* ==========================================================================
+   Dashboard de Estadísticas e Informes
+   ========================================================================== */
 main {
     padding: 20px;
 }
+
+/* Alerta de inventario crítico en el Dashboard */
 .dashboard-alert-box {
-    background-color: #fff5f5; /* Fondo rojizo/salmón muy suave */
+    background-color: #fff5f5;
     border: 1px solid #feb2b2;
-    border-left: 6px solid #e53e3e; /* Borde rojo fuerte que llama la atención */
+    border-left: 6px solid #e53e3e; /* Borde rojo grueso indicador de alerta */
     border-radius: 8px;
     padding: 20px;
     margin-bottom: 25px;
@@ -503,7 +560,7 @@ main {
 
 .dashboard-alert-box h3 {
     margin: 0;
-    color: var(--alerta); /* Texto rojo oscuro */
+    color: var(--alerta);
     font-size: 18px;
     font-weight: 600;
 }
@@ -529,6 +586,7 @@ main {
     color: var(--color-borde-badge);
 }
 
+/* Distintivo de stock crítico */
 .alert-list span.stock-badge {
     background-color: var(--color-fondo-badge);
     color: var(--color-borde-badge);
@@ -538,6 +596,7 @@ main {
     font-size: 13px;
 }
 
+/* Malla (Grid) de indicadores rápidos */
 .estadisticas {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -545,6 +604,7 @@ main {
     margin-bottom: 30px;
 }
 
+/* Tarjeta de métrica individual */
 .card {
     background: white;
     padding: 20px;
@@ -565,6 +625,7 @@ main {
     color: var(--oscuro);
 }
 
+/* Panel de productos más vendidos */
 .productos-populares {
     background: white;
     padding: 20px;
@@ -599,7 +660,7 @@ main {
     color: var(--verde);
 }
 
-/* =======================Responsive============================*/
+/* Reglas de visualización del dashboard en pantallas reducidas */
 @media (max-width: 768px) {
     .estadisticas {
         grid-template-columns: 1fr;
@@ -635,6 +696,9 @@ main {
     }
 }
 
+/* ==========================================================================
+   Comprobante / Detalle de Factura
+   ========================================================================== */
 .factura-contenedor {
     background-color: #fff;
     max-width: 800px;
@@ -698,7 +762,7 @@ main {
     padding-top: 20px;
 }
 
-/* Reglas específicas para imprimir la factura correctamente */
+/* Reglas específicas para imprimir la factura */
 @media print {
     body {
         background-color: #fff;
@@ -709,23 +773,25 @@ main {
         padding: 0;
     }
 }
-.acciones  {
+
+/* Grupo de botones para realizar acciones de gestión en fila */
+.acciones {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 8px;
     padding: 5px;
     justify-items: center;
-    width: 8
-
+    width: 80%;
 }
 
-.acciones button{
+.acciones button {
     min-width: 100px;
     padding: 10px 12px;
     border-radius: 8px;
     font-size: 14px;
 }
 
+/* Ancho reservado para la columna final de acciones en tablas */
 td:last-child {
     width: 220px;
     min-width: 200px;

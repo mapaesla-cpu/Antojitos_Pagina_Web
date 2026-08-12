@@ -11,9 +11,23 @@ const { error } = require('console');
 
 // Configuración de multer
 const storage = multer.diskStorage({
+    /**
+     * Define la carpeta de destino donde se guardarán las imágenes.
+     * 
+     * @param {Object} req - Objeto de petición Express.
+     * @param {Object} file - Objeto que representa el archivo subido.
+     * @param {Function} cb - Función callback para retornar la ruta de destino.
+     */
     destination: (req, file, cb) => {
         cb(null, 'C:/Xampp/htdocs/Antojitos_Pagina_Web/public/img'); // carpeta donde se guardan las imágenes
     },
+    /**
+     * Define el nombre que tendrá el archivo guardado.
+     * 
+     * @param {Object} req - Objeto de petición Express.
+     * @param {Object} file - Objeto que representa el archivo subido.
+     * @param {Function} cb - Función callback para retornar el nombre de archivo generado.
+     */
     filename: (req, file, cb) => {
         // El nombre del archivo será: fecha + nombre original
         cb(null, Date.now() + path.extname(file.originalname));
@@ -21,6 +35,16 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage: storage });
+
+/**
+ * Inicia sesión de un usuario y genera un token JWT.
+ * 
+ * @param {Object} req - Objeto de petición de Express.
+ * @param {Object} req.body - Cuerpo de la petición.
+ * @param {string} req.body.correo - Correo electrónico del usuario.
+ * @param {string} req.body.contrasena - Contraseña del usuario.
+ * @param {Object} res - Objeto de respuesta de Express.
+ */
 // LOGIN
 router.post('/login', (req, res) => {
   const { correo, contrasena } = req.body;
@@ -45,6 +69,17 @@ router.post('/login', (req, res) => {
   });
 });
 
+/**
+ * Agrega un nuevo insumo al inventario.
+ * 
+ * @param {Object} req - Objeto de petición de Express.
+ * @param {Object} req.body - Cuerpo de la petición.
+ * @param {string} req.body.nombre - Nombre del insumo.
+ * @param {string} req.body.unidad - Unidad de medida del insumo.
+ * @param {number} req.body.cantidad - Cantidad disponible inicial.
+ * @param {number} req.body.stock - Stock mínimo requerido.
+ * @param {Object} res - Objeto de respuesta de Express.
+ */
 //Agregar Insumos
 router.post("/agregar", (req, res) => {
   const nombre = req.body.nombre;
@@ -66,6 +101,12 @@ router.post("/agregar", (req, res) => {
  );
 });
 
+/**
+ * Consulta y retorna todos los insumos registrados.
+ * 
+ * @param {Object} req - Objeto de petición de Express.
+ * @param {Object} res - Objeto de respuesta de Express.
+ */
 //Consultar Insumos
 router.get("/consultar", (req, res) => {
 
@@ -83,6 +124,19 @@ router.get("/consultar", (req, res) => {
 
 });
 
+/**
+ * Actualiza los datos de un insumo existente por su ID.
+ * 
+ * @param {Object} req - Objeto de petición de Express.
+ * @param {Object} req.params - Parámetros de la URL.
+ * @param {string} req.params.id_insumo - ID del insumo a actualizar.
+ * @param {Object} req.body - Cuerpo de la petición.
+ * @param {string} req.body.nombre - Nuevo nombre del insumo.
+ * @param {string} req.body.unidad_medida - Nueva unidad de medida.
+ * @param {number} req.body.cantidad_disponible - Nueva cantidad disponible.
+ * @param {number} req.body.stock_minimo - Nuevo stock mínimo.
+ * @param {Object} res - Objeto de respuesta de Express.
+ */
 //Actualizar insumo
 router.put("/actualizar/:id_insumo", (req, res) => {
   const { id_insumo} = req.params;
@@ -104,6 +158,14 @@ router.put("/actualizar/:id_insumo", (req, res) => {
       });
 });
 
+/**
+ * Elimina un insumo del inventario por su ID.
+ * 
+ * @param {Object} req - Objeto de petición de Express.
+ * @param {Object} req.params - Parámetros de la URL.
+ * @param {string} req.params.id_insumo - ID del insumo a eliminar.
+ * @param {Object} res - Objeto de respuesta de Express.
+ */
 //Eliminar insumo
 router.delete("/eliminar/:id_insumo", (req, res) => {
   const {id_insumo} = req.params;
@@ -120,6 +182,16 @@ router.delete("/eliminar/:id_insumo", (req, res) => {
 
 });
 
+/**
+ * Agrega una nueva categoría de productos.
+ * 
+ * @param {Object} req - Objeto de petición de Express.
+ * @param {Object} req.body - Cuerpo de la petición.
+ * @param {string} req.body.nombre - Nombre de la categoría.
+ * @param {string} req.body.descripcion - Descripción de la categoría.
+ * @param {number|string} req.body.estado - Estado de la categoría.
+ * @param {Object} res - Objeto de respuesta de Express.
+ */
 //Agregar Categoria
 router.post("/agregarCategoria", (req, res) => {
   const nombre = req.body.nombre;
@@ -141,6 +213,12 @@ router.post("/agregarCategoria", (req, res) => {
  );
 });
 
+/**
+ * Consulta y retorna todas las categorías registradas.
+ * 
+ * @param {Object} req - Objeto de petición de Express.
+ * @param {Object} res - Objeto de respuesta de Express.
+ */
 //Consultar Categoria
 router.get("/consultarCategoria", (req, res) => {
 
@@ -158,6 +236,18 @@ router.get("/consultarCategoria", (req, res) => {
 
 });
 
+/**
+ * Actualiza una categoría existente por su ID.
+ * 
+ * @param {Object} req - Objeto de petición de Express.
+ * @param {Object} req.params - Parámetros de la URL.
+ * @param {string} req.params.id_categoria - ID de la categoría a actualizar.
+ * @param {Object} req.body - Cuerpo de la petición.
+ * @param {string} req.body.nombre - Nuevo nombre de la categoría.
+ * @param {string} req.body.descripcion - Nueva descripción de la categoría.
+ * @param {number|string} req.body.estado - Nuevo estado de la categoría.
+ * @param {Object} res - Objeto de respuesta de Express.
+ */
 //Actualizar Categoria
 router.put("/actualizarCategoria/:id_categoria", (req, res) => {
   const { id_categoria} = req.params;
@@ -178,6 +268,16 @@ router.put("/actualizarCategoria/:id_categoria", (req, res) => {
       });
 });
 
+/**
+ * Desactiva o cambia el estado de una categoría por su ID.
+ * 
+ * @param {Object} req - Objeto de petición de Express.
+ * @param {Object} req.params - Parámetros de la URL.
+ * @param {string} req.params.id_categoria - ID de la categoría.
+ * @param {Object} req.body - Cuerpo de la petición.
+ * @param {number|string} req.body.estado - Nuevo estado a asignar a la categoría.
+ * @param {Object} res - Objeto de respuesta de Express.
+ */
 //Desactivar Categoria
 router.put("/categorias/desactivar/:id_categoria", (req, res) => {
   const {id_categoria} = req.params;
@@ -195,6 +295,19 @@ router.put("/categorias/desactivar/:id_categoria", (req, res) => {
 
 });
 
+/**
+ * Agrega un nuevo producto cargando una imagen opcional.
+ * 
+ * @param {Object} req - Objeto de petición de Express.
+ * @param {Object} req.body - Cuerpo de la petición.
+ * @param {string} req.body.id_categoria - ID de la categoría a la que pertenece el producto.
+ * @param {string} req.body.nombre - Nombre del producto.
+ * @param {string} req.body.descripcion - Descripción del producto.
+ * @param {number} req.body.precio - Precio del producto.
+ * @param {number|string} req.body.disponible - Disponibilidad del producto (e.g., 1 o 0).
+ * @param {Object} req.file - Archivo cargado por multer para la imagen del producto.
+ * @param {Object} res - Objeto de respuesta de Express.
+ */
 //Agregar Producto
 router.post("/agregarProducto", upload.single('imagen'), (req, res) => {
     console.log("Body:", req.body);      // ← agrega esto
@@ -215,6 +328,12 @@ router.post("/agregarProducto", upload.single('imagen'), (req, res) => {
     });
 });
 
+/**
+ * Consulta y retorna todos los productos con el nombre de su categoría asociada.
+ * 
+ * @param {Object} req - Objeto de petición de Express.
+ * @param {Object} res - Objeto de respuesta de Express.
+ */
 //Consultar Producto
 router.get("/consultarProducto", (req, res) => {
     const sql = `SELECT p.*, c.nombre as nombre_categoria 
@@ -229,6 +348,21 @@ router.get("/consultarProducto", (req, res) => {
     });
 });
 
+/**
+ * Actualiza un producto existente por su ID.
+ * 
+ * @param {Object} req - Objeto de petición de Express.
+ * @param {Object} req.params - Parámetros de la URL.
+ * @param {string} req.params.id_producto - ID del producto a actualizar.
+ * @param {Object} req.body - Cuerpo de la petición.
+ * @param {string} req.body.id_categoria - Nuevo ID de la categoría asociada.
+ * @param {string} req.body.nombre - Nuevo nombre del producto.
+ * @param {string} req.body.descripcion - Nueva descripción.
+ * @param {number} req.body.precio - Nuevo precio.
+ * @param {string} req.body.imagen - Nombre de la imagen del producto.
+ * @param {number|string} req.body.disponible - Nuevo estado de disponibilidad.
+ * @param {Object} res - Objeto de respuesta de Express.
+ */
 //Actualizar Producto
 router.put("/actualizarProducto/:id_producto", (req, res) => { 
   console.log("Body:", req.body);
@@ -254,6 +388,16 @@ router.put("/actualizarProducto/:id_producto", (req, res) => {
       });
 });
 
+/**
+ * Cambia el estado de disponibilidad de un producto por su ID.
+ * 
+ * @param {Object} req - Objeto de petición de Express.
+ * @param {Object} req.params - Parámetros de la URL.
+ * @param {string} req.params.id_producto - ID del producto.
+ * @param {Object} req.body - Cuerpo de la petición.
+ * @param {number|string} req.body.disponible - Nuevo estado de disponibilidad a asignar (e.g., 1 o 0).
+ * @param {Object} res - Objeto de respuesta de Express.
+ */
 //Desactivar Producto
 router.put("/producto/disponible/:id_producto", (req, res) => {
   const {id_producto} = req.params;
@@ -271,6 +415,14 @@ router.put("/producto/disponible/:id_producto", (req, res) => {
 
 });
 
+/**
+ * Consulta y obtiene la lista de insumos requeridos por un producto específico.
+ * 
+ * @param {Object} req - Objeto de petición de Express.
+ * @param {Object} req.params - Parámetros de la URL.
+ * @param {string} req.params.id_producto - ID del producto a consultar.
+ * @param {Object} res - Objeto de respuesta de Express.
+ */
 // Consultar insumos de un producto
 router.get("/producto-insumos/:id_producto", (req, res) => {
     const { id_producto } = req.params;
@@ -284,6 +436,16 @@ router.get("/producto-insumos/:id_producto", (req, res) => {
     });
 });
 
+/**
+ * Asocia un insumo a un producto especificando la cantidad requerida.
+ * 
+ * @param {Object} req - Objeto de petición de Express.
+ * @param {Object} req.body - Cuerpo de la petición.
+ * @param {string} req.body.id_producto - ID del producto.
+ * @param {string} req.body.id_insumo - ID del insumo a asociar.
+ * @param {number} req.body.cantidad_requerida - Cantidad necesaria del insumo para el producto.
+ * @param {Object} res - Objeto de respuesta de Express.
+ */
 // Agregar insumo a producto
 router.post("/producto-insumos/agregar", (req, res) => {
     const { id_producto, id_insumo, cantidad_requerida } = req.body;
@@ -294,6 +456,15 @@ router.post("/producto-insumos/agregar", (req, res) => {
     });
 });
 
+/**
+ * Desasocia un insumo de un producto.
+ * 
+ * @param {Object} req - Objeto de petición de Express.
+ * @param {Object} req.body - Cuerpo de la petición.
+ * @param {string} req.body.id_producto - ID del producto.
+ * @param {string} req.body.id_insumo - ID del insumo a desasociar.
+ * @param {Object} res - Objeto de respuesta de Express.
+ */
 // Eliminar insumo de producto
 router.delete("/producto-insumos/eliminar", (req, res) => {
     const { id_producto, id_insumo } = req.body;
@@ -304,6 +475,12 @@ router.delete("/producto-insumos/eliminar", (req, res) => {
     });
 });
 
+/**
+ * Consulta y retorna todos los productos que están disponibles en el menú.
+ * 
+ * @param {Object} req - Objeto de petición de Express.
+ * @param {Object} res - Objeto de respuesta de Express.
+ */
 //Cargar Menú
 router.get("/consultarMenu", (req, res) => {
     const sql = `SELECT p.*, c.nombre as nombre_categoria 
@@ -319,6 +496,17 @@ router.get("/consultarMenu", (req, res) => {
     });
 });
 
+/**
+ * Registra un nuevo cliente en el sistema.
+ * 
+ * @param {Object} req - Objeto de petición de Express.
+ * @param {Object} req.body - Cuerpo de the petición.
+ * @param {string} req.body.nombre - Nombre del cliente.
+ * @param {string} req.body.telefono - Teléfono del cliente.
+ * @param {string} req.body.direccion - Dirección de entrega del cliente.
+ * @param {string} req.body.correo - Correo electrónico del cliente.
+ * @param {Object} res - Objeto de respuesta de Express.
+ */
 // Registar cliente
 router.post("/clientes/agregar" , (req, res) => {
   const {nombre, telefono, direccion, correo} = req.body;
@@ -334,6 +522,18 @@ router.post("/clientes/agregar" , (req, res) => {
   });
 });
 
+/**
+ * Registra un nuevo pedido y genera automáticamente su factura correspondiente.
+ * 
+ * @param {Object} req - Objeto de petición de Express.
+ * @param {Object} req.body - Cuerpo de la petición.
+ * @param {string} req.body.id_cliente - ID del cliente que realiza el pedido.
+ * @param {string} req.body.tipo_entrega - Tipo de entrega.
+ * @param {string} req.body.metodo_pago - Método de pago utilizado.
+ * @param {number} req.body.total - Total a pagar del pedido.
+ * @param {string} [req.body.notas] - Notas o comentarios adicionales.
+ * @param {Object} res - Objeto de respuesta de Express.
+ */
 //Registrar pedido
 router.post("/pedidos/agregar" , (req, res) => {
   console.log("Body pedido:", req.body);
@@ -367,6 +567,18 @@ router.post("/pedidos/agregar" , (req, res) => {
   });
 });
 
+/**
+ * Registra el detalle de un producto específico dentro de un pedido.
+ * 
+ * @param {Object} req - Objeto de petición de Express.
+ * @param {Object} req.body - Cuerpo de la petición.
+ * @param {string} req.body.id_pedido - ID del pedido al que pertenece.
+ * @param {string} req.body.id_producto - ID del producto en el detalle.
+ * @param {number} req.body.cantidad - Cantidad de productos.
+ * @param {number} req.body.precio_unitario - Precio unitario del producto.
+ * @param {number} req.body.subtotal - Subtotal para esta línea de detalle.
+ * @param {Object} res - Objeto de respuesta de Express.
+ */
 // Registrar detalle pedido
 router.post("/detalle/agregar" , (req, res) => {
   const {id_pedido, id_producto, cantidad, precio_unitario, subtotal} = req.body;
@@ -381,6 +593,12 @@ router.post("/detalle/agregar" , (req, res) => {
   });
 });
 
+/**
+ * Consulta y retorna todos los pedidos ordenados de forma descendente por fecha.
+ * 
+ * @param {Object} req - Objeto de petición de Express.
+ * @param {Object} res - Objeto de respuesta de Express.
+ */
 // Consultar pedidos
 router.get("/pedidos/consultar", (req, res) => {
     const sql = `SELECT p.*, c.nombre as nombre_cliente, c.telefono 
@@ -396,6 +614,16 @@ router.get("/pedidos/consultar", (req, res) => {
     });
 });
 
+/**
+ * Cambia el estado de un pedido por su ID.
+ * 
+ * @param {Object} req - Objeto de petición de Express.
+ * @param {Object} req.params - Parámetros de la URL.
+ * @param {string} req.params.id - ID del pedido a actualizar.
+ * @param {Object} req.body - Cuerpo de la petición.
+ * @param {string} req.body.estado - Nuevo estado del pedido (e.g., 'pendiente', 'entregado', 'cancelado').
+ * @param {Object} res - Objeto de respuesta de Express.
+ */
 // Cambiar estado
 router.put("/pedidos/estado/:id", (req, res) => {
   console.log(req.body);
@@ -411,6 +639,14 @@ router.put("/pedidos/estado/:id", (req, res) => {
     });
 });
 
+/**
+ * Consulta y retorna la información detallada de un pedido y sus productos asociados.
+ * 
+ * @param {Object} req - Objeto de petición de Express.
+ * @param {Object} req.params - Parámetros de la URL.
+ * @param {string} req.params.id - ID del pedido a consultar.
+ * @param {Object} res - Objeto de respuesta de Express.
+ */
 // Ver detalle pedido
 router.get("/pedidos/detalle/:id", (req, res) => {
     const { id } = req.params;
@@ -435,6 +671,15 @@ router.get("/pedidos/detalle/:id", (req, res) => {
         });
     });
 });
+
+/**
+ * Descuenta del inventario los insumos de cada producto incluido en un pedido.
+ * 
+ * @param {Object} req - Objeto de petición de Express.
+ * @param {Object} req.body - Cuerpo de la petición.
+ * @param {string} req.body.id_pedido - ID del pedido del cual descontar los insumos.
+ * @param {Object} res - Objeto de respuesta de Express.
+ */
 //Descontar inventario
 router.post("/inventario/descontar", (req, res) => {
     const { id_pedido } = req.body;
@@ -472,6 +717,18 @@ router.post("/inventario/descontar", (req, res) => {
     });
 });
 
+/**
+ * Registra una entrada de insumos al inventario, validando el token JWT y guardando el movimiento.
+ * 
+ * @param {Object} req - Objeto de petición de Express.
+ * @param {Object} req.headers - Cabeceras de la petición.
+ * @param {string} req.headers.authorization - Token de autorización JWT.
+ * @param {Object} req.body - Cuerpo de la petición.
+ * @param {string} req.body.id_insumo - ID del insumo a aumentar.
+ * @param {number} req.body.cantidad - Cantidad de entrada.
+ * @param {string} req.body.motivo - Motivo de la entrada.
+ * @param {Object} res - Objeto de respuesta de Express.
+ */
 //Registrar entrada de insumos
 router.post("/insumos/entrada", (req, res) => {
 
@@ -519,6 +776,18 @@ router.post("/insumos/entrada", (req, res) => {
   });
 });
 
+/**
+ * Registra una salida de insumos del inventario, validando el token JWT y guardando el movimiento.
+ * 
+ * @param {Object} req - Objeto de petición de Express.
+ * @param {Object} req.headers - Cabeceras de la petición.
+ * @param {string} req.headers.authorization - Token de autorización JWT.
+ * @param {Object} req.body - Cuerpo de la petición.
+ * @param {string} req.body.id_insumo - ID del insumo a disminuir.
+ * @param {number} req.body.cantidad - Cantidad de salida.
+ * @param {string} req.body.motivo - Motivo de la salida.
+ * @param {Object} res - Objeto de respuesta de Express.
+ */
 //Registrar salida de insumos
 router.post("/insumos/salida", (req, res) => {
 
@@ -566,8 +835,14 @@ router.post("/insumos/salida", (req, res) => {
   });
 });
 
-  
-
+/**
+ * RUTA PÚBLICA: Consulta y retorna únicamente el ID y estado de un pedido por su ID.
+ * 
+ * @param {Object} req - Objeto de petición de Express.
+ * @param {Object} req.params - Parámetros de la URL.
+ * @param {string} req.params.id_pedido - ID del pedido a consultar.
+ * @param {Object} res - Objeto de respuesta de Express.
+ */
 // RUTA PÚBLICA: Consultar el estado de un pedido por ID
 router.get("/pedidos/consultar/:id_pedido", (req, res) => {
     const id_pedido = req.params.id_pedido;
@@ -591,6 +866,12 @@ router.get("/pedidos/consultar/:id_pedido", (req, res) => {
     });
 });
 
+/**
+ * Obtiene las estadísticas generales para el dashboard (pedidos de hoy, pendientes, ingresos y populares).
+ * 
+ * @param {Object} req - Objeto de petición de Express.
+ * @param {Object} res - Objeto de respuesta de Express.
+ */
 // Estadísticas dashboard
 router.get("/dashboard/estadisticas", (req, res) => {
     const sqlPedidosHoy = `SELECT COUNT(*) as total FROM pedidos 
@@ -634,6 +915,12 @@ router.get("/dashboard/estadisticas", (req, res) => {
     });
 });
 
+/**
+ * Carga y retorna los 5 productos más populares (vendidos) para la página principal.
+ * 
+ * @param {Object} req - Objeto de petición de Express.
+ * @param {Object} res - Objeto de respuesta de Express.
+ */
 // Cargar productos populares para la página principal
 router.get("/dashboard/estadisticasmenu", (req, res) => {
     const sqlPopulares = `SELECT pr.nombre, pr.imagen, pr.precio, pr.descripcion,
@@ -653,6 +940,12 @@ router.get("/dashboard/estadisticasmenu", (req, res) => {
     });
 });
 
+/**
+ * Consulta y obtiene la lista de insumos que se encuentran por debajo del stock mínimo.
+ * 
+ * @param {Object} req - Objeto de petición de Express.
+ * @param {Object} res - Objeto de respuesta de Express.
+ */
 // Ruta para obtener insumos con bajo stock comparando con su mínimo
 router.get("/insumos/alertas", (req, res) => {
     // Traemos los insumos donde el stock actual sea menor o igual al mínimo
@@ -671,6 +964,12 @@ router.get("/insumos/alertas", (req, res) => {
     });
 });
 
+/**
+ * Consulta y retorna los ajustes generales de configuración del negocio.
+ * 
+ * @param {Object} req - Objeto de petición de Express.
+ * @param {Object} res - Objeto de respuesta de Express.
+ */
 // Consultar configuración
 router.get("/configuracion/consultar", (req, res) => {
     const sql = "SELECT * FROM configuracion LIMIT 1";
@@ -683,6 +982,20 @@ router.get("/configuracion/consultar", (req, res) => {
     });
 });
 
+/**
+ * Actualiza los ajustes generales de configuración del negocio.
+ * 
+ * @param {Object} req - Objeto de petición de Express.
+ * @param {Object} req.body - Cuerpo de la petición.
+ * @param {string} req.body.nombre_negocio - Nombre del negocio.
+ * @param {string} req.body.nit - NIT del negocio.
+ * @param {string} req.body.telefono - Teléfono de contacto.
+ * @param {string} req.body.direccion - Dirección física.
+ * @param {string} req.body.horario_apertura - Horario de apertura.
+ * @param {string} req.body.horario_cierre - Horario de cierre.
+ * @param {string} req.body.dias_atencion - Días de atención al público.
+ * @param {Object} res - Objeto de respuesta de Express.
+ */
 // Actualizar configuración
 router.put("/configuracion/actualizar", (req, res) => {
     const { nombre_negocio, nit, telefono, direccion, horario_apertura, horario_cierre, dias_atencion } = req.body;
@@ -704,6 +1017,17 @@ router.put("/configuracion/actualizar", (req, res) => {
     });
 });
 
+/**
+ * Cambia la contraseña del usuario logueado después de validar su token JWT y su contraseña actual.
+ * 
+ * @param {Object} req - Objeto de petición de Express.
+ * @param {Object} req.headers - Cabeceras de la petición.
+ * @param {string} req.headers.authorization - Token de autorización JWT.
+ * @param {Object} req.body - Cuerpo de la petición.
+ * @param {string} req.body.password_actual - Contraseña actual del usuario.
+ * @param {string} req.body.password_nueva - Nueva contraseña a establecer.
+ * @param {Object} res - Objeto de respuesta de Express.
+ */
 // Cambiar contraseña
 router.put("/configuracion/password", (req, res) => {
     const { password_actual, password_nueva } = req.body;
@@ -751,6 +1075,12 @@ router.put("/configuracion/password", (req, res) => {
     });
 });
 
+/**
+ * Consulta y obtiene todas las facturas registradas en orden cronológico descendente.
+ * 
+ * @param {Object} req - Objeto de petición de Express.
+ * @param {Object} res - Objeto de respuesta de Express.
+ */
 // Consultar facturas
 router.get("/facturas/consultar", (req, res) => {
     const sql = `SELECT f.*, c.nombre as nombre_cliente, c.telefono
@@ -767,6 +1097,14 @@ router.get("/facturas/consultar", (req, res) => {
     });
 });
 
+/**
+ * Obtiene la información detallada de una factura y el desglose de productos de su pedido asociado.
+ * 
+ * @param {Object} req - Objeto de petición de Express.
+ * @param {Object} req.params - Parámetros de la URL.
+ * @param {string} req.params.id - ID de la factura a consultar.
+ * @param {Object} res - Objeto de respuesta de Express.
+ */
 // Ver factura detallada
 router.get("/facturas/ver/:id", (req, res) => {
     const { id } = req.params;
@@ -804,6 +1142,18 @@ const transporter = nodemailer.createTransport({
     }
 });
 
+/**
+ * Envía un correo electrónico con los datos de contacto ingresados en el formulario web.
+ * 
+ * @param {Object} req - Objeto de petición de Express.
+ * @param {Object} req.body - Cuerpo de la petición.
+ * @param {string} req.body.nombre - Nombre de la persona que contacta.
+ * @param {string} req.body.email - Correo de la persona que contacta.
+ * @param {string} req.body.telefono - Teléfono de contacto.
+ * @param {string} req.body.mensaje - Contenido del mensaje.
+ * @param {string} req.body.terminos - Indicador de aceptación de términos.
+ * @param {Object} res - Objeto de respuesta de Express.
+ */
 router.post("/contacto/enviar", (req, res) => {
     const { nombre, email, telefono, mensaje, terminos } = req.body;
 
