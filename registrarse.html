@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro</title>
+    <link rel="stylesheet" href="css/stylesLogin.css">
+</head>
+<body>
+    <main>
+        <section class="registrarse">
+            <form id="formulario-de-registro" class="formulario-de-registro">
+                <div href="#" class="logo">Anto<span class="tienda">Jitos</span></div>
+                <fieldset>
+                    <legend>Formulario de Registro</legend>
+                    <label for="registro-nombre-usuario">Usuario</label>
+                    <input type="text" id="registro-nombre-usuario" name="registro-nombre-usuario" placeholder="Usuario" required>
+                    <label for="registro-correo">Correo</label>
+                    <input type="email" id="registro-correo" name="registro-correo" placeholder="Correo electronico" required>
+                    <label for="registro-contrasena">Contraseña</label>
+                    <input type="password" id="registro-contrasena" name="registro-contrasena" placeholder="Contraseña" required>
+                    <label for="registro-contrasena-confirmar">Confirmar Contraseña</label>
+                    <input type="password" id="registro-contrasena-confirmar" name="registro-contrasena-confirmar" placeholder="Contraseña otra vez" required>
+                    <label for="registro-rol">Rol</label>
+                    <select id="registro-rol" name="registro-rol" required>
+                        <option value="">Seleccione...</option>
+                        <option value="Administrador">Administrador</option>
+                        <option value="Trabajador">Trabajador</option>
+                    </select>
+                    <button class="btn-registrarse" type="submit" id="btn-registrarse">Registrase</button>
+                </fieldset>
+            </form>
+
+        </section>
+    </main>
+    
+</body>
+<script src="/js/nav-admin.js"></script>
+<script src="/js/registrarse.js"></script>
+</html>

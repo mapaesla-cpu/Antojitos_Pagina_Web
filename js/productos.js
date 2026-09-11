@@ -1,5 +1,4 @@
 // Al principio directo, sin DOMContentLoaded
-alert("productos.js cargo");
 const formularioP = document.getElementById('formularioP');
 const btnlimpiar = document.getElementById("limpiar-btn");
 

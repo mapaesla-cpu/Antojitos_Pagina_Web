@@ -9,3 +9,5 @@ node_modules/
 
 #Ignorar carpetas de configuración del editor
 .vscode/
+
+.crearUsuario

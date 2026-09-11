@@ -7,15 +7,27 @@ formulario.addEventListener('submit', async (e) => {
     const correo = document.getElementById('contacto-email').value;
     const telefono = document.getElementById('contacto-telefono').value;
     const mensaje = document.getElementById('contacto-mensaje').value;
-    const terminos = document.getElementById('contacto-terminos').checked ? "Sí" : "No";
+    const terminos = document.getElementById('contacto-terminos').checked;
 
-    const res = await fetch('http://localhost:3000/api/auth/contacto/enviar', {
+    if(!terminos){
+        alert("Debes aceptar los términos y condiciones");
+        return;
+    }
+    const res = await fetch("http://localhost:3000/api/auth/contacto/enviar", {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ nombre, correo, telefono, mensaje, terminos })
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            nombre,
+            correo,
+            telefono,
+            mensaje
+        })
     });
 
     const data = await res.json();
+
     alert(data.mensaje || data.error);
     formulario.reset();
 });

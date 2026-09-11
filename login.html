@@ -4,141 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inicio de Sesión</title>
-    <style>
-        :root {
-    --rojo: #E8221A;
-    --naranja: #F97316;
-    --amarillo: #FACC15;
-    --verde: #22C55E;
-    --oscuro: #1A1A1A;
-    --crema: #FFF8F0;
-    --blanco: #FFFFFF;
-    --grisoscuro: #333;
-    --grisclaro: #666;
-}
-/* Reset básico*/
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-/* =======================Body============================*/
-body {
-    font-family: 'Nunito', sans-serif;
-    overflow-x: hidden;
-    background-image: url('/img/hamburguesaPrincipal.png');
-    background-repeat: no-repeat;
-    background-size: cover;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0;
-    height: 100vh;
-    flex-direction: column;
-}
-header {
-    background-color: var(--oscuro);
-    box-shadow: 0 2px 5px rgb(0, 0, 0, 0.1);
-    position: sticky;
-    top: 0;
-    z-index: 100;
-}
-.logo{
-    flex-shrink: 0;
-    text-decoration: none;  
-    font-family: 'Libre Baskerville', Georgia, 'Times New Roman', Times, serif;
-    font-size: 3rem;
-    font-weight: bold;
-    letter-spacing: -0,5px;
-    color: var(--amarillo);
-    user-select: none;
-    white-space: nowrap;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-
-}
-.logo .tienda {color: var(--naranja);}
-
-.formulario-sesion {
-    width: 500px;
-    margin: auto;
-}
-
-label{
-    display: block;
-    margin-top: 10px;
-    color: grey;
-    font-family: 'Nunito', sans-serif;
-}
-
-fieldset{
-    border: none;
-    padding: 30px;
-    background-color: #f4f4f4;
-    border-radius: 10px;
-}
-
-legend{
-    position: relative;
-    top: 20px;
-    font-size: 25px;
-    text-align: center;
-    font-family: 'Nunito', sans-serif;
-    color: var(--grisclaro);
-}
-input, button, textarea{
-    width: 100%;
-    padding: 10px;
-    margin-top: 20px;
-    margin-bottom: 15px;
-}
-
-input{
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-h1{
-    margin-bottom: 20px;
-    text-align: center;
-}
-a{
-    align-content: center;
-    text-align: center;
-}
-
-.inisiar-s-btn {
-    border-radius: 5px;
-    size: 10px;
-    background-color: var(--naranja);
-    color: var(--blanco);
-    border: none;
-    cursor: pointer;
-    border-radius: 8px;
-    margin-top: 10px;
-    padding: 10px 15px;
-    font-weight: bold;  
-    transition: all 0.3s ease-in-out;
-}
-.recuperar-pass a {
-    align-content: center;
-    text-align: center;
-
-}
-footer {
-    background: var(--oscuro);
-    color: #999;
-    text-align: center;
-    padding: 1.5rem;
-    font-size: .85rem;
-    margin-top: auto;
-    width: 100%;
-}
-footer span {color: var(--amarillo); font-weight: 700;}
-
-    </style>
+    <link rel="stylesheet" href="css/stylesLogin.css">
 </head>
 <body>
     <main>
@@ -153,9 +19,9 @@ footer span {color: var(--amarillo); font-weight: 700;}
                     <label for="contrasena">Contraseña</label>
                     <input type="password" id="contrasena" name="contrasena" placeholder="Contraseña" required>
 
-                    <button class="inisiar-s-btn" type="submit" id="iniciar-sesion" name="iniciar-sesion">Iniciar sesión</button> 
+                    <button class="iniciar-s-btn" type="submit" id="iniciar-sesion" name="iniciar-sesion">Iniciar sesión</button> 
                     <div style="display: flex; gap: 70px;">
-                        <a href="recuperar_pass.html" class="recuperar-pass">¿Olvido su contraseña?</a>
+                        <a href="recuperarContrasena.html" class="recuperar-pass">¿Olvido su contraseña?</a>
                         <a href="registrarse.html" class="registrar-ususario">Registrarse</a>
                     </div>
                     

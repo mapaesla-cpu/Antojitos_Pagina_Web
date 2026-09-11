@@ -709,11 +709,18 @@ main {
 }
 
 .factura-header {
-    display: flex;
-    justify-content: space-between;
+    display: block;
+    text-align: center;
     border-bottom: 2px solid var(--oscuro);
     padding-bottom: 20px;
     margin-bottom: 20px;
+    margin-top: 40px;
+}
+.factura-header h2, .factura-header h3, .factura-header p, .factura-header hr {
+    margin: 8px 0;
+}
+.factura-header hr {
+    margin: 15px 0;
 }
 
 .factura-header .datos-empresa {

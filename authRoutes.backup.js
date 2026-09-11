@@ -8,6 +8,7 @@ const conexion = require('./db');
 const multer = require('multer');
 const path = require('path');
 const { error } = require('console');
+const nodemailer = require('nodemailer');
 
 // Configuración de multer
 const storage = multer.diskStorage({
@@ -68,6 +69,60 @@ router.post('/login', (req, res) => {
     res.json({ mensaje: 'Login exitoso', token, rol: usuario.rol });
   });
 });
+
+//Registar usuario/admin
+router.post('/login/registrarse', (req, res) => {
+  const nombre = req.body.nombre;
+  const correo = req.body.correo;
+  const contrasena = req.body.contrasena;
+  const rol = req.body.rol;
+  
+
+bcrypt.hash(contrasena, 10, (err, hash) => {
+  if (err) {
+    console.error('Error al encriptar contraseña:', err);
+    return res.status(500).json({ mensaje: 'Error en el servidor al encriptar la contraseña' });
+  }
+
+  const sql = 'INSERT INTO usuarios (nombre, correo, contrasena, rol) VALUES (?, ?, ?, ?)';
+  db.query(sql, [nombre, correo, hash, rol], (err, result) => {
+    if (err) {
+      console.error('Error en la base de datos:', err);
+      if (err.code === 'ER_DUP_ENTRY') {
+        return res.status(400).json({ mensaje: 'El correo ya está registrado' });
+      }
+      return res.status(500).json({ mensaje: 'Error al guardar el usuario en la base de datos' });
+    }
+    console.log('Usuario creado exitosamente ✅');
+    return res.status(201).json({ mensaje: 'Usuario creado exitosamente!' });
+  });
+});
+});
+
+//Recuperar contraseña
+router.post('/login/recuperar-contrasena', (req, res) => {
+  const { correo } = req.body;
+
+  const sql = 'SELECT * FROM usuarios WHERE correo = ?';
+  db.query(sql, [correo], async (err, results) => {
+    if (err) return res.status(500).json({ mensaje: 'Error en el servidor' });
+    if (results.length === 0) return res.status(401).json({ mensaje: 'Usuario no encontrado' });
+
+    const usuario = results[0];
+    const passwordValida = await bcrypt.compare(contrasena, usuario.contrasena);
+
+    if (!passwordValida) return res.status(401).json({ mensaje: 'Contraseña incorrecta' });
+
+    const token = jwt.sign(
+      { id: usuario.id_usuario, rol: usuario.rol },
+      'secreto_antojitos',
+      { expiresIn: '8h' }
+    );
+
+    res.json({ mensaje: 'Login exitoso', token, rol: usuario.rol });
+  });
+});
+
 
 /**
  * Agrega un nuevo insumo al inventario.
@@ -673,6 +728,61 @@ router.get("/pedidos/detalle/:id", (req, res) => {
 });
 
 /**
+ * Envía un correo electrónico con los datos de contacto ingresados en el formulario web.
+ * 
+ * @param {Object} req - Objeto de petición de Express.
+ * @param {Object} req.body - Cuerpo de la petición.
+ * @param {string} req.body.nombre - Nombre de la persona que contacta.
+ * @param {string} req.body.email - Correo de la persona que contacta.
+ * @param {string} req.body.telefono - Teléfono de contacto.
+ * @param {string} req.body.mensaje - Contenido del mensaje.
+ * @param {string} req.body.terminos - Indicador de aceptación de términos.
+ * @param {Object} res - Objeto de respuesta de Express.
+ */
+const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
+    }
+});
+
+router.post("/contacto/enviar", async (req, res) => {
+
+    const { nombre, correo, telefono, mensaje } = req.body;
+
+    try {
+
+        await transporter.sendMail({
+            from: process.env.EMAIL_USER,
+            to: process.env.EMAIL_USER,
+            replyTo: correo,
+            subject: `Mensaje de ${nombre}`,
+            text: `
+Nombre: ${nombre}
+Correo: ${correo}
+Teléfono: ${telefono}
+
+Mensaje:
+${mensaje}
+            `
+        });
+
+        res.json({
+            mensaje: "Correo enviado correctamente"
+        });
+
+    } catch (error) {
+
+        console.error("Error al enviar correo:", error);
+
+        res.status(500).json({
+            error: "Error al enviar el correo"
+        });
+    }
+});
+
+/**
  * Descuenta del inventario los insumos de cada producto incluido en un pedido.
  * 
  * @param {Object} req - Objeto de petición de Express.
@@ -1129,54 +1239,6 @@ router.get("/facturas/ver/:id", (req, res) => {
 
             res.json({ factura: factura[0], detalle });
         });
-    });
-});
-
-const nodemailer = require('nodemailer');
-
-const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
-    }
-});
-
-/**
- * Envía un correo electrónico con los datos de contacto ingresados en el formulario web.
- * 
- * @param {Object} req - Objeto de petición de Express.
- * @param {Object} req.body - Cuerpo de la petición.
- * @param {string} req.body.nombre - Nombre de la persona que contacta.
- * @param {string} req.body.email - Correo de la persona que contacta.
- * @param {string} req.body.telefono - Teléfono de contacto.
- * @param {string} req.body.mensaje - Contenido del mensaje.
- * @param {string} req.body.terminos - Indicador de aceptación de términos.
- * @param {Object} res - Objeto de respuesta de Express.
- */
-router.post("/contacto/enviar", (req, res) => {
-    const { nombre, email, telefono, mensaje, terminos } = req.body;
-
-    const mailOptions = {
-        from: email,
-        to: '[EMAIL_ADDRESS]', // ← correo del administrador
-        subject: `Contacto Antojitos - ${terminos}`,
-        html: `
-            <h2>Nuevo mensaje de contacto</h2>
-            <p><strong>Nombre:</strong> ${nombre}</p>
-            <p><strong>Correo:</strong> ${email}</p>
-            <p><strong>Telefono:</strong> ${telefono}</p>
-            <p><strong>Terminos y condiciones:</strong> ${terminos}</p>
-            <p><strong>Mensaje:</strong> ${mensaje}</p>
-        `
-    };
-
-    transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-            console.log(error);
-            return res.status(500).json({ error: "Error al enviar el correo" });
-        }
-        res.json({ mensaje: "Mensaje enviado correctamente" });
     });
 });
 
