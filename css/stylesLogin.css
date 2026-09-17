@@ -61,7 +61,7 @@ header {
 .formulario-de-registro {
     width: 400px;
     margin: 200px;
-    margin-bottom: 50px;
+    margin-bottom: 10px;
 }
 
 label{
@@ -126,7 +126,7 @@ a{
     text-align: center;
 
 }
-.btn-registrarse {
+.btn-registrarse, .btn-regresar {
     border-radius: 5px;
     size: 10px;
     background-color: var(--naranja);

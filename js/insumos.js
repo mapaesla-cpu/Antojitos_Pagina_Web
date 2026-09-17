@@ -31,6 +31,8 @@ btnlimpiar.addEventListener("click", () => {
     formulario.reset();
 });
 
+let todosLosInsumos = [];
+
 async function cargarDatos() {
     console.log("Entró a la función");
     try {
@@ -40,45 +42,55 @@ async function cargarDatos() {
         console.log("Respuesta", res);
         const data = await res.json();
         console.log("Datos", data);
-
-        const tabla = document.getElementById("tablaBody");
-        console.log("Tabla encontrada:", tabla);
-        console.log("cantidad de registros:", data.length);
-        tabla.innerHTML = "";
-
-        data.forEach(item => {
-            tabla.innerHTML += `
-                <tr>
-                    <td>${item.id_insumo}</td>
-                    <td>${item.nombre}</td>
-                    <td>${item.unidad_medida}</td>
-                    <td>${item.cantidad_disponible}</td>
-                    <td>${item.stock_minimo}</td>
-                    <td>${item.fecha_actualizacion}</td>
-                    <td>
-                    <div class="acciones">
-                        <button class="btn-entrada" Onclick="abrirEntrada(${item.id_insumo}, '${item.nombre}', '${item.unidad_medida}', ${item.cantidad_disponible})">
-                            <i class="fa-solid fa-arrow-right-to-bracket"></i> Entrada
-                        </button>
-                        <button class="btn-salida" Onclick="abrirSalida(${item.id_insumo}, '${item.nombre}', '${item.unidad_medida}', ${item.cantidad_disponible})">
-                            <i class="fa-solid fa-arrow-right-from-bracket"></i> Salida
-                        </button>
-                        <button class="btn-editar" Onclick="actualizar(${item.id_insumo}, '${item.nombre}', '${item.unidad_medida}', ${item.cantidad_disponible}, ${item.stock_minimo})">
-                            <i class="fa-solid fa-pen-to-square"></i> Editar
-                        </button> 
-                        <button class="btn-eliminar" Onclick="eliminar(${item.id_insumo})">
-                            <i class="fa-solid fa-trash"></i> Eliminar
-                        </button>       
-                    </div>  
-                    </td>
-                </tr>           
-            `;
-
-        });
+        todosLosInsumos = data;
+        mostrarInsumos(todosLosInsumos);
     } catch (error) {
         console.log("Error cargando datos:", error);
     }
-    
+}
+
+function mostrarInsumos(insumos) {
+    const tabla = document.getElementById("tablaBody");
+    if (!tabla) return;
+    tabla.innerHTML = "";
+
+    insumos.forEach(item => {
+        tabla.innerHTML += `
+            <tr>
+                <td>${item.id_insumo}</td>
+                <td>${item.nombre}</td>
+                <td>${item.unidad_medida}</td>
+                <td>${item.cantidad_disponible}</td>
+                <td>${item.stock_minimo}</td>
+                <td>${item.fecha_actualizacion}</td>
+                <td>
+                <div class="acciones">
+                    <button class="btn-entrada" Onclick="abrirEntrada(${item.id_insumo}, '${item.nombre}', '${item.unidad_medida}', ${item.cantidad_disponible})">
+                        <i class="fa-solid fa-arrow-right-to-bracket"></i> Entrada
+                    </button>
+                    <button class="btn-salida" Onclick="abrirSalida(${item.id_insumo}, '${item.nombre}', '${item.unidad_medida}', ${item.cantidad_disponible})">
+                        <i class="fa-solid fa-arrow-right-from-bracket"></i> Salida
+                    </button>
+                    <button class="btn-editar" Onclick="actualizar(${item.id_insumo}, '${item.nombre}', '${item.unidad_medida}', ${item.cantidad_disponible}, ${item.stock_minimo})">
+                        <i class="fa-solid fa-pen-to-square"></i> Editar
+                    </button> 
+                    <button class="btn-eliminar" Onclick="eliminar(${item.id_insumo})">
+                        <i class="fa-solid fa-trash"></i> Eliminar
+                    </button>       
+                </div>  
+                </td>
+            </tr>           
+        `;
+    });
+}
+
+function buscarInsumo() {
+    const texto = document.getElementById("buscador").value.toLowerCase().trim();
+    const filtrados = todosLosInsumos.filter(item =>
+        String(item.id_insumo).toLowerCase().includes(texto) ||
+        (item.nombre && item.nombre.toLowerCase().includes(texto))
+    );
+    mostrarInsumos(filtrados);
 }
 function actualizar(id_insumo, nombre, unidad_medida, cantidad_disponible, stock_minimo){
     alert("Ingrese los datos en el formulario al final de la página");

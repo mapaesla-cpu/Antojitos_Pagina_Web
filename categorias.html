@@ -39,7 +39,7 @@
         </li>
 
         <li>
-            <a href="pedidos_panel.html" class="menu-link">
+            <a href="pedidos-panel.html" class="menu-link">
                 <span class="icono">🛍️</span> Pedidos
             </a>
         </li>
@@ -62,7 +62,7 @@
     </header>
      <main>
         <section class="ingreso-categorias">
-            <h1>Categorias</h1>
+            <h1>Gestión de Categorias</h1>
             <h2>Registro de categorías</h2>
             <form id="formularioC"> 
                 <fieldset class="nueva-categoria">
@@ -73,7 +73,7 @@
                     </div>
                     <div class="campo>">
                         <label for="descripcion">Descripción</label>
-                        <textarea id="descripcion" name="descripcion" rows="6" cols="50"></textarea>
+                        <textarea id="descripcion" name="descripcion" rows="6" cols="50" required></textarea>
                     </div>
                     <div class="campo>">
                         <label for="estado">Estado</label>
@@ -92,6 +92,8 @@
 
         </section>
         <section class="tabla-categoria">
+            <input type="text" id="buscador" placeholder="Buscar categoría por código o nombre..." 
+                oninput="buscarCategoria()">
             <table border="1">
                 <h2>Listado Actual de Categorías</h2>
                 <thead>

@@ -4,7 +4,6 @@ const btnlimpiar = document.getElementById("limpiar-btn");
 
 formularioP.addEventListener("submit", async (e) => {
     e.preventDefault();
-    alert("Entro al submit");
     const formData = new FormData();
 
     formData.append("id_categoria", document.getElementById("id_categoria").value);
@@ -21,7 +20,6 @@ formularioP.addEventListener("submit", async (e) => {
     alert("Status:" + respuesta.status);
     const resultado = await respuesta.text();
     alert("Respuesta del servidor: " + resultado);
-    // ... resto del código
 });
 
 btnlimpiar.addEventListener("click", () => {
@@ -31,6 +29,8 @@ btnlimpiar.addEventListener("click", () => {
 // Y al final del archivo llama las funciones directamente:
 cargarDatosP();
 cargarCategorias();
+
+let todosLosProductos = [];
 
 async function cargarDatosP() {
     console.log("Entró a la función");
@@ -42,42 +42,52 @@ async function cargarDatosP() {
         const data = await res.json();
         console.log("Datos", data);
 
-        const tabla = document.getElementById("tablaBody2");
-        console.log("Tabla encontrada:", tabla);
-        console.log("cantidad de registros:", data.length);
-        tabla.innerHTML = "";
-
-        data.forEach(item => {
-            tabla.innerHTML += `
-                <tr>
-                    <td>${item.id_producto}</td>
-                    <td>${item.nombre_categoria}</td>
-                    <td>${item.nombre}</td>
-                    <td>${item.descripcion}</td>
-                    <td>${item.precio}</td>
-                    <td><img src="http://localhost:3000/img/${item.imagen}" width="50px"></td>
-                    <td>${item.disponible == 1 ? 'Si' : 'No'}</td>
-                    <td>
-                    
-                        <button class="btn-editar-producto" Onclick="mensajeEditar(); actualizarProducto(${item.id_producto}, ${item.id_categoria}, '${item.nombre}', '${item.descripcion}', '${item.precio}','${item.imagen}','${item.disponible}')">
-                            <i class="fa-solid fa-edit"></i>Editar
-                        </button> 
-                        <button class="${item.disponible == 1 ? 'btn-eliminar' : 'btn-editar-producto'}"
-                            onclick="toggleActivo(${item.id_producto}, '${item.disponible}')">
-                            <i class="fa-solid fa-${item.disponible == 1? 'ban' : 'check'}"></i>
-                            ${item.disponible == 1 ? 'Desactivar' : 'Activar'}
-                        </button>
-                    
-                    </td>
-                </tr>           
-            `;
-
-        });
+        todosLosProductos = data;
+        mostrarProductos(todosLosProductos);
     } catch (error) {
         console.log("Error cargando datos:", error);
     }
-    
 }
+
+function mostrarProductos(productos) {
+    const tabla = document.getElementById("tablaBody2");
+    if (!tabla) return;
+    tabla.innerHTML = "";
+
+    productos.forEach(item => {
+        tabla.innerHTML += `
+            <tr>
+                <td>${item.id_producto}</td>
+                <td>${item.nombre_categoria}</td>
+                <td>${item.nombre}</td>
+                <td>${item.descripcion}</td>
+                <td>${item.precio}</td>
+                <td><img src="http://localhost:3000/img/${item.imagen}" width="50px"></td>
+                <td>${item.disponible == 1 ? 'Si' : 'No'}</td>
+                <td>
+                    <button class="btn-editar-producto" Onclick="mensajeEditar(); actualizarProducto(${item.id_producto}, ${item.id_categoria}, '${item.nombre}', '${item.descripcion}', '${item.precio}','${item.imagen}','${item.disponible}')">
+                        <i class="fa-solid fa-edit"></i>Editar
+                    </button> 
+                    <button class="${item.disponible == 1 ? 'btn-eliminar' : 'btn-editar-producto'}"
+                        onclick="toggleActivo(${item.id_producto}, '${item.disponible}')">
+                        <i class="fa-solid fa-${item.disponible == 1? 'ban' : 'check'}"></i>
+                        ${item.disponible == 1 ? 'Desactivar' : 'Activar'}
+                    </button>
+                </td>
+            </tr>           
+        `;
+    });
+}
+
+function buscarProducto() {
+    const texto = document.getElementById("buscador").value.toLowerCase().trim();
+    const filtrados = todosLosProductos.filter(item =>
+        String(item.id_producto).toLowerCase().includes(texto) ||
+        (item.nombre && item.nombre.toLowerCase().includes(texto))
+    );
+    mostrarProductos(filtrados);
+}
+
 function actualizarProducto(id_producto, id_categoria, nombre, descripcion, precio, imagenArchivo, disponible){
     // Llena el modal con los datos actuales
     cargarCategoriasModal(id_categoria);

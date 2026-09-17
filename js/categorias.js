@@ -31,6 +31,8 @@ btnlimpiar.addEventListener("click", () => {
     formulario.reset();
 });
 
+let todasLasCategorias = [];
+
 async function cargarDatosC() {
     console.log("Entró a la función");
     try {
@@ -40,36 +42,47 @@ async function cargarDatosC() {
         console.log("Respuesta", res);
         const data = await res.json();
         console.log("Datos", data);
-
-        const tabla = document.getElementById("tablaBody1");
-        console.log("Tabla encontrada:", tabla);
-        console.log("cantidad de registros:", data.length);
-        tabla.innerHTML = "";
-
-        data.forEach(item => {
-            tabla.innerHTML += `
-                <tr>
-                    <td>${item.id_categoria}</td>
-                    <td>${item.nombre}</td>
-                    <td>${item.descripcion}</td>
-                    <td>${item.estado}</td>
-                    <td>
-                        <button class="btn-editar-categoria" Onclick="mensajeEditar(); actualizarCategoria(${item.id_categoria}, '${item.nombre}', '${item.descripcion}', '${item.estado}')">
-                            <i class="fa-solid fa-pen-to-square"></i> Editar
-                        </button> 
-                        <button class="${item.estado == 'activa'? 'btn-eliminar' : 'btn-editar-categoria'}"
-                            onclick="toggleActivo(${item.id_categoria}, '${item.estado}')">
-                            <i class="fa-solid fa-${item.estado == 'activa'? 'ban' : 'check'}"></i>
-                            ${item.estado == 'activa'? 'Desactivar' : 'Activar'}
-                        </button>
-                </tr>           
-            `;
-
-        });
+        todasLasCategorias = data;
+        mostrarCategorias(todasLasCategorias);
     } catch (error) {
         console.log("Error cargando datos:", error);
     }
-    
+}
+
+function mostrarCategorias(categorias) {
+    const tabla = document.getElementById("tablaBody1");
+    if (!tabla) return;
+    tabla.innerHTML = "";
+
+    categorias.forEach(item => {
+        tabla.innerHTML += `
+            <tr>
+                <td>${item.id_categoria}</td>
+                <td>${item.nombre}</td>
+                <td>${item.descripcion}</td>
+                <td>${item.estado}</td>
+                <td>
+                    <button class="btn-editar-categoria" Onclick="mensajeEditar(); actualizarCategoria(${item.id_categoria}, '${item.nombre}', '${item.descripcion}', '${item.estado}')">
+                        <i class="fa-solid fa-pen-to-square"></i> Editar
+                    </button> 
+                    <button class="${item.estado == 'activa'? 'btn-eliminar' : 'btn-editar-categoria'}"
+                        onclick="toggleActivo(${item.id_categoria}, '${item.estado}')">
+                        <i class="fa-solid fa-${item.estado == 'activa'? 'ban' : 'check'}"></i>
+                        ${item.estado == 'activa'? 'Desactivar' : 'Activar'}
+                    </button>
+                </td>
+            </tr>           
+        `;
+    });
+}
+
+function buscarCategoria() {
+    const texto = document.getElementById("buscador").value.toLowerCase().trim();
+    const filtradas = todasLasCategorias.filter(item =>
+        String(item.id_categoria).toLowerCase().includes(texto) ||
+        (item.nombre && item.nombre.toLowerCase().includes(texto))
+    );
+    mostrarCategorias(filtradas);
 }
 function actualizarCategoria(id_categoria, nombre, descripcion, estado){
     // Llena el modal con los datos actuales
@@ -101,7 +114,6 @@ async function guardarActualizacionC() {
     });
 
     const data = await res.json();
-    console.log(data);
 
     cerrarModalC();
     cargarDatosC();

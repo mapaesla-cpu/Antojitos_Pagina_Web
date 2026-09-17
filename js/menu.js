@@ -208,8 +208,8 @@ async function enviarPedido() {
     console.log("Carrito:", carrito);
 
     //Validar campos
-    if (!nombre || !telefono){
-        alert("Por favor ingresa tu nombre y teléfono");
+    if (!nombre || !telefono || !correo){
+        alert("Por favor rellena todos los campos");
         return;
     }
     try {

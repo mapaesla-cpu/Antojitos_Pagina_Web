@@ -7,6 +7,9 @@ const correo = document.getElementById('registro-correo').value;
 const contrasena = document.getElementById('registro-contrasena').value;
 const confirmarContrasena = document.getElementById('registro-contrasena-confirmar').value;
 const rol = document.getElementById('registro-rol').value;
+if (!contrasena || contrasena.trim().length < 6){
+  return alert ('La contraseña debe tener minimo 6 caracteres.');
+}
 
 if(contrasena !== confirmarContrasena){
     return alert('Las contraseñas no coinciden');
@@ -17,7 +20,7 @@ try {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ nombre, correo, contrasena, rol })
     });
-    
+    console.log(result);
     const data = await result.json();
 
     if (result.ok) {
@@ -30,4 +33,8 @@ try {
     console.error('Error:', error);
 }
 
+});
+
+document.getElementById('btn-regresar').addEventListener('click', async (e) => {
+  window.location.href ='login.html';
 });

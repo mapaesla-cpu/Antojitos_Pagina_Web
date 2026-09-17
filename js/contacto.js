@@ -24,6 +24,7 @@ formulario.addEventListener('submit', async (e) => {
         });
 
         const data = await res.json();
+        alert(data.mensaje);
 
         if (res.ok) {
             alert(data.mensaje);

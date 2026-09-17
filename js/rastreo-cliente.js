@@ -16,7 +16,7 @@ async function buscarPedidoClientSide() {
         alert("Por favor, ingresa un número de pedido.");
         return;
     }
-
+    console.log(id_pedido);
     try {
         // Hacemos la petición GET a la ruta pública del backend
         const res = await fetch(`http://localhost:3000/api/auth/pedidos/consultar/${id_pedido}`);

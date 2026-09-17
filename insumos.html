@@ -39,7 +39,7 @@
         </li>
 
         <li>
-            <a href="pedidos_panel.html" class="menu-link">
+            <a href="pedidos-panel.html" class="menu-link">
                 <span class="icono">🛍️</span> Pedidos
             </a>
         </li>
@@ -101,6 +101,8 @@
 
         </section>
         <section class="tabla-insumos">
+            <input type="text" id="buscador" placeholder="Buscar insumo por código o nombre..." 
+                oninput="buscarInsumo()">
             <table border="1">
                 <h2>Listado Actual de Insumos</h2>
                 <thead>
@@ -152,7 +154,7 @@
                 <label>Motivo</label>
                 <textarea id="modal-entrada-motivo" rows="3" placeholder="Ej: comprar a proveedor" required></textarea>
                 <button onclick="guardarEntrada()"><span class="material-symbols-outlined">check_circle</span>entrada</button>
-                <button onclick="cerrarModal()"><span class="material-symbols-outlined">cancel</span>Cancelar</button>
+                <button onclick="cerrarModalEntrada()"><span class="material-symbols-outlined">cancel</span>Cancelar</button>
             </div>
 
          </div>
@@ -174,7 +176,7 @@
                 <label>Motivo</label>
                 <textarea id="modal-salida-motivo" rows="3" placeholder="Ej: producto en mal estado" required></textarea>
                 <button onclick="guardarSalida()"><span class="material-symbols-outlined">check_circle</span>Registrar salida</button>
-                <button onclick="cerrarModal()"><span class="material-symbols-outlined">cancel</span>Cancelar</button>
+                <button onclick="cerrarModalSalida()"><span class="material-symbols-outlined">cancel</span>Cancelar</button>
             </div>
 
          </div>

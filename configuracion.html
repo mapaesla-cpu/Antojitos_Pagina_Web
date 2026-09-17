@@ -38,7 +38,7 @@
         </li>
 
         <li>
-            <a href="pedidos_panel.html" class="menu-link">
+            <a href="pedidos-panel.html" class="menu-link">
                 <span class="icono">🛍️</span> Pedidos
             </a>
         </li>
@@ -62,12 +62,12 @@
 
     <main>
         <section class="encabezado">
-            <h1>Configuración</h1>
+            <h1>Gestión de la Empresa</h1>
         </section>
 
         <!-- Datos del negocio -->
         <section class="config-seccion">
-            <h2>Datos del Negocio</h2>
+            <h2>Datos del negocio</h2>
             <div class="campo">
                 <label>Nombre del negocio</label>
                 <input type="text" id="config-nombre">
@@ -105,15 +105,15 @@
             <h2>Cambiar Contraseña</h2>
             <div class="campo">
                 <label>Contraseña actual</label>
-                <input type="password" id="password-actual">
+                <input type="password" id="password-actual" required>
             </div>
             <div class="campo">
                 <label>Nueva contraseña</label>
-                <input type="password" id="password-nueva">
+                <input type="password" id="password-nueva" required>
             </div>
             <div class="campo">
                 <label>Confirmar nueva contraseña</label>
-                <input type="password" id="password-confirmar">
+                <input type="password" id="password-confirmar" required>
             </div>
             <button onclick="cambiarPassword()">Cambiar contraseña</button>
         </section>

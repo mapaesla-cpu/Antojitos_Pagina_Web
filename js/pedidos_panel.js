@@ -1,40 +1,57 @@
+let todosLosPedidos = [];
+
 async function cargarPedidos() {
     try {
         const res = await fetch("http://localhost:3000/api/auth/pedidos/consultar");
         const data = await res.json();
-
-        const tabla = document.getElementById("tablaBody");
-        tabla.innerHTML = "";
-
-        data.forEach(item => {
-            tabla.innerHTML += `
-                <tr>
-                    <td>#${item.id_pedido}</td>
-                    <td>${item.nombre_cliente}</td>
-                    <td>${item.telefono}</td>
-                    <td>${new Date(item.fecha_pedido).toLocaleDateString()}</td>
-                    <td>${item.tipo_entrega}</td>
-                    <td>$${Number(item.total).toLocaleString()}</td>
-                    <td>
-                        <select onchange="cambiarEstado(${item.id_pedido}, this.value)">
-                            <option ${item.estado == 'pendiente' ? 'selected' : ''}>pendiente</option>
-                            <option ${item.estado == 'en preparacion' ? 'selected' : ''}>en preparacion</option>
-                            <option ${item.estado == 'listo' ? 'selected' : ''}>listo</option>
-                            <option ${item.estado == 'entregado' ? 'selected' : ''}>entregado</option>
-                            <option ${item.estado == 'cancelado' ? 'selected' : ''}>cancelado</option>
-                        </select>
-                    </td>
-                    <td>
-                        <button class="btn-editar" onclick="verDetalle(${item.id_pedido})">
-                            <i class="fa-solid fa-eye"></i> Ver detalle
-                        </button>
-                    </td>
-                </tr>
-            `;
-        });
+        console.log(data);
+        todosLosPedidos = data;
+        mostrarPedidos(todosLosPedidos);
     } catch (error) {
         console.log("Error:", error);
     }
+}
+
+function mostrarPedidos(pedidos) {
+    const tabla = document.getElementById("tablaBody");
+    if (!tabla) return;
+    tabla.innerHTML = "";
+
+    pedidos.forEach(item => {
+        tabla.innerHTML += `
+            <tr>
+                <td>#${item.id_pedido}</td>
+                <td>${item.nombre_cliente}</td>
+                <td>${item.telefono}</td>
+                <td>${new Date(item.fecha_pedido).toLocaleDateString()}</td>
+                <td>${item.tipo_entrega}</td>
+                <td>$${Number(item.total).toLocaleString()}</td>
+                <td>
+                    <select onchange="cambiarEstado(${item.id_pedido}, this.value)">
+                        <option ${item.estado == 'pendiente' ? 'selected' : ''}>pendiente</option>
+                        <option ${item.estado == 'en preparacion' ? 'selected' : ''}>en preparacion</option>
+                        <option ${item.estado == 'listo' ? 'selected' : ''}>listo</option>
+                        <option ${item.estado == 'entregado' ? 'selected' : ''}>entregado</option>
+                        <option ${item.estado == 'cancelado' ? 'selected' : ''}>cancelado</option>
+                    </select>
+                </td>
+                <td>
+                    <button class="btn-editar" onclick="verDetalle(${item.id_pedido})">
+                        <i class="fa-solid fa-eye"></i> Ver detalle
+                    </button>
+                </td>
+            </tr>
+        `;
+    });
+}
+
+function buscarPedido() {
+    const texto = document.getElementById("buscador").value.toLowerCase().trim();
+    const filtrados = todosLosPedidos.filter(item =>
+        String(item.id_pedido).toLowerCase().includes(texto) ||
+        (item.nombre_cliente && item.nombre_cliente.toLowerCase().includes(texto))
+    );
+    mostrarPedidos(filtrados);
 }
 
 async function cambiarEstado(id_pedido, estado) {
