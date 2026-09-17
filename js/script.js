@@ -31,23 +31,21 @@ const tablaInsumo = document.getElementById("nombre");
 
 document.addEventListener("DOMContentLoaded", cargarFooter);
 
-const populares = document.getElementById("populares-inicio");
-const siguiente = document.getElementById("siguiente");
-const anterior = document.getElementById("anterior");
+const populares = document.getElementById('populares-inicio');
+const siguiente = document.getElementById('siguiente');
+const anterior  = document.getElementById('anterior');
 
-siguiente.addEventListener("click", () => {
-    populares.scrollBy({
-        left: 330,
-        behavior: "smooth"
+if (siguiente && populares) {
+    siguiente.addEventListener('click', () => {
+        populares.scrollBy({ left: 330, behavior: 'smooth' });
     });
-});
+}
 
-anterior.addEventListener("click", () => {
-    populares.scrollBy({
-        left: -330,
-        behavior: "smooth"
+if (anterior && populares) {
+    anterior.addEventListener('click', () => {
+        populares.scrollBy({ left: -330, behavior: 'smooth' });
     });
-});
+}
 
 document.addEventListener("DOMContentLoaded", () => {
     const btnHamburguesa = document.getElementById("hamburguesa-menu");

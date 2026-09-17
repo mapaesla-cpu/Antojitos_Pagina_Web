@@ -11,7 +11,9 @@ const nodemailer = require('nodemailer');
  * Las credenciales se leen desde variables de entorno para mayor seguridad.
  */
 const transporter = nodemailer.createTransport({
-    service: 'gmail',
+    host: 'smtp.gmail.com',
+    port: 465,
+    secure: true,       // SSL en puerto 465
     auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS
@@ -31,27 +33,29 @@ const transporter = nodemailer.createTransport({
 const enviarMensaje = async (req, res) => {
     const { nombre, correo, telefono, mensaje } = req.body;
 
+    // Log de diagnóstico: verifica que las variables de entorno se cargaron
+    console.log('[contacto] EMAIL_USER cargado:', process.env.EMAIL_USER ? 'SÍ' : 'NO (undefined)');
+    console.log('[contacto] EMAIL_PASS cargado:', process.env.EMAIL_PASS ? 'SÍ' : 'NO (undefined)');
+
     try {
         await transporter.sendMail({
-            from: process.env.EMAIL_USER,      // Remitente: email del negocio
-            to: process.env.EMAIL_USER,        // Destinatario: el mismo email del negocio
-            replyTo: correo,                   // Permite responder directamente al cliente
+            from: process.env.EMAIL_USER,
+            to: process.env.EMAIL_USER,
+            replyTo: correo,
             subject: `Mensaje de ${nombre}`,
-            text: `
-Nombre: ${nombre}
-Correo: ${correo}
-Teléfono: ${telefono}
-
-Mensaje:
-${mensaje}
-            `
+            text: `Nombre: ${nombre}\nCorreo: ${correo}\nTeléfono: ${telefono}\n\nMensaje:\n${mensaje}`
         });
 
         res.json({ mensaje: 'Correo enviado correctamente' });
 
     } catch (error) {
-        console.error('Error al enviar correo:', error);
-        res.status(500).json({ error: 'Error al enviar el correo' });
+        // Expone el error detallado para diagnóstico (quitar en producción)
+        console.error('[contacto] Error Nodemailer:', error.message, '| Código:', error.code);
+        res.status(500).json({
+            error: 'Error al enviar el correo',
+            detalle: error.message,
+            codigo: error.code
+        });
     }
 };
 

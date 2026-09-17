@@ -5,6 +5,10 @@
  *              Escucha en el puerto 3000 por defecto.
  */
 
+// ── Variables de entorno ───────────────────────────────────────────────────
+// Debe cargarse antes que cualquier otro módulo que use process.env
+require('dotenv').config();
+
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
@@ -16,8 +20,21 @@ require('./db');
 
 // ── Middlewares globales ───────────────────────────────────────────────────
 
-/** Permite peticiones desde otros orígenes (útil en desarrollo con frontend separado) */
-app.use(cors());
+/** Permite peticiones desde el frontend (XAMPP, Live Server, etc.) */
+app.use(cors({
+    origin: [
+        'http://localhost',
+        'http://127.0.0.1',
+        'http://localhost:80',
+        'http://127.0.0.1:80',
+        'http://localhost:5500',
+        'http://127.0.0.1:5500',
+        'http://localhost:5501',
+        'http://127.0.0.1:5501'
+    ],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
 
 /** Parsea el cuerpo de las peticiones en formato JSON */
 app.use(express.json());
