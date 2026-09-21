@@ -9,8 +9,8 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const usuarioModel = require('../models/usuarioModel');
 
-/** Clave secreta para firmar los tokens JWT. Mover a .env en producción. */
-const JWT_SECRET = 'secreto_antojitos';
+/** Clave secreta para firmar los tokens JWT desde .env */
+const JWT_SECRET = process.env.JWT_SECRET;
 
 /**
  * Inicia sesión de un usuario y genera un token JWT válido por 8 horas.

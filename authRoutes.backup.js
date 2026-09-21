@@ -62,7 +62,7 @@ router.post('/login', (req, res) => {
 
     const token = jwt.sign(
       { id: usuario.id_usuario, rol: usuario.rol },
-      'secreto_antojitos',
+      process.env.JWT_SECRET,
       { expiresIn: '8h' }
     );
 
@@ -115,7 +115,7 @@ router.post('/login/recuperar-contrasena', (req, res) => {
 
     const token = jwt.sign(
       { id: usuario.id_usuario, rol: usuario.rol },
-      'secreto_antojitos',
+      process.env.JWT_SECRET,
       { expiresIn: '8h' }
     );
 
@@ -858,7 +858,7 @@ router.post("/insumos/entrada", (req, res) => {
 
   let decoded;
   try {
-    decoded = jwt.verify(token, "secreto_antojitos");
+    decoded = jwt.verify(token, process.env.JWT_SECRET);
   } catch (error) {
     return res.status(401).json({ error: "Token inválido" });
   }
@@ -917,7 +917,7 @@ router.post("/insumos/salida", (req, res) => {
 
   let decoded;
   try {
-    decoded = jwt.verify(token, "secreto_antojitos");
+    decoded = jwt.verify(token, process.env.JWT_SECRET);
   } catch (error) {
     return res.status(401).json({ error: "Token inválido" });
   }
@@ -1153,7 +1153,7 @@ router.put("/configuracion/password", (req, res) => {
     let decoded;
 
     try{
-      decoded = jwt.verify(token, "secreto_antojitos");
+      decoded = jwt.verify(token, process.env.JWT_SECRET);
     }catch (error) {
       return res.status(401).json({ error: "Token inválido"});
     }

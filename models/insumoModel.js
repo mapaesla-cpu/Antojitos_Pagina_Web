@@ -32,7 +32,7 @@ const agregar = (nombre, unidad, cantidad, stock) => {
  */
 const consultarTodos = () => {
     return new Promise((resolve, reject) => {
-        const sql = 'SELECT * FROM insumos';
+        const sql = 'SELECT * FROM insumos WHERE activo = 1';
         db.query(sql, (err, results) => {
             if (err) return reject(err);
             resolve(results);
@@ -52,7 +52,6 @@ const consultarTodos = () => {
  */
 const actualizar = (id, nombre, unidad_medida, cantidad_disponible, stock_minimo) => {
     return new Promise((resolve, reject) => {
-        // CORRECCIÓN: Se usa coma antes de WHERE (error original en template literal)
         const sql = `UPDATE insumos SET
             nombre = ?,
             unidad_medida = ?,
@@ -74,7 +73,7 @@ const actualizar = (id, nombre, unidad_medida, cantidad_disponible, stock_minimo
  */
 const eliminar = (id) => {
     return new Promise((resolve, reject) => {
-        const sql = 'DELETE FROM insumos WHERE id_insumo = ?';
+        const sql = 'UPDATE insumos SET activo = 0 WHERE id_insumo = ?';
         db.query(sql, [id], (err, result) => {
             if (err) return reject(err);
             resolve(result);
@@ -92,7 +91,7 @@ const obtenerAlertas = () => {
         const sql = `
             SELECT id_insumo, nombre, cantidad_disponible, stock_minimo
             FROM insumos
-            WHERE cantidad_disponible <= stock_minimo
+            WHERE cantidad_disponible <= stock_minimo AND activo = 1
         `;
         db.query(sql, (err, results) => {
             if (err) return reject(err);
@@ -127,8 +126,8 @@ const sumarCantidad = (id_insumo, cantidad) => {
  */
 const restarCantidad = (id_insumo, cantidad) => {
     return new Promise((resolve, reject) => {
-        const sql = 'UPDATE insumos SET cantidad_disponible = cantidad_disponible - ? WHERE id_insumo = ?';
-        db.query(sql, [cantidad, id_insumo], (err, result) => {
+        const sql = 'UPDATE insumos SET cantidad_disponible = cantidad_disponible - ? WHERE id_insumo = ? AND cantidad_disponible >= ?';
+        db.query(sql, [cantidad, id_insumo, cantidad], (err, result) => {
             if (err) return reject(err);
             resolve(result);
         });

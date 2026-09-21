@@ -7,6 +7,9 @@
 
 const insumoModel = require('../models/insumoModel');
 
+const esNumeroValido = (valor) =>
+    valor !== '' && valor !== null && valor !== undefined && !isNaN(valor) && Number(valor) >= 0;
+
 /**
  * Agrega un nuevo insumo al inventario.
  *
@@ -19,6 +22,9 @@ const insumoModel = require('../models/insumoModel');
  */
 const agregar = async (req, res) => {
     const { nombre, unidad, cantidad, stock } = req.body;
+    if (!nombre || !nombre.trim() || !unidad || !esNumeroValido(cantidad) || !esNumeroValido(stock)) {
+        return res.status(400).json({ error: 'Datos inválidos: revise nombre, unidad, cantidad y stock' });
+    }
     try {
         await insumoModel.agregar(nombre, unidad, cantidad, stock);
         res.json({ mensaje: 'Insumo agregado correctamente' });
@@ -58,8 +64,14 @@ const consultar = async (req, res) => {
 const actualizar = async (req, res) => {
     const { id_insumo } = req.params;
     const { nombre, unidad_medida, cantidad_disponible, stock_minimo } = req.body;
+    if (!nombre || !nombre.trim() || !unidad_medida || !esNumeroValido(cantidad_disponible) || !esNumeroValido(stock_minimo)) {
+        return res.status(400).json({ error: 'Datos inválidos' });
+    }
     try {
-        await insumoModel.actualizar(id_insumo, nombre, unidad_medida, cantidad_disponible, stock_minimo);
+        const resultado = await insumoModel.actualizar(id_insumo, nombre, unidad_medida, cantidad_disponible, stock_minimo);
+        if (resultado.affectedRows === 0) {
+            return res.status(404).json({ error: 'Insumo no encontrado' });
+        }
         res.json({ mensaje: 'Insumo actualizado correctamente' });
     } catch (error) {
         console.error('Error al actualizar insumo:', error);
@@ -77,7 +89,10 @@ const actualizar = async (req, res) => {
 const eliminar = async (req, res) => {
     const { id_insumo } = req.params;
     try {
-        await insumoModel.eliminar(id_insumo);
+        const resultado = await insumoModel.eliminar(id_insumo);
+        if (resultado.affectedRows === 0) {
+            return res.status(404).json({ error: 'Insumo no encontrado' });
+        }
         res.json({ mensaje: 'Insumo eliminado correctamente' });
     } catch (error) {
         console.error('Error al eliminar insumo:', error);

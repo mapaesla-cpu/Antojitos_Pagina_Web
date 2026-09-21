@@ -8,18 +8,19 @@
 const express = require('express');
 const router = express.Router();
 const insumoController = require('../controllers/insumoController');
+const verificarToken = require('../middlewares/verificarToken');
 
 // POST /api/auth/agregar → Agregar nuevo insumo
-router.post('/agregar', insumoController.agregar);
+router.post('/agregar', verificarToken, insumoController.agregar);
 
 // GET /api/auth/consultar → Consultar todos los insumos
 router.get('/consultar', insumoController.consultar);
 
 // PUT /api/auth/actualizar/:id_insumo → Actualizar insumo por ID
-router.put('/actualizar/:id_insumo', insumoController.actualizar);
+router.put('/actualizar/:id_insumo', verificarToken, insumoController.actualizar);
 
 // DELETE /api/auth/eliminar/:id_insumo → Eliminar insumo por ID
-router.delete('/eliminar/:id_insumo', insumoController.eliminar);
+router.delete('/eliminar/:id_insumo', verificarToken, insumoController.eliminar);
 
 // GET /api/auth/insumos/alertas → Obtener insumos con bajo stock
 router.get('/insumos/alertas', insumoController.obtenerAlertas);

@@ -11,7 +11,7 @@ const configuracionModel = require('../models/configuracionModel');
 const usuarioModel = require('../models/usuarioModel');
 
 /** Clave secreta para verificar tokens JWT. */
-const JWT_SECRET = 'secreto_antojitos';
+const JWT_SECRET = process.env.JWT_SECRET;
 
 /**
  * Retorna la configuración general del negocio.

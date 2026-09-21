@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 /**
  * @file server.js
  * @description Punto de entrada del servidor Express para Antojitos.
@@ -5,9 +7,6 @@
  *              Escucha en el puerto 3000 por defecto.
  */
 
-// ── Variables de entorno ───────────────────────────────────────────────────
-// Debe cargarse antes que cualquier otro módulo que use process.env
-require('dotenv').config();
 
 const express = require('express');
 const cors = require('cors');

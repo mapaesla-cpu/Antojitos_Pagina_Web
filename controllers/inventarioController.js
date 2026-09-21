@@ -9,22 +9,12 @@ const jwt = require('jsonwebtoken');
 const insumoModel = require('../models/insumoModel');
 const inventarioModel = require('../models/inventarioModel');
 
-/** Clave secreta para verificar tokens JWT. */
-const JWT_SECRET = 'secreto_antojitos';
-
-/**
- * Extrae y valida el token JWT del encabezado Authorization.
- * Devuelve el payload decodificado o null si el token es inválido/inexistente.
- *
- * @param {import('express').Request} req - Objeto de petición de Express.
- * @returns {{ id: number, rol: string }|null} Payload del token o null.
- */
 const extraerToken = (req) => {
     const authHeader = req.headers.authorization;
     if (!authHeader) return null;
     const token = authHeader.split(' ')[1];
     try {
-        return jwt.verify(token, JWT_SECRET);
+        return jwt.verify(token, process.env.JWT_SECRET);
     } catch {
         return null;
     }
@@ -51,9 +41,16 @@ const registrarEntrada = async (req, res) => {
     const { id_insumo, cantidad, motivo } = req.body;
     const idUsuario = decoded.id;
 
+    if (!id_insumo || !(Number(cantidad) > 0) || !motivo || !motivo.trim()) {
+        return res.status(400).json({ error: 'Datos inválidos' });
+    }
+
     try {
         // 2. Sumar cantidad al insumo
-        await insumoModel.sumarCantidad(id_insumo, cantidad);
+        const resultado = await insumoModel.sumarCantidad(id_insumo, cantidad);
+        if (resultado.affectedRows === 0) {
+            return res.status(404).json({ error: 'Insumo no encontrado' });
+        }
 
         // 3. Registrar el movimiento en el historial
         await inventarioModel.registrarMovimiento(id_insumo, 'entrada', cantidad, motivo, idUsuario);
@@ -87,9 +84,16 @@ const registrarSalida = async (req, res) => {
     const { id_insumo, cantidad, motivo } = req.body;
     const idUsuario = decoded.id;
 
+    if (!id_insumo || !(Number(cantidad) > 0) || !motivo || !motivo.trim()) {
+        return res.status(400).json({ error: 'Datos inválidos' });
+    }
+
     try {
         // 2. Restar cantidad al insumo
-        await insumoModel.restarCantidad(id_insumo, cantidad);
+        const resultado = await insumoModel.restarCantidad(id_insumo, cantidad);
+        if (resultado.affectedRows === 0) {
+            return res.status(400).json({ error: 'Stock insuficiente o insumo inexistente' });
+        }
 
         // 3. Registrar el movimiento en el historial
         await inventarioModel.registrarMovimiento(id_insumo, 'salida', cantidad, motivo, idUsuario);

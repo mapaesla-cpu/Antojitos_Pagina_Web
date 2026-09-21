@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -32,7 +32,7 @@
                 </summary>
                 <ul class="sub-menu">
                     <li><a href="productos.html">Productos</a></li>
-                    <li><a href="#">Insumos</a></li>
+                    <li><a href="insumos.html">Insumos</a></li>
                     <li><a href="categorias.html">Categorías</a></li>
                 </ul>
             </details>
@@ -67,12 +67,12 @@
             <form id="formulario"> 
                 <fieldset class="nuevo-insumo">
                     <legend>Ingreso de Insumos</legend>
-                    <div class="campo>">
+                    <div class="campo">
                         <label for="nombre">Nombre Insumo</label>
                         <input type="text" id="nombre" name="nombre" placeholder="Nombre" required>
                     </div>
-                    <div class="campo>">
-                        <label for="unidad">Unidad de medida</labe>
+                    <div class="campo">
+                        <label for="unidad">Unidad de medida</label>
                         <select id="unidad" name="unidad" required>
                             <option value="kg">Kilogramo (kg)</option>
                             <option value="g">Gramo (g)</option>
@@ -83,15 +83,15 @@
                             <option value="arroba">Arroba</option>    
                         </select>    
                     </div>
-                    <div class="campo>">
+                    <div class="campo">
                         <label for="cantidad">Cantidad Disponible</label>
-                        <input type="number" id="cantidad" name="cantidad" placeholder="Cantidad disponible" required>
+                        <input type="number" id="cantidad" name="cantidad" placeholder="Cantidad disponible" min="0" step="any" required>
                     </div>
-                    <div class="campo>">
+                    <div class="campo">
                         <label for="stock">Stock minimo</label>
-                        <input type="number" id="stock" name="stock" placeholder="Stock minimo" required>
+                        <input type="number" id="stock" name="stock" placeholder="Stock minimo" min="0" step="any" required>
                     </div>
-                    <div class="botones>">
+                    <div class="botones">
                         <button class="registrar-insumo-btn" type="submit" id="registrar-insumo" name="registrar-insumo"><span class="material-symbols-outlined">check_circle</span>Registrar</button> 
                         <button class="limpiar-btn" type="button" id="limpiar-btn" name="limpiar-btn"><span class="material-symbols-outlined">cleaning_services</span>Limpiar</button>  
                     </div>
@@ -103,8 +103,9 @@
         <section class="tabla-insumos">
             <input type="text" id="buscador" placeholder="Buscar insumo por código o nombre..." 
                 oninput="buscarInsumo()">
+            <h2>Listado Actual de Insumos</h2>
             <table border="1">
-                <h2>Listado Actual de Insumos</h2>
+                
                 <thead>
                     <tr>
                         <th>Código</th>
@@ -128,10 +129,10 @@
                 <input type="text" id="modal-nombre">
                 <label>Unidad de medida</label>
                 <input type="text" id="modal-unidad">
-                <label >Cantidad disponible</label>
+                <label>Cantidad disponible</label>
                 <input type="number" id="modal-cantidad" disabled>
                 <label>Stock minimo</label>
-                <input type="number" id="modal-stock">
+                <input type="number" id="modal-stock" min="0" step="any">
                 <button onclick="guardarActualizacion()"><span class="material-symbols-outlined">save</span>Guardar</button>
                 <button onclick="cerrarModal()"><span class="material-symbols-outlined">cancel</span>Cancelar</button>
             </div>
@@ -149,7 +150,7 @@
                         <input type="number" id="modal-entrada-stock-actual" readonly>
                         <span id="modal-entrada-unidad"></span>
                     </div>
-                <label >Cantidad</label>
+                <label>Cantidad</label>
                 <input type="number" id="modal-entrada-cantidad" min="1" required>
                 <label>Motivo</label>
                 <textarea id="modal-entrada-motivo" rows="3" placeholder="Ej: comprar a proveedor" required></textarea>
@@ -171,7 +172,7 @@
                         <input type="number" id="modal-salida-stock-actual" readonly>
                         <span id="modal-salida-unidad"></span>
                     </div>
-                <label >Cantidad</label>
+                <label>Cantidad</label>
                 <input type="number" id="modal-salida-cantidad" min="1" required>
                 <label>Motivo</label>
                 <textarea id="modal-salida-motivo" rows="3" placeholder="Ej: producto en mal estado" required></textarea>
