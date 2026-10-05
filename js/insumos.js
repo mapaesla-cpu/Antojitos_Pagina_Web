@@ -93,7 +93,7 @@ function mostrarInsumos(insumos) {
                 <td>${item.unidad_medida}</td>
                 <td>${item.cantidad_disponible}</td>
                 <td>${item.stock_minimo}</td>
-                <td>${item.fecha_actualizacion}</td>
+                <td>${new Date(item.fecha_actualizacion).toLocaleDateString()}</td>
                 <td>
                 <div class="acciones">
                     <button class="btn-entrada" onclick="abrirEntrada(${item.id_insumo})">

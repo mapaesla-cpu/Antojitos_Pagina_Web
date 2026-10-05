@@ -10,4 +10,5 @@ node_modules/
 #Ignorar carpetas de configuración del editor
 .vscode/
 
-.crearUsuario
+#Ignorar archivo de base de datos
+.antojitos_db.sql
