@@ -1,8 +1,19 @@
+/**
+ * @file rastreo-cliente.js
+ * @description Módulo de seguimiento y rastreo de pedidos para clientes.
+ *              Consulta el estado de un pedido por su número de orden
+ *              e ilumina los pasos interactivos de la línea de tiempo.
+ */
+
+/**
+ * Consulta el estado del pedido ingresado por el cliente y actualiza visualmente
+ * la barra de progreso (pendiente, en preparación, listo, entregado, cancelado).
+ */
 async function buscarPedidoClientSide() {
-    const id_pedido = document.getElementById('num-pedido').value;
+    const id_pedido = document.getElementById('num-pedido').value.trim();
     const contenedorResultado = document.getElementById('resultado-rastreo');
-    
-    // Elementos de texto en la interfaz
+
+    // Elementos de texto de la interfaz
     const txtId = document.getElementById('txt-id-pedido');
     const txtEstado = document.getElementById('txt-estado');
 
@@ -16,64 +27,65 @@ async function buscarPedidoClientSide() {
         alert("Por favor, ingresa un número de pedido.");
         return;
     }
-    console.log(id_pedido);
+
     try {
-        // Hacemos la petición GET a la ruta pública del backend
         const res = await fetch(`http://localhost:3000/api/auth/pedidos/consultar/${id_pedido}`);
-        
+
         if (!res.ok) {
-            alert("No se encontró ningún pedido con el número #" + id_pedido);
-            contenedorResultado.style.display = 'none';
+            alert(`No se encontró ningún pedido con el número #${id_pedido}`);
+            if (contenedorResultado) contenedorResultado.style.display = 'none';
             return;
         }
 
         const data = await res.json();
-        
-        // Asignar los datos del backend al HTML
-        txtId.textContent = data.id_pedido;
-        txtEstado.textContent = data.estado;
-        
-        // Mostrar el bloque con los resultados
-        contenedorResultado.style.display = 'block';
 
-        // 1. Limpiar clases previas de todos los pasos para evitar errores al buscar varios seguidos
+        // Asignar los datos del backend al HTML
+        if (txtId) txtId.textContent = data.id_pedido;
+        if (txtEstado) {
+            txtEstado.textContent = data.estado;
+            txtEstado.style.color = '';
+        }
+
+        if (contenedorResultado) contenedorResultado.style.display = 'block';
+
+        // 1. Limpiar estados previos de los pasos
         const steps = [stepPendiente, stepPreparacion, stepListo, stepEntregado];
         steps.forEach(step => {
-            step.classList.remove('active', 'cancelado');
+            if (step) step.classList.remove('active', 'cancelado');
         });
 
-        // 2. Lógica para iluminar la línea de tiempo según el estado en MySQL
-        switch (data.estado.toLowerCase()) {
+        // 2. Iluminar la línea de tiempo según el estado del pedido
+        const estado = (data.estado || '').toLowerCase();
+        switch (estado) {
             case 'pendiente':
-                stepPendiente.classList.add('active');
+                if (stepPendiente) stepPendiente.classList.add('active');
                 break;
 
             case 'en preparacion':
-                stepPendiente.classList.add('active');
-                stepPreparacion.classList.add('active');
+                if (stepPendiente) stepPendiente.classList.add('active');
+                if (stepPreparacion) stepPreparacion.classList.add('active');
                 break;
 
             case 'listo':
-                stepPendiente.classList.add('active');
-                stepPreparacion.classList.add('active');
-                stepListo.classList.add('active');
+                if (stepPendiente) stepPendiente.classList.add('active');
+                if (stepPreparacion) stepPreparacion.classList.add('active');
+                if (stepListo) stepListo.classList.add('active');
                 break;
 
             case 'entregado':
-                stepPendiente.classList.add('active');
-                stepPreparacion.classList.add('active');
-                stepListo.classList.add('active');
-                stepEntregado.classList.add('active');
+                if (stepPendiente) stepPendiente.classList.add('active');
+                if (stepPreparacion) stepPreparacion.classList.add('active');
+                if (stepListo) stepListo.classList.add('active');
+                if (stepEntregado) stepEntregado.classList.add('active');
                 break;
 
             case 'cancelado':
-                // Si está cancelado, pintamos el primer nodo de color rojo de alerta
-                stepPendiente.classList.add('cancelado');
-                txtEstado.style.color = '#dc3545'; // Cambia el texto del estado a rojo
+                if (stepPendiente) stepPendiente.classList.add('cancelado');
+                if (txtEstado) txtEstado.style.color = '#dc3545';
                 break;
-                
+
             default:
-                console.log("Estado no reconocido");
+                break;
         }
 
     } catch (error) {

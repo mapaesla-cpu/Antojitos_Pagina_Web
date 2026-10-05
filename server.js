@@ -11,6 +11,8 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
 const app = express();
 
 // ── Conexión a la base de datos ────────────────────────────────────────────
@@ -40,6 +42,25 @@ app.use(express.json());
 
 /** Parsea el cuerpo de formularios HTML (application/x-www-form-urlencoded) */
 app.use(express.urlencoded({ extended: true }));
+
+/**
+ * Helmet: configura headers HTTP de seguridad (X-Frame-Options, CSP, etc.).
+ * crossOriginResourcePolicy deshabilitado para permitir cargar imágenes desde el frontend.
+ */
+app.use(helmet({
+    crossOriginResourcePolicy: { policy: 'cross-origin' }
+}));
+
+/**
+ * Rate limiter para el endpoint de login.
+ * Limita a 10 intentos por IP cada 15 minutos para prevenir
+ * ataques de fuerza bruta contra las credenciales.
+ */
+const loginLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 10,
+    message: { error: 'Demasiados intentos de inicio de sesión. Intente de nuevo en 15 minutos.' }
+});
 
 /** Sirve archivos estáticos (HTML, CSS, JS, imágenes) desde la carpeta public */
 app.use(express.static(path.join(__dirname, 'public')));
@@ -85,6 +106,22 @@ app.get('/', (req, res) => {
 // ── Arranque del servidor ──────────────────────────────────────────────────
 
 const PORT = process.env.PORT || 3000;
+
+/**
+ * Middleware global de manejo de errores.
+ * Captura errores de Multer (archivos muy grandes o tipo no permitido)
+ * y cualquier otro error no manejado por los controladores.
+ */
+app.use((err, req, res, next) => {
+    if (err.code === 'LIMIT_FILE_SIZE') {
+        return res.status(413).json({ error: 'El archivo es demasiado grande. Máximo 5 MB.' });
+    }
+    if (err.message && err.message.includes('Tipo de archivo no permitido')) {
+        return res.status(400).json({ error: err.message });
+    }
+    console.error('Error no manejado:', err);
+    res.status(500).json({ error: 'Error interno del servidor' });
+});
 
 app.listen(PORT, () => {
     console.log(`Servidor corriendo en http://localhost:${PORT}`);

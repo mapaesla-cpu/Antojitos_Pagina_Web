@@ -185,6 +185,11 @@ details summary::-webkit-details-marker {
 .sub-menu a:hover {
     color: #ffffff;
 }
+.usarioSesion p {
+    font-size: 0.90rem;
+    color: #999;
+    margin-top: 14px;
+}
 
 /* ==========================================================================
    Contenido Principal

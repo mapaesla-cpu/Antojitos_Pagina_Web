@@ -75,9 +75,26 @@ const actualizarContrasena = (id, nuevoHash) => {
     });
 };
 
+/**
+ * Busca el nombre y el rol del usuario que inicia sesión, en la base de datos por su correo electrónico.
+ *
+ * @param {string} correo - Correo del usuario a buscar.
+ * @returns {Promise<Array>} Arreglo con los resultados (vacío si no existe).
+ */
+const usuarioSesion = (correo) => {
+    return new Promise((resolve, reject) => {
+        const sql = 'SELECT nombre,rol FROM usuarios WHERE correo = ?';
+        db.query(sql, [correo], (err, results) => {
+            if (err) return reject(err);
+            resolve(results);
+        });
+    });
+};
+
 module.exports = {
     buscarPorCorreo,
     buscarPorId,
     crearUsuario,
-    actualizarContrasena
+    actualizarContrasena,
+    usuarioSesion
 };

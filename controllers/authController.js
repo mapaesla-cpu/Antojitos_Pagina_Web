@@ -71,7 +71,6 @@ const registrarse = async (req, res) => {
         // Encripta la contraseña con bcrypt (salt de 10 rondas)
         const hash = await bcrypt.hash(contrasena, 10);
         await usuarioModel.crearUsuario(nombre, correo, hash, rol);
-        console.log('Usuario creado exitosamente ✅');
         res.status(201).json({ mensaje: 'Usuario creado exitosamente!' });
 
     } catch (error) {
@@ -114,6 +113,7 @@ const recuperarContrasena = async (req, res) => {
         res.status(500).json({ mensaje: 'Error en el servidor' });
     }
 };
+
 
 module.exports = {
     login,

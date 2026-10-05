@@ -1,35 +1,59 @@
+/**
+ * @file script.js
+ * @description Módulo global de utilidades de interfaz y componentes compartidos.
+ *              Gestiona la navegación móvil (menú hamburguesa), carrusel de populares
+ *              y la carga dinámica de información del negocio en el pie de página (footer).
+ */
+
+/* ══════════════════════════════════════════════════════════════════════════
+ *  MENÚ DE NAVEGACIÓN MÓVIL
+ * ══════════════════════════════════════════════════════════════════════════ */
+
 const hamburguesa = document.getElementById("hamburguesa-menu");
 const menu = document.getElementById("menu");
-hamburguesa.addEventListener("click", () => {
-    menu.classList.toggle("active");
-});
 
-const nombreInsumo = document.getElementById("nombre_insumo");
-const unidadInsumo = document.getElementById("unidad_medida");
-const cantidadInsumo = document.getElementById("cantidad_disponible");
-const stockInsumo = document.getElementById("stock_minimo");
-
-async function cargarFooter() {
-    const res = await fetch("http://localhost:3000/api/auth/configuracion/consultar");
-    const data = await res.json();
-    console.log(data);
-
-    document.getElementById("footer-nombre").textContent = data.nombre_negocio;
-    document.getElementById("footer-nit").textContent = data.nit;
-    document.getElementById("footer-telefono").textContent = data.telefono;
-    document.getElementById("footer-direccion").textContent = data.direccion;
-    document.getElementById("footer-apertura").textContent = data.horario_apertura;
-    document.getElementById("footer-cierre").textContent = data.horario_cierre;
-    document.getElementById("footer-dias").textContent = data.dias_atencion;
+if (hamburguesa && menu) {
+    hamburguesa.addEventListener("click", () => {
+        menu.classList.toggle("active");
+    });
 }
 
+/* ══════════════════════════════════════════════════════════════════════════
+ *  PIE DE PÁGINA DINÁMICO (FOOTER)
+ * ══════════════════════════════════════════════════════════════════════════ */
 
+/**
+ * Consulta la configuración de la empresa y la muestra dinámicamente en el footer.
+ */
+async function cargarFooter() {
+    try {
+        const res = await fetch("http://localhost:3000/api/auth/configuracion/consultar");
+        const data = await res.json();
 
-const botonInsumo = document.getElementById("nombre");
+        if (data) {
+            const setTexto = (id, valor) => {
+                const el = document.getElementById(id);
+                if (el && valor !== undefined) el.textContent = valor;
+            };
 
-const tablaInsumo = document.getElementById("nombre");
+            setTexto("footer-nombre", data.nombre_negocio);
+            setTexto("footer-nit", data.nit);
+            setTexto("footer-telefono", data.telefono);
+            setTexto("footer-direccion", data.direccion);
+            setTexto("footer-apertura", data.horario_apertura);
+            setTexto("footer-cierre", data.horario_cierre);
+            setTexto("footer-dias", data.dias_atencion);
+        }
+    } catch (error) {
+        console.error("Error al cargar datos del footer:", error);
+    }
+}
 
 document.addEventListener("DOMContentLoaded", cargarFooter);
+
+/* ══════════════════════════════════════════════════════════════════════════
+ *  CARRUSEL DE PRODUCTOS POPULARES
+ * ══════════════════════════════════════════════════════════════════════════ */
 
 const populares = document.getElementById('populares-inicio');
 const siguiente = document.getElementById('siguiente');
@@ -46,6 +70,10 @@ if (anterior && populares) {
         populares.scrollBy({ left: -330, behavior: 'smooth' });
     });
 }
+
+/* ══════════════════════════════════════════════════════════════════════════
+ *  BARRA LATERAL (SIDEBAR) ADMINISTRATIVA
+ * ══════════════════════════════════════════════════════════════════════════ */
 
 document.addEventListener("DOMContentLoaded", () => {
     const btnHamburguesa = document.getElementById("hamburguesa-menu");

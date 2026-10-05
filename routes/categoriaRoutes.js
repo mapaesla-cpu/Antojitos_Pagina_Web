@@ -8,17 +8,18 @@
 const express = require('express');
 const router = express.Router();
 const categoriaController = require('../controllers/categoriaController');
+const verificarToken = require('../middlewares/verificarToken');
 
-// POST /api/auth/agregarCategoria → Agregar nueva categoría
-router.post('/agregarCategoria', categoriaController.agregar);
+// POST /api/auth/agregarCategoria → Agregar nueva categoría (requiere auth)
+router.post('/agregarCategoria', verificarToken, categoriaController.agregar);
 
 // GET /api/auth/consultarCategoria → Consultar todas las categorías
 router.get('/consultarCategoria', categoriaController.consultar);
 
-// PUT /api/auth/actualizarCategoria/:id_categoria → Actualizar categoría por ID
-router.put('/actualizarCategoria/:id_categoria', categoriaController.actualizar);
+// PUT /api/auth/actualizarCategoria/:id_categoria → Actualizar categoría por ID (requiere auth)
+router.put('/actualizarCategoria/:id_categoria', verificarToken, categoriaController.actualizar);
 
-// PUT /api/auth/categorias/desactivar/:id_categoria → Cambiar estado activo/inactivo
-router.put('/categorias/desactivar/:id_categoria', categoriaController.cambiarEstado);
+// PUT /api/auth/categorias/desactivar/:id_categoria → Cambiar estado activo/inactivo (requiere auth)
+router.put('/categorias/desactivar/:id_categoria', verificarToken, categoriaController.cambiarEstado);
 
 module.exports = router;

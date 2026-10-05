@@ -1,40 +1,50 @@
-const formulario = document.getElementById('formulario-contacto');
+/**
+ * @file contacto.js
+ * @description Módulo para el formulario de contacto público.
+ *              Valida que el usuario acepte los términos y envía el mensaje
+ *              por correo electrónico mediante la API del backend.
+ */
 
-formulario.addEventListener('submit', async (e) => {
-    e.preventDefault();
+const formularioContacto = document.getElementById('formulario-contacto');
 
-    const nombre   = document.getElementById('contacto-nombre').value;
-    const correo   = document.getElementById('contacto-email').value;
-    const telefono = document.getElementById('contacto-telefono').value;
-    const mensaje  = document.getElementById('contacto-mensaje').value;
-    const terminos = document.getElementById('contacto-terminos').checked;
+if (formularioContacto) {
+    /**
+     * Procesa y envía el formulario de contacto.
+     */
+    formularioContacto.addEventListener('submit', async (e) => {
+        e.preventDefault();
 
-    if (!terminos) {
-        alert('Debes aceptar los terminos y condiciones');
-        return;
-    }
+        const nombre   = document.getElementById('contacto-nombre').value.trim();
+        const correo   = document.getElementById('contacto-email').value.trim();
+        const telefono = document.getElementById('contacto-telefono').value.trim();
+        const mensaje  = document.getElementById('contacto-mensaje').value.trim();
+        const terminos = document.getElementById('contacto-terminos').checked;
 
-    try {
-        const res = await fetch('http://localhost:3000/api/auth/contacto/enviar', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ nombre, correo, telefono, mensaje })
-        });
-
-        const data = await res.json();
-        alert(data.mensaje);
-
-        if (res.ok) {
-            alert(data.mensaje);
-            formulario.reset();
-        } else {
-            // Muestra el error detallado del servidor para diagnóstico
-            alert('Error del servidor:\n' + (data.detalle || data.error));
+        if (!terminos) {
+            alert('Debes aceptar los términos y condiciones antes de enviar.');
+            return;
         }
-    } catch (error) {
-        console.error('Error al enviar:', error);
-        alert('No se pudo conectar con el servidor. Verifica que el servidor este corriendo.');
-    }
-});
+
+        try {
+            const res = await fetch('http://localhost:3000/api/auth/contacto/enviar', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ nombre, correo, telefono, mensaje })
+            });
+
+            const data = await res.json();
+
+            if (res.ok) {
+                alert(data.mensaje || '¡Mensaje enviado con éxito! Nos comunicaremos pronto.');
+                formularioContacto.reset();
+            } else {
+                alert('No se pudo enviar el mensaje:\n' + (data.detalle || data.error || data.mensaje));
+            }
+        } catch (error) {
+            console.error('Error al enviar contacto:', error);
+            alert('No se pudo conectar con el servidor. Verifica que el servidor esté en ejecución.');
+        }
+    });
+}

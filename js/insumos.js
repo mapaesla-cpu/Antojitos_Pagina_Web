@@ -1,5 +1,21 @@
+/**
+ * @file insumos.js
+ * @description Módulo frontend para la gestión de insumos del inventario.
+ *              Permite agregar, consultar, actualizar, eliminar insumos
+ *              y registrar movimientos de entrada/salida de inventario.
+ *              Se comunica con la API REST del backend mediante fetch.
+ */
+
+/* ══════════════════════════════════════════════════════════════════════════
+ *  AGREGAR INSUMO — Formulario principal
+ * ══════════════════════════════════════════════════════════════════════════ */
+
 const formulario  = document.getElementById('formulario');
 
+/**
+ * Evento submit del formulario de nuevo insumo.
+ * Envía los datos al endpoint POST /api/auth/agregar con token JWT.
+ */
 formulario.addEventListener("submit", async (e) => {
     e.preventDefault();
 
@@ -29,29 +45,41 @@ formulario.addEventListener("submit", async (e) => {
     cargarDatos();
 });
 
+/** Botón para limpiar el formulario sin enviar datos. */
 const btnlimpiar = document.getElementById("limpiar-btn");
 btnlimpiar.addEventListener("click", () => {
     formulario.reset();
 });
 
+/* ══════════════════════════════════════════════════════════════════════════
+ *  CONSULTAR INSUMOS — Carga y renderizado de la tabla
+ * ══════════════════════════════════════════════════════════════════════════ */
+
+/** Almacén local de todos los insumos cargados desde el servidor. */
 let todosLosInsumos = [];
 
+/**
+ * Carga todos los insumos desde el backend y los muestra en la tabla.
+ * Llama al endpoint GET /api/auth/consultar.
+ */
 async function cargarDatos() {
-    console.log("Entró a la función");
     try {
         const res = await fetch("http://localhost:3000/api/auth/consultar", {
             method: "GET"
         });   
-        console.log("Respuesta", res);
         const data = await res.json();
-        console.log("Datos", data);
         todosLosInsumos = data;
         mostrarInsumos(todosLosInsumos);
     } catch (error) {
-        console.log("Error cargando datos:", error);
+        console.error("Error cargando datos:", error);
     }
 }
 
+/**
+ * Renderiza la lista de insumos en la tabla HTML.
+ *
+ * @param {Array<Object>} insumos - Lista de insumos a mostrar.
+ */
 function mostrarInsumos(insumos) {
     const tabla = document.getElementById("tablaBody");
     if (!tabla) return;
@@ -87,6 +115,10 @@ function mostrarInsumos(insumos) {
     });
 }
 
+/**
+ * Filtra los insumos por texto de búsqueda (ID o nombre).
+ * Se activa al escribir en el campo buscador.
+ */
 function buscarInsumo() {
     const texto = document.getElementById("buscador").value.toLowerCase().trim();
     const filtrados = todosLosInsumos.filter(item =>
@@ -96,6 +128,15 @@ function buscarInsumo() {
     mostrarInsumos(filtrados);
 }
 
+/* ══════════════════════════════════════════════════════════════════════════
+ *  ACTUALIZAR INSUMO — Modal de edición
+ * ══════════════════════════════════════════════════════════════════════════ */
+
+/**
+ * Abre el modal de actualización y lo llena con los datos del insumo seleccionado.
+ *
+ * @param {number} id - ID del insumo a editar.
+ */
 function actualizar(id) {
     const item = todosLosInsumos.find(i => i.id_insumo === id);
     if (!item) return;
@@ -107,10 +148,15 @@ function actualizar(id) {
     document.getElementById("modalActualizar").style.display = "flex";
 }
 
+/** Cierra el modal de actualización de insumos. */
 function cerrarModal() {
     document.getElementById("modalActualizar").style.display = "none";
 }
 
+/**
+ * Guarda los cambios del modal de actualización.
+ * Valida los datos y envía un PUT al backend.
+ */
 async function guardarActualizacion() {
     const id_insumo = document.getElementById("modal-id").value;
     const nombre = document.getElementById("modal-nombre").value;
@@ -142,6 +188,16 @@ async function guardarActualizacion() {
     cargarDatos();
 }
 
+/* ══════════════════════════════════════════════════════════════════════════
+ *  ELIMINAR INSUMO
+ * ══════════════════════════════════════════════════════════════════════════ */
+
+/**
+ * Elimina un insumo previa confirmación del usuario.
+ * Envía un DELETE al backend con el token JWT.
+ *
+ * @param {number} id_insumo - ID del insumo a eliminar.
+ */
 async function eliminar(id_insumo) {
     if (!confirm("¿Seguro que deseas eliminar este insumo?")) return;
     const token = localStorage.getItem("token");
@@ -158,7 +214,16 @@ async function eliminar(id_insumo) {
     cargarDatos();
 }
 
-//Modal entrada
+/* ══════════════════════════════════════════════════════════════════════════
+ *  ENTRADA DE INVENTARIO — Modal de entrada
+ * ══════════════════════════════════════════════════════════════════════════ */
+
+/**
+ * Abre el modal de entrada de inventario para un insumo específico.
+ * Pre-llena los datos del insumo y limpia los campos de entrada.
+ *
+ * @param {number} id - ID del insumo al que se le registrará entrada.
+ */
 function abrirEntrada(id) {
     const item = todosLosInsumos.find(i => i.id_insumo === id);
     if (!item) return;
@@ -168,7 +233,7 @@ function abrirEntrada(id) {
     document.getElementById("modal-entrada-unidad").textContent = item.unidad_medida;
     document.getElementById("modal-entrada-stock-actual").value = item.cantidad_disponible;
 
-    //Limpiar los campos que debe llenar el administrador
+    // Limpiar los campos que debe llenar el administrador
     document.getElementById("modal-entrada-cantidad").value = "";
     document.getElementById("modal-entrada-motivo").value = "";
 
@@ -176,6 +241,10 @@ function abrirEntrada(id) {
     document.getElementById("modalEntrada").style.display = "flex";
 }
 
+/**
+ * Guarda la entrada de inventario.
+ * Valida cantidad y motivo, luego envía POST al backend.
+ */
 async function guardarEntrada() {
     const id_insumo = document.getElementById("modal-entrada-id").value;
     const cantidad = document.getElementById("modal-entrada-cantidad").value;
@@ -202,7 +271,6 @@ async function guardarEntrada() {
     });
 
     const data = await res.json();
-    console.log(data);
 
     if(!res.ok) {
         alert(data.error || "Error al registrar entrada");
@@ -213,11 +281,21 @@ async function guardarEntrada() {
     cargarDatos();
 }
 
+/** Cierra el modal de entrada de inventario. */
 function cerrarModalEntrada() {
     document.getElementById("modalEntrada").style.display = "none";
 }
 
-//Modal salida
+/* ══════════════════════════════════════════════════════════════════════════
+ *  SALIDA DE INVENTARIO — Modal de salida
+ * ══════════════════════════════════════════════════════════════════════════ */
+
+/**
+ * Abre el modal de salida de inventario para un insumo específico.
+ * Pre-llena los datos del insumo y limpia los campos de salida.
+ *
+ * @param {number} id - ID del insumo al que se le registrará salida.
+ */
 function abrirSalida(id) {
     const item = todosLosInsumos.find(i => i.id_insumo === id);
     if (!item) return;
@@ -227,7 +305,7 @@ function abrirSalida(id) {
     document.getElementById("modal-salida-unidad").textContent = item.unidad_medida;
     document.getElementById("modal-salida-stock-actual").value = item.cantidad_disponible;
 
-    //Limpiar los campos que debe llenar el administrador
+    // Limpiar los campos que debe llenar el administrador
     document.getElementById("modal-salida-cantidad").value = "";
     document.getElementById("modal-salida-motivo").value = "";
 
@@ -235,6 +313,10 @@ function abrirSalida(id) {
     document.getElementById("modalSalida").style.display = "flex";
 }
 
+/**
+ * Guarda la salida de inventario.
+ * Valida cantidad (no mayor que stock), motivo, y envía POST al backend.
+ */
 async function guardarSalida() {
     const id_insumo = document.getElementById("modal-salida-id").value;
     const cantidad = document.getElementById("modal-salida-cantidad").value;
@@ -245,9 +327,6 @@ async function guardarSalida() {
         return;
     }
     const stockActual = document.getElementById("modal-salida-stock-actual").value;
-
-    console.log("Cantidad solicitada:", cantidad);
-    console.log("Stock actual:", stockActual);
 
     if (Number(cantidad) > Number(stockActual)) {
         alert("No hay suficiente stock disponible");
@@ -269,7 +348,6 @@ async function guardarSalida() {
     });
 
     const data = await res.json();
-    console.log(data);
 
     if(!res.ok) {
         alert(data.error || "Error al registrar salida");
@@ -280,6 +358,7 @@ async function guardarSalida() {
     cargarDatos();
 }
 
+/** Cierra el modal de salida de inventario. */
 function cerrarModalSalida() {
     document.getElementById("modalSalida").style.display = "none";
 }

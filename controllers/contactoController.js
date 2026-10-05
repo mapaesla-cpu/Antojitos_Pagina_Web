@@ -33,10 +33,6 @@ const transporter = nodemailer.createTransport({
 const enviarMensaje = async (req, res) => {
     const { nombre, correo, telefono, mensaje } = req.body;
 
-    // Log de diagnóstico: verifica que las variables de entorno se cargaron
-    console.log('[contacto] EMAIL_USER cargado:', process.env.EMAIL_USER ? 'SÍ' : 'NO (undefined)');
-    console.log('[contacto] EMAIL_PASS cargado:', process.env.EMAIL_PASS ? 'SÍ' : 'NO (undefined)');
-
     try {
         await transporter.sendMail({
             from: process.env.EMAIL_USER,
@@ -49,12 +45,9 @@ const enviarMensaje = async (req, res) => {
         res.json({ mensaje: 'Correo enviado correctamente' });
 
     } catch (error) {
-        // Expone el error detallado para diagnóstico (quitar en producción)
         console.error('[contacto] Error Nodemailer:', error.message, '| Código:', error.code);
         res.status(500).json({
-            error: 'Error al enviar el correo',
-            detalle: error.message,
-            codigo: error.code
+            error: 'Error al enviar el correo'
         });
     }
 };

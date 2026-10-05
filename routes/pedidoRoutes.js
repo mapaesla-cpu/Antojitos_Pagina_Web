@@ -8,20 +8,21 @@
 const express = require('express');
 const router = express.Router();
 const pedidoController = require('../controllers/pedidoController');
+const verificarToken = require('../middlewares/verificarToken');
 
 // ── Pedidos ────────────────────────────────────────────────────────────────
 
 // POST /api/auth/pedidos/agregar → Registrar nuevo pedido (genera factura automáticamente)
 router.post('/pedidos/agregar', pedidoController.agregar);
 
-// GET /api/auth/pedidos/consultar → Listar todos los pedidos
-router.get('/pedidos/consultar', pedidoController.consultar);
+// GET /api/auth/pedidos/consultar → Listar todos los pedidos (requiere auth)
+router.get('/pedidos/consultar', verificarToken, pedidoController.consultar);
 
-// PUT /api/auth/pedidos/estado/:id → Cambiar estado del pedido
-router.put('/pedidos/estado/:id', pedidoController.cambiarEstado);
+// PUT /api/auth/pedidos/estado/:id → Cambiar estado del pedido (requiere auth)
+router.put('/pedidos/estado/:id', verificarToken, pedidoController.cambiarEstado);
 
-// GET /api/auth/pedidos/detalle/:id → Ver detalle completo de un pedido
-router.get('/pedidos/detalle/:id', pedidoController.verDetalle);
+// GET /api/auth/pedidos/detalle/:id → Ver detalle completo de un pedido (requiere auth)
+router.get('/pedidos/detalle/:id', verificarToken, pedidoController.verDetalle);
 
 // GET /api/auth/pedidos/consultar/:id_pedido → Consulta pública de estado (sin auth)
 router.get('/pedidos/consultar/:id_pedido', pedidoController.consultarEstadoPublico);
@@ -33,10 +34,10 @@ router.post('/detalle/agregar', pedidoController.agregarDetalle);
 
 // ── Facturas ───────────────────────────────────────────────────────────────
 
-// GET /api/auth/facturas/consultar → Listar todas las facturas
-router.get('/facturas/consultar', pedidoController.consultarFacturas);
+// GET /api/auth/facturas/consultar → Listar todas las facturas (requiere auth)
+router.get('/facturas/consultar', verificarToken, pedidoController.consultarFacturas);
 
-// GET /api/auth/facturas/ver/:id → Ver factura detallada
-router.get('/facturas/ver/:id', pedidoController.verFactura);
+// GET /api/auth/facturas/ver/:id → Ver factura detallada (requiere auth)
+router.get('/facturas/ver/:id', verificarToken, pedidoController.verFactura);
 
 module.exports = router;
