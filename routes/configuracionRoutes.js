@@ -16,7 +16,7 @@ router.get('/configuracion/consultar', configuracionController.consultar);
 // PUT /api/auth/configuracion/actualizar → Actualizar configuración del negocio (requiere auth)
 router.put('/configuracion/actualizar', verificarToken, configuracionController.actualizar);
 
-// PUT /api/auth/configuracion/password → Cambiar contraseña (requiere JWT)
-router.put('/configuracion/password', configuracionController.cambiarPassword);
+// PUT /api/auth/configuracion/password → Cambiar contraseña (requiere auth)
+router.put('/configuracion/password', verificarToken, configuracionController.cambiarPassword);
 
 module.exports = router;

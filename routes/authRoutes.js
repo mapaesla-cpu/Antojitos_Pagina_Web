@@ -9,6 +9,7 @@ const express = require('express');
 const router = express.Router();
 const rateLimit = require('express-rate-limit');
 const authController = require('../controllers/authController');
+const usuarioController = require('../controllers/usuarioController');
 const verificarToken = require('../middlewares/verificarToken');
 
 /**
@@ -29,6 +30,9 @@ router.post('/login/registrarse', verificarToken, authController.registrarse);
 
 // POST /api/auth/login/recuperar-contrasena → Recuperar contraseña
 router.post('/login/recuperar-contrasena', authController.recuperarContrasena);
+
+// GET /api/auth/usuario/sesion → Obtener nombre y rol del usuario autenticado (requiere auth)
+router.get('/usuario/sesion', verificarToken, usuarioController.usuSesion);
 
 
 module.exports = router;

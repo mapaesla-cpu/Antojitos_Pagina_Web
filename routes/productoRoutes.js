@@ -14,8 +14,8 @@ const verificarToken = require('../middlewares/verificarToken');
 // POST /api/auth/agregarProducto → Agregar producto (con subida de imagen, requiere auth)
 router.post('/agregarProducto', verificarToken, upload.single('imagen'), productoController.agregar);
 
-// GET /api/auth/consultarProducto → Consultar todos los productos
-router.get('/consultarProducto', productoController.consultar);
+// GET /api/auth/consultarProducto → Consultar todos los productos (requiere auth)
+router.get('/consultarProducto', verificarToken, productoController.consultar);
 
 // GET /api/auth/consultarMenu → Consultar productos disponibles (menú público)
 router.get('/consultarMenu', productoController.consultarMenu);
@@ -26,8 +26,8 @@ router.put('/actualizarProducto/:id_producto', verificarToken, productoControlle
 // PUT /api/auth/producto/disponible/:id_producto → Cambiar disponibilidad del producto (requiere auth)
 router.put('/producto/disponible/:id_producto', verificarToken, productoController.cambiarDisponibilidad);
 
-// GET /api/auth/producto-insumos/:id_producto → Obtener insumos de un producto
-router.get('/producto-insumos/:id_producto', productoController.consultarInsumos);
+// GET /api/auth/producto-insumos/:id_producto → Obtener insumos de un producto (requiere auth)
+router.get('/producto-insumos/:id_producto', verificarToken, productoController.consultarInsumos);
 
 // POST /api/auth/producto-insumos/agregar → Asociar insumo a producto (requiere auth)
 router.post('/producto-insumos/agregar', verificarToken, productoController.agregarInsumo);

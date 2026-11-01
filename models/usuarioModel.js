@@ -76,15 +76,15 @@ const actualizarContrasena = (id, nuevoHash) => {
 };
 
 /**
- * Busca el nombre y el rol del usuario que inicia sesión, en la base de datos por su correo electrónico.
+ * Busca el nombre y el rol del usuario que inicia sesión, en la base de datos por su  id.
  *
- * @param {string} correo - Correo del usuario a buscar.
+ * @param {string} id - id del usuario a buscar.
  * @returns {Promise<Array>} Arreglo con los resultados (vacío si no existe).
  */
-const usuarioSesion = (correo) => {
+const usuarioSesion = (id) => {
     return new Promise((resolve, reject) => {
-        const sql = 'SELECT nombre,rol FROM usuarios WHERE correo = ?';
-        db.query(sql, [correo], (err, results) => {
+        const sql = 'SELECT nombre,rol FROM usuarios WHERE id_usuario = ?';
+        db.query(sql, [id], (err, results) => {
             if (err) return reject(err);
             resolve(results);
         });

@@ -67,12 +67,16 @@ let todosLosProductos = [];
  * Consulta la lista completa de productos desde el backend.
  */
 async function cargarDatosP() {
+    const token = localStorage.getItem("token");
     try {
         const res = await fetch("http://localhost:3000/api/auth/consultarProducto", {
-            method: "GET"
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
         });
         const data = await res.json();
-        todosLosProductos = data;
+        todosLosProductos = Array.isArray(data) ? data : [];
         mostrarProductos(todosLosProductos);
     } catch (error) {
         console.error("Error cargando productos:", error);
@@ -157,8 +161,13 @@ function abrirModalEditar(id_producto) {
  * @param {number} idSeleccionado - Categoría actual para preseleccionarla.
  */
 async function cargarCategoriasModal(idSeleccionado) {
+    const token = localStorage.getItem("token");
     try {
-        const res = await fetch("http://localhost:3000/api/auth/consultarCategoria");
+        const res = await fetch("http://localhost:3000/api/auth/consultarCategoria", {
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        });
         const categorias = await res.json();
 
         const select = document.getElementById("modal-id-categoria");
@@ -257,8 +266,13 @@ async function toggleActivo(id_producto, estadoActual) {
  * Carga las categorías en el formulario de registro de producto.
  */
 async function cargarCategorias() {
+    const token = localStorage.getItem("token");
     try {
-        const res = await fetch("http://localhost:3000/api/auth/consultarCategoria");
+        const res = await fetch("http://localhost:3000/api/auth/consultarCategoria", {
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        });
         const categorias = await res.json();
 
         const select = document.getElementById("id_categoria");
@@ -280,8 +294,13 @@ async function cargarCategorias() {
  * Carga la lista de insumos en el select del modal para vincularlos al producto.
  */
 async function cargarInsumosModal() {
+    const token = localStorage.getItem("token");
     try {
-        const res = await fetch("http://localhost:3000/api/auth/consultar");
+        const res = await fetch("http://localhost:3000/api/auth/consultar", {
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        });
         const insumos = await res.json();
 
         const select = document.getElementById("modal-select-insumo");
@@ -300,8 +319,13 @@ async function cargarInsumosModal() {
  * @param {number} id_producto - ID del producto a consultar.
  */
 async function cargarInsumosProducto(id_producto) {
+    const token = localStorage.getItem("token");
     try {
-        const res = await fetch(`http://localhost:3000/api/auth/producto-insumos/${id_producto}`);
+        const res = await fetch(`http://localhost:3000/api/auth/producto-insumos/${id_producto}`, {
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        });
         const data = await res.json();
 
         const tbody = document.getElementById("tabla-insumos-producto");

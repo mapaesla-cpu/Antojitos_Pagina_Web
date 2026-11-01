@@ -13,8 +13,8 @@ const verificarToken = require('../middlewares/verificarToken');
 // POST /api/auth/agregarCategoria → Agregar nueva categoría (requiere auth)
 router.post('/agregarCategoria', verificarToken, categoriaController.agregar);
 
-// GET /api/auth/consultarCategoria → Consultar todas las categorías
-router.get('/consultarCategoria', categoriaController.consultar);
+// GET /api/auth/consultarCategoria → Consultar todas las categorías (requiere auth)
+router.get('/consultarCategoria', verificarToken, categoriaController.consultar);
 
 // PUT /api/auth/actualizarCategoria/:id_categoria → Actualizar categoría por ID (requiere auth)
 router.put('/actualizarCategoria/:id_categoria', verificarToken, categoriaController.actualizar);

@@ -13,8 +13,8 @@ const verificarToken = require('../middlewares/verificarToken');
 // POST /api/auth/agregar → Agregar nuevo insumo
 router.post('/agregar', verificarToken, insumoController.agregar);
 
-// GET /api/auth/consultar → Consultar todos los insumos
-router.get('/consultar', insumoController.consultar);
+// GET /api/auth/consultar → Consultar todos los insumos (requiere auth)
+router.get('/consultar', verificarToken, insumoController.consultar);
 
 // PUT /api/auth/actualizar/:id_insumo → Actualizar insumo por ID
 router.put('/actualizar/:id_insumo', verificarToken, insumoController.actualizar);
@@ -22,7 +22,7 @@ router.put('/actualizar/:id_insumo', verificarToken, insumoController.actualizar
 // DELETE /api/auth/eliminar/:id_insumo → Eliminar insumo por ID
 router.delete('/eliminar/:id_insumo', verificarToken, insumoController.eliminar);
 
-// GET /api/auth/insumos/alertas → Obtener insumos con bajo stock
-router.get('/insumos/alertas', insumoController.obtenerAlertas);
+// GET /api/auth/insumos/alertas → Obtener insumos con bajo stock (requiere auth)
+router.get('/insumos/alertas', verificarToken, insumoController.obtenerAlertas);
 
 module.exports = router;

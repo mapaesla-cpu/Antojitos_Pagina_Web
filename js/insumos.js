@@ -63,12 +63,16 @@ let todosLosInsumos = [];
  * Llama al endpoint GET /api/auth/consultar.
  */
 async function cargarDatos() {
+    const token = localStorage.getItem("token");
     try {
         const res = await fetch("http://localhost:3000/api/auth/consultar", {
-            method: "GET"
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
         });   
         const data = await res.json();
-        todosLosInsumos = data;
+        todosLosInsumos = Array.isArray(data) ? data : [];
         mostrarInsumos(todosLosInsumos);
     } catch (error) {
         console.error("Error cargando datos:", error);

@@ -70,12 +70,16 @@ let todasLasCategorias = [];
  * Consulta la lista completa de categorías desde la API REST.
  */
 async function cargarDatosC() {
+    const token = localStorage.getItem("token");
     try {
         const res = await fetch("http://localhost:3000/api/auth/consultarCategoria", {
-            method: "GET"
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
         });
         const data = await res.json();
-        todasLasCategorias = data;
+        todasLasCategorias = Array.isArray(data) ? data : [];
         mostrarCategorias(todasLasCategorias);
     } catch (error) {
         console.error("Error cargando categorías:", error);

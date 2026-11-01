@@ -73,7 +73,7 @@ Antojitos_Pagina_Web/
 │   ├── pedidoController.js     # Procesamiento y ciclo de vida de pedidos
 │   └── productoController.js   # Gestión de catálogo y recetas
 ├── css/
-│   ├── index.css               # Estilos de la tienda y páginas públicas
+│   ├── styless.css               # Estilos de la tienda y páginas públicas
 │   └── stylesPanel.css         # Estilos del panel de control administrativo
 ├── js/
 │   ├── categorias.js           # Lógica frontend de categorías

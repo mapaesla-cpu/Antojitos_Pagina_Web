@@ -67,24 +67,11 @@ const actualizar = async (req, res) => {
 const cambiarPassword = async (req, res) => {
     const { password_actual, password_nueva } = req.body;
 
-    // 1. Validar que el token JWT esté presente
-    const authHeader = req.headers.authorization;
-    if (!authHeader) {
-        return res.status(401).json({ error: 'Token no proporcionado' });
-    }
-
-    const token = authHeader.split(' ')[1];
-    let decoded;
-    try {
-        decoded = jwt.verify(token, JWT_SECRET);
-    } catch {
-        return res.status(401).json({ error: 'Token inválido' });
-    }
-
-    const idUsuario = decoded.id;
+    // El middleware verificarToken ya validó el JWT y puso los datos en req.usuario
+    const idUsuario = req.usuario.id;
 
     try {
-        // 2. Buscar al usuario en la base de datos
+        // 1. Buscar al usuario en la base de datos
         const results = await usuarioModel.buscarPorId(idUsuario);
         if (results.length === 0) {
             return res.status(404).json({ error: 'Usuario no encontrado' });
@@ -92,13 +79,13 @@ const cambiarPassword = async (req, res) => {
 
         const usuario = results[0];
 
-        // 3. Verificar que la contraseña actual sea correcta
+        // 2. Verificar que la contraseña actual sea correcta
         const match = await bcrypt.compare(password_actual, usuario.contrasena);
         if (!match) {
             return res.status(401).json({ error: 'Contraseña actual incorrecta' });
         }
 
-        // 4. Encriptar la nueva contraseña y guardarla
+        // 3. Encriptar la nueva contraseña y guardarla
         const nuevoHash = await bcrypt.hash(password_nueva, 10);
         await usuarioModel.actualizarContrasena(idUsuario, nuevoHash);
 
@@ -109,6 +96,7 @@ const cambiarPassword = async (req, res) => {
         res.status(500).json({ error: 'Error al actualizar contraseña' });
     }
 };
+
 
 module.exports = {
     consultar,

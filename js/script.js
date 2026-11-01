@@ -92,4 +92,57 @@ document.addEventListener("DOMContentLoaded", () => {
             sidebar.classList.remove("visible");
         });
     }
+
+    // Cargar datos del usuario en el sidebar si los elementos existen
+    cargarUsuarioSesion();
 });
+
+/* ══════════════════════════════════════════════════════════════════════════
+ *  VERIFICACIÓN DE TOKEN Y DATOS DE SESIÓN EN EL SIDEBAR
+ * ══════════════════════════════════════════════════════════════════════════ */
+
+/**
+ * Verifica que exista un token JWT válido y carga el nombre y rol del usuario
+ * en los elementos #usuario-sesion y #rol-usuario-sesion del sidebar.
+ * Si no hay token o es inválido, redirige al login.
+ */
+async function cargarUsuarioSesion() {
+    const spanUsuario = document.getElementById("usuario-sesion");
+    const spanRol = document.getElementById("rol-usuario-sesion");
+
+    // Solo ejecutar en páginas administrativas que tengan el sidebar con estos elementos
+    if (!spanUsuario || !spanRol) return;
+
+    const token = localStorage.getItem("token");
+
+    // Si no hay token, redirigir al login
+    if (!token) {
+        window.location.href = "login.html";
+        return;
+    }
+
+    try {
+        const res = await fetch("http://localhost:3000/api/auth/usuario/sesion", {
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        });
+
+        if (res.status === 401) {
+            // Token inválido o expirado → cerrar sesión
+            localStorage.removeItem("token");
+            localStorage.removeItem("rol");
+            window.location.href = "login.html";
+            return;
+        }
+
+        const data = await res.json();
+
+        if (data.nombre && data.rol) {
+            spanUsuario.textContent = data.nombre;
+            spanRol.textContent = data.rol;
+        }
+    } catch (error) {
+        console.error("Error al cargar datos de sesión:", error);
+    }
+}
