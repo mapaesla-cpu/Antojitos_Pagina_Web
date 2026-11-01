@@ -33,7 +33,7 @@ Bienvenido al repositorio oficial de **Antojitos**, una solución web integral d
 
 ### Panel Administrativo (Privado)
 
-- **Autenticación y Roles:** Acceso seguro con JSON Web Tokens (JWT) y contraseñas cifradas con `bcryptjs`.
+- **Autenticación, Roles y Sesión en Sidebar:** Acceso seguro con JSON Web Tokens (JWT), contraseñas cifradas con `bcryptjs`, verificación automática de sesión activa y visualización del nombre de usuario y rol en el menú lateral de todos los módulos administrativos.
 - **Dashboard Estadístico:** Métricas de ingresos del día, pedidos pendientes, total vendido y alertas de inventario crítico.
 - **Gestión de Menú y Categorías:** Operaciones CRUD completas para activar/desactivar y actualizar productos y categorías.
 - **Subida Segura de Imágenes:** Carga y validación estricta de tipos MIME y tamaño máximo para fotos de productos mediante Multer.
@@ -65,45 +65,57 @@ Antojitos_Pagina_Web/
 ├── config/
 │   └── multer.js              # Configuración y filtros de subida de imágenes
 ├── controllers/
-│   ├── authController.js       # Registro, login y cambio de contraseña
-│   ├── categoriaController.js  # Lógica de categorías
-│   ├── configuracionController.js # Métricas y datos del negocio
-│   ├── contactoController.js   # Manejo de correos de contacto
-│   ├── insumoController.js     # Gestión de stock e inventario
-│   ├── pedidoController.js     # Procesamiento y ciclo de vida de pedidos
-│   └── productoController.js   # Gestión de catálogo y recetas
+│   ├── authController.js          # Registro, login y recuperación de contraseña
+│   ├── categoriaController.js     # Lógica de categorías
+│   ├── clienteController.js       # Gestión de datos de clientes
+│   ├── configuracionController.js # Datos del negocio y cambio de contraseña
+│   ├── contactoController.js      # Manejo de correos de contacto
+│   ├── dashboardController.js     # Estadísticas y métricas del negocio
+│   ├── insumoController.js        # Gestión de stock e insumos
+│   ├── inventarioController.js    # Entradas, salidas y descuento de inventario
+│   ├── pedidoController.js        # Procesamiento, ciclo de vida de pedidos y facturas
+│   ├── productoController.js      # Gestión de catálogo y recetas
+│   └── usuarioController.js       # Consulta de usuario y rol de la sesión activa
 ├── css/
-│   ├── styless.css               # Estilos de la tienda y páginas públicas
-│   └── stylesPanel.css         # Estilos del panel de control administrativo
+│   ├── styles.css                 # Estilos de la tienda y páginas públicas
+│   ├── stylesLogin.css            # Estilos de autenticación
+│   └── stylesPanel.css            # Estilos del panel de control administrativo
 ├── js/
-│   ├── categorias.js           # Lógica frontend de categorías
-│   ├── configuracion.js        # Lógica de configuración y perfil
-│   ├── contacto.js             # Lógica del formulario de contacto
-│   ├── dashboard.js            # Gráficos y alertas de stock
-│   ├── facturacion.js          # Módulo de facturas e impresión
-│   ├── index.js                # Lógica del home y destacados
-│   ├── insumos.js              # Gestión de inventario y movimientos
-│   ├── login.js                # Flujo de autenticación
-│   ├── menu.js                 # Menú, carrito y checkout
-│   ├── pedidos_panel.js        # Panel de pedidos
-│   ├── productos.js            # Catálogo e insumos por producto
-│   ├── rastreo-cliente.js      # Línea de tiempo de pedidos
-│   ├── registrar-usuario.js    # Creación de administradores/empleados
-│   └── script.js               # Utilidades globales (sidebar, footer, navegación)
+│   ├── categorias.js              # Lógica frontend de categorías
+│   ├── configuracion.js           # Lógica de configuración y perfil
+│   ├── contacto.js                # Lógica del formulario de contacto
+│   ├── dashboard.js               # Gráficos y alertas de stock
+│   ├── facturacion.js             # Módulo de facturas e impresión
+│   ├── index.js                   # Lógica del home y destacados
+│   ├── insumos.js                 # Gestión de inventario y movimientos
+│   ├── login.js                   # Flujo de autenticación
+│   ├── menu.js                    # Menú, carrito y checkout
+│   ├── pedidos_panel.js           # Panel de pedidos
+│   ├── productos.js               # Catálogo e insumos por producto
+│   ├── rastreo-cliente.js         # Línea de tiempo de pedidos
+│   ├── registrar-usuario.js       # Creación de administradores/empleados
+│   └── script.js                  # Utilidades globales (sidebar, sesión de usuario, footer)
 ├── middlewares/
-│   └── verificarToken.js       # Middleware de validación de JWT para rutas protegidas
+│   └── verificarToken.js          # Middleware de validación de JWT para rutas protegidas
 ├── models/
 │   ├── categoriaModel.js
+│   ├── clienteModel.js
+│   ├── configuracionModel.js
+│   ├── dashboardModel.js
 │   ├── insumoModel.js
+│   ├── inventarioModel.js
 │   ├── pedidoModel.js
 │   ├── productoModel.js
 │   └── usuarioModel.js
 ├── routes/
 │   ├── authRoutes.js
 │   ├── categoriaRoutes.js
+│   ├── clienteRoutes.js
 │   ├── configuracionRoutes.js
 │   ├── contactoRoutes.js
+│   ├── dashboardRoutes.js
 │   ├── insumoRoutes.js
+│   ├── inventarioRoutes.js
 │   ├── pedidoRoutes.js
 │   └── productoRoutes.js
 ├── img/                        # Almacenamiento local de imágenes subidas
@@ -186,7 +198,8 @@ JWT_SECRET=tu_secreto_super_seguro_jwt
 
 - **Helmet:** Configuración de cabeceras HTTP que protegen contra ataques de Cross-Site Scripting (XSS), Clickjacking y MIME sniffing.
 - **Rate Limiting:** Protección activa en `/api/auth/login` con limitación de solicitudes consecutivas para bloquear intentos de fuerza bruta.
-- **Control de Acceso Basado en Tokens (JWT):** Las rutas de escritura y lectura administrativa requieren cabecera `Authorization: Bearer <token>`.
+- **Control de Acceso Basado en Tokens (JWT):** Todas las rutas administrativas (dashboard, productos, insumos, categorías, pedidos, facturación y configuración) requieren cabecera `Authorization: Bearer <token>` validada por el middleware `verificarToken`.
+- **Protección de Sesión en Frontend:** Verificación automática del token al cargar cualquier módulo del panel administrativo; si el token no existe o ha expirado, se limpia la sesión y redirige a `login.html`.
 - **Cifrado de Contraseñas:** Algoritmo `bcryptjs` con salting para almacenamiento seguro de credenciales.
 - **Validación en Multer:** Restricción estricta de extensiones permitidas (`.jpg`, `.jpeg`, `.png`, `.webp`) y límite de 5MB por archivo para prevenir inyección de ejecutables.
 - **Manejo Centralizado de Errores:** Middleware global que captura errores sin exponer la estructura de la base de datos o claves internas en producción.
@@ -195,34 +208,56 @@ JWT_SECRET=tu_secreto_super_seguro_jwt
 
 ## Endpoints de la API (Resumen)
 
-### Autenticación y Usuarios (`/api/auth`)
+### Autenticación, Usuarios y Configuración (`/api/auth`)
 
 - `POST /login` — Inicio de sesión con rate limit. Retorna token JWT y rol.
-- `POST /login/registrarse` — Registro de nuevos usuarios (_Requiere Token Admin_).
-- `PUT /configuracion/password` — Actualización de contraseña del usuario autenticado.
+- `POST /login/registrarse` — Registro de nuevos usuarios (_Requiere Token_).
+- `GET /usuario/sesion` — Obtiene el nombre y rol del usuario autenticado para el menú lateral (_Requiere Token_).
+- `GET /configuracion/consultar` — Consulta pública de los datos generales del negocio.
+- `PUT /configuracion/actualizar` — Actualización de datos comerciales del negocio (_Requiere Token_).
+- `PUT /configuracion/password` — Actualización de contraseña del usuario autenticado (_Requiere Token_).
 
-### Catálogo y Menú
+### Dashboard (`/api/auth`)
+
+- `GET /dashboard/estadisticas` — Métricas de ventas del día, pedidos pendientes y productos populares (_Requiere Token_).
+- `GET /dashboard/estadisticasmenu` — Productos más vendidos para la página de inicio pública.
+
+### Catálogo, Productos y Categorías (`/api/auth`)
 
 - `GET /consultarMenu` — Listado público de productos disponibles clasificados por categoría.
+- `GET /consultarProducto` — Listado completo de productos para el panel administrativo (_Requiere Token_).
 - `POST /agregarProducto` — Creación de producto con carga de imagen (_Requiere Token_).
 - `PUT /actualizarProducto/:id` — Edición de producto (_Requiere Token_).
-- `PUT /producto/disponible/:id` — Cambio de estado activo/inactivo (_Requiere Token_).
+- `PUT /producto/disponible/:id` — Cambio de estado disponible/no disponible (_Requiere Token_).
+- `GET /producto-insumos/:id` — Consulta de insumos (receta) asociados a un producto (_Requiere Token_).
+- `POST /producto-insumos/agregar` — Vincular insumo a la receta de un producto (_Requiere Token_).
+- `DELETE /producto-insumos/eliminar` — Desvincular insumo de un producto (_Requiere Token_).
+- `GET /consultarCategoria` — Listado de categorías para administración (_Requiere Token_).
+- `POST /agregarCategoria` — Creación de nueva categoría (_Requiere Token_).
+- `PUT /actualizarCategoria/:id` — Edición de categoría (_Requiere Token_).
+- `PUT /categorias/desactivar/:id` — Activar o desactivar categoría (_Requiere Token_).
 
-### Pedidos y Clientes
+### Pedidos, Clientes y Facturación (`/api/auth`)
 
 - `POST /clientes/agregar` — Registro de datos del cliente al ordenar.
 - `POST /pedidos/agregar` — Registro del pedido principal.
 - `POST /detalle/agregar` — Registro de los productos del pedido.
 - `GET /pedidos/consultar/:id` — Consulta pública del estado de un pedido para rastreo.
 - `GET /pedidos/consultar` — Consulta de pedidos para el panel administrativo (_Requiere Token_).
+- `GET /pedidos/detalle/:id` — Detalle completo de un pedido (_Requiere Token_).
 - `PUT /pedidos/estado/:id` — Actualización del estado de entrega (_Requiere Token_).
+- `GET /facturas/consultar` — Listado de facturas generadas (_Requiere Token_).
+- `GET /facturas/ver/:id` — Detalle de factura para visualización e impresión (_Requiere Token_).
 
-### Inventario e Insumos
+### Inventario e Insumos (`/api/auth`)
 
-- `GET /consultar` — Listado de insumos de bodega.
+- `GET /consultar` — Listado de insumos de bodega (_Requiere Token_).
 - `POST /agregar` — Registro de nuevo insumo (_Requiere Token_).
+- `PUT /actualizar/:id_insumo` — Actualización de datos de un insumo (_Requiere Token_).
+- `DELETE /eliminar/:id_insumo` — Eliminación de un insumo (_Requiere Token_).
 - `POST /insumos/entrada` — Registro de entrada de inventario (_Requiere Token_).
 - `POST /insumos/salida` — Registro de salida de inventario (_Requiere Token_).
+- `POST /inventario/descontar` — Descuento automático de insumos al confirmar un pedido en línea.
 - `GET /insumos/alertas` — Insumos por debajo del stock mínimo (_Requiere Token_).
 
 ---
