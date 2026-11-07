@@ -1,11 +1,10 @@
 /**
  * @file usuarioModel.js
- * @description Modelo de usuarios. Contiene únicamente las consultas SQL
- *              relacionadas con la tabla `usuarios`. Todas las funciones
- *              retornan Promesas para un manejo asíncrono limpio.
+ * @description Modelo de usuarios. Representa la lógica de dominio de usuarios
+ *              y delega el acceso a datos al DAO correspondiente (`usuarioDAO`).
  */
 
-const db = require('../db');
+const usuarioDAO = require('../dao/usuarioDAO');
 
 /**
  * Busca un usuario en la base de datos por su correo electrónico.
@@ -14,13 +13,7 @@ const db = require('../db');
  * @returns {Promise<Array>} Arreglo con los resultados (vacío si no existe).
  */
 const buscarPorCorreo = (correo) => {
-    return new Promise((resolve, reject) => {
-        const sql = 'SELECT * FROM usuarios WHERE correo = ?';
-        db.query(sql, [correo], (err, results) => {
-            if (err) return reject(err);
-            resolve(results);
-        });
-    });
+    return usuarioDAO.buscarPorCorreo(correo);
 };
 
 /**
@@ -30,13 +23,7 @@ const buscarPorCorreo = (correo) => {
  * @returns {Promise<Array>} Arreglo con los resultados.
  */
 const buscarPorId = (id) => {
-    return new Promise((resolve, reject) => {
-        const sql = 'SELECT * FROM usuarios WHERE id_usuario = ?';
-        db.query(sql, [id], (err, results) => {
-            if (err) return reject(err);
-            resolve(results);
-        });
-    });
+    return usuarioDAO.buscarPorId(id);
 };
 
 /**
@@ -49,13 +36,7 @@ const buscarPorId = (id) => {
  * @returns {Promise<Object>} Resultado de la inserción (incluye `insertId`).
  */
 const crearUsuario = (nombre, correo, hash, rol) => {
-    return new Promise((resolve, reject) => {
-        const sql = 'INSERT INTO usuarios (nombre, correo, contrasena, rol) VALUES (?, ?, ?, ?)';
-        db.query(sql, [nombre, correo, hash, rol], (err, result) => {
-            if (err) return reject(err);
-            resolve(result);
-        });
-    });
+    return usuarioDAO.crearUsuario(nombre, correo, hash, rol);
 };
 
 /**
@@ -66,29 +47,17 @@ const crearUsuario = (nombre, correo, hash, rol) => {
  * @returns {Promise<Object>} Resultado de la actualización.
  */
 const actualizarContrasena = (id, nuevoHash) => {
-    return new Promise((resolve, reject) => {
-        const sql = 'UPDATE usuarios SET contrasena = ? WHERE id_usuario = ?';
-        db.query(sql, [nuevoHash, id], (err, result) => {
-            if (err) return reject(err);
-            resolve(result);
-        });
-    });
+    return usuarioDAO.actualizarContrasena(id, nuevoHash);
 };
 
 /**
- * Busca el nombre y el rol del usuario que inicia sesión, en la base de datos por su  id.
+ * Busca el nombre y el rol del usuario que inicia sesión por su ID.
  *
- * @param {string} id - id del usuario a buscar.
+ * @param {string|number} id - ID del usuario a buscar.
  * @returns {Promise<Array>} Arreglo con los resultados (vacío si no existe).
  */
 const usuarioSesion = (id) => {
-    return new Promise((resolve, reject) => {
-        const sql = 'SELECT nombre,rol FROM usuarios WHERE id_usuario = ?';
-        db.query(sql, [id], (err, results) => {
-            if (err) return reject(err);
-            resolve(results);
-        });
-    });
+    return usuarioDAO.usuarioSesion(id);
 };
 
 module.exports = {

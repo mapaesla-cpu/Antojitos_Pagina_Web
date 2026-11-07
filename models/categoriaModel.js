@@ -1,27 +1,21 @@
 /**
  * @file categoriaModel.js
- * @description Modelo de categorías. Contiene las consultas SQL de la tabla `categorias`.
- *              Todas las funciones retornan Promesas.
+ * @description Modelo de categorías. Representa la lógica de dominio de categorías
+ *              y delega las consultas SQL a `categoriaDAO`.
  */
 
-const db = require('../db');
+const categoriaDAO = require('../dao/categoriaDAO');
 
 /**
  * Inserta una nueva categoría en la base de datos.
  *
  * @param {string} nombre - Nombre de la categoría.
  * @param {string} descripcion - Descripción de la categoría.
- * @param {number} estado - Estado de la categoría (1 = activo, 0 = inactivo).
+ * @param {number|string} estado - Estado de la categoría.
  * @returns {Promise<Object>} Resultado de la inserción.
  */
 const agregar = (nombre, descripcion, estado) => {
-    return new Promise((resolve, reject) => {
-        const sql = 'INSERT INTO categorias (nombre, descripcion, estado) VALUES (?, ?, ?)';
-        db.query(sql, [nombre, descripcion, estado], (err, result) => {
-            if (err) return reject(err);
-            resolve(result);
-        });
-    });
+    return categoriaDAO.agregar(nombre, descripcion, estado);
 };
 
 /**
@@ -30,13 +24,7 @@ const agregar = (nombre, descripcion, estado) => {
  * @returns {Promise<Array>} Lista de categorías.
  */
 const consultarTodas = () => {
-    return new Promise((resolve, reject) => {
-        const sql = 'SELECT * FROM categorias';
-        db.query(sql, (err, results) => {
-            if (err) return reject(err);
-            resolve(results);
-        });
-    });
+    return categoriaDAO.consultarTodas();
 };
 
 /**
@@ -45,39 +33,22 @@ const consultarTodas = () => {
  * @param {number} id - ID de la categoría a actualizar.
  * @param {string} nombre - Nuevo nombre de la categoría.
  * @param {string} descripcion - Nueva descripción.
- * @param {number} estado - Nuevo estado (1 = activo, 0 = inactivo).
+ * @param {number|string} estado - Nuevo estado.
  * @returns {Promise<Object>} Resultado de la actualización.
  */
 const actualizar = (id, nombre, descripcion, estado) => {
-    return new Promise((resolve, reject) => {
-        // CORRECCIÓN: Se asegura la coma antes de WHERE en la plantilla SQL
-        const sql = `UPDATE categorias SET
-            nombre = ?,
-            descripcion = ?,
-            estado = ?
-            WHERE id_categoria = ?`;
-        db.query(sql, [nombre, descripcion, estado, id], (err, result) => {
-            if (err) return reject(err);
-            resolve(result);
-        });
-    });
+    return categoriaDAO.actualizar(id, nombre, descripcion, estado);
 };
 
 /**
  * Cambia únicamente el estado (activo/inactivo) de una categoría.
  *
  * @param {number} id - ID de la categoría.
- * @param {number} estado - Nuevo estado a asignar.
+ * @param {number|string} estado - Nuevo estado a asignar.
  * @returns {Promise<Object>} Resultado de la actualización.
  */
 const cambiarEstado = (id, estado) => {
-    return new Promise((resolve, reject) => {
-        const sql = 'UPDATE categorias SET estado = ? WHERE id_categoria = ?';
-        db.query(sql, [estado, id], (err, result) => {
-            if (err) return reject(err);
-            resolve(result);
-        });
-    });
+    return categoriaDAO.cambiarEstado(id, estado);
 };
 
 module.exports = {

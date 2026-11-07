@@ -1,10 +1,10 @@
 /**
  * @file insumoModel.js
- * @description Modelo de insumos. Contiene las consultas SQL de la tabla `insumos`.
- *              Todas las funciones retornan Promesas.
+ * @description Modelo de insumos. Representa las operaciones de negocio sobre insumos
+ *              y delega la ejecución SQL a `insumoDAO`.
  */
 
-const db = require('../db');
+const insumoDAO = require('../dao/insumoDAO');
 
 /**
  * Inserta un nuevo insumo en la base de datos.
@@ -16,28 +16,16 @@ const db = require('../db');
  * @returns {Promise<Object>} Resultado de la inserción.
  */
 const agregar = (nombre, unidad, cantidad, stock) => {
-    return new Promise((resolve, reject) => {
-        const sql = 'INSERT INTO insumos (nombre, unidad_medida, cantidad_disponible, stock_minimo) VALUES (?, ?, ?, ?)';
-        db.query(sql, [nombre, unidad, cantidad, stock], (err, result) => {
-            if (err) return reject(err);
-            resolve(result);
-        });
-    });
+    return insumoDAO.agregar(nombre, unidad, cantidad, stock);
 };
 
 /**
- * Retorna todos los insumos registrados.
+ * Retorna todos los insumos activos registrados.
  *
  * @returns {Promise<Array>} Lista de insumos.
  */
 const consultarTodos = () => {
-    return new Promise((resolve, reject) => {
-        const sql = 'SELECT * FROM insumos WHERE activo = 1';
-        db.query(sql, (err, results) => {
-            if (err) return reject(err);
-            resolve(results);
-        });
-    });
+    return insumoDAO.consultarTodos();
 };
 
 /**
@@ -51,34 +39,17 @@ const consultarTodos = () => {
  * @returns {Promise<Object>} Resultado de la actualización.
  */
 const actualizar = (id, nombre, unidad_medida, cantidad_disponible, stock_minimo) => {
-    return new Promise((resolve, reject) => {
-        const sql = `UPDATE insumos SET
-            nombre = ?,
-            unidad_medida = ?,
-            cantidad_disponible = ?,
-            stock_minimo = ?
-            WHERE id_insumo = ?`;
-        db.query(sql, [nombre, unidad_medida, cantidad_disponible, stock_minimo, id], (err, result) => {
-            if (err) return reject(err);
-            resolve(result);
-        });
-    });
+    return insumoDAO.actualizar(id, nombre, unidad_medida, cantidad_disponible, stock_minimo);
 };
 
 /**
- * Elimina un insumo por su ID.
+ * Elimina lógicamente un insumo por su ID.
  *
  * @param {number} id - ID del insumo a eliminar.
  * @returns {Promise<Object>} Resultado de la eliminación.
  */
 const eliminar = (id) => {
-    return new Promise((resolve, reject) => {
-        const sql = 'UPDATE insumos SET activo = 0 WHERE id_insumo = ?';
-        db.query(sql, [id], (err, result) => {
-            if (err) return reject(err);
-            resolve(result);
-        });
-    });
+    return insumoDAO.eliminar(id);
 };
 
 /**
@@ -87,17 +58,7 @@ const eliminar = (id) => {
  * @returns {Promise<Array>} Lista de insumos en alerta de bajo stock.
  */
 const obtenerAlertas = () => {
-    return new Promise((resolve, reject) => {
-        const sql = `
-            SELECT id_insumo, nombre, cantidad_disponible, stock_minimo
-            FROM insumos
-            WHERE cantidad_disponible <= stock_minimo AND activo = 1
-        `;
-        db.query(sql, (err, results) => {
-            if (err) return reject(err);
-            resolve(results);
-        });
-    });
+    return insumoDAO.obtenerAlertas();
 };
 
 /**
@@ -108,13 +69,7 @@ const obtenerAlertas = () => {
  * @returns {Promise<Object>} Resultado de la actualización.
  */
 const sumarCantidad = (id_insumo, cantidad) => {
-    return new Promise((resolve, reject) => {
-        const sql = 'UPDATE insumos SET cantidad_disponible = cantidad_disponible + ? WHERE id_insumo = ?';
-        db.query(sql, [cantidad, id_insumo], (err, result) => {
-            if (err) return reject(err);
-            resolve(result);
-        });
-    });
+    return insumoDAO.sumarCantidad(id_insumo, cantidad);
 };
 
 /**
@@ -125,13 +80,7 @@ const sumarCantidad = (id_insumo, cantidad) => {
  * @returns {Promise<Object>} Resultado de la actualización.
  */
 const restarCantidad = (id_insumo, cantidad) => {
-    return new Promise((resolve, reject) => {
-        const sql = 'UPDATE insumos SET cantidad_disponible = cantidad_disponible - ? WHERE id_insumo = ? AND cantidad_disponible >= ?';
-        db.query(sql, [cantidad, id_insumo, cantidad], (err, result) => {
-            if (err) return reject(err);
-            resolve(result);
-        });
-    });
+    return insumoDAO.restarCantidad(id_insumo, cantidad);
 };
 
 module.exports = {

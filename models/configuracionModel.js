@@ -1,11 +1,10 @@
 /**
  * @file configuracionModel.js
- * @description Modelo de configuración del negocio. Contiene las consultas SQL
- *              de la tabla `configuracion` y de contraseñas de usuarios.
- *              Todas las funciones retornan Promesas.
+ * @description Modelo de configuración del negocio. Delega el acceso a datos
+ *              de la tabla `configuracion` a `configuracionDAO`.
  */
 
-const db = require('../db');
+const configuracionDAO = require('../dao/configuracionDAO');
 
 /**
  * Retorna la configuración general del negocio (primer registro de la tabla).
@@ -13,13 +12,7 @@ const db = require('../db');
  * @returns {Promise<Object>} Objeto con los datos de configuración.
  */
 const consultar = () => {
-    return new Promise((resolve, reject) => {
-        const sql = 'SELECT * FROM configuracion LIMIT 1';
-        db.query(sql, (err, results) => {
-            if (err) return reject(err);
-            resolve(results[0]);
-        });
-    });
+    return configuracionDAO.consultar();
 };
 
 /**
@@ -35,22 +28,15 @@ const consultar = () => {
  * @returns {Promise<Object>} Resultado de la actualización.
  */
 const actualizar = (nombre_negocio, nit, telefono, direccion, horario_apertura, horario_cierre, dias_atencion) => {
-    return new Promise((resolve, reject) => {
-        // CORRECCIÓN: WHERE en línea separada para evitar error SQL silencioso
-        const sql = `UPDATE configuracion SET
-            nombre_negocio = ?,
-            nit = ?,
-            telefono = ?,
-            direccion = ?,
-            horario_apertura = ?,
-            horario_cierre = ?,
-            dias_atencion = ?
-            WHERE id_config = 1`;
-        db.query(sql, [nombre_negocio, nit, telefono, direccion, horario_apertura, horario_cierre, dias_atencion], (err, result) => {
-            if (err) return reject(err);
-            resolve(result);
-        });
-    });
+    return configuracionDAO.actualizar(
+        nombre_negocio,
+        nit,
+        telefono,
+        direccion,
+        horario_apertura,
+        horario_cierre,
+        dias_atencion
+    );
 };
 
 module.exports = {

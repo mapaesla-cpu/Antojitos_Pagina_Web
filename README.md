@@ -95,18 +95,28 @@ Antojitos_Pagina_Web/
 │   ├── rastreo-cliente.js         # Línea de tiempo de pedidos
 │   ├── registrar-usuario.js       # Creación de administradores/empleados
 │   └── script.js                  # Utilidades globales (sidebar, sesión de usuario, footer)
+├── dao/
+│   ├── categoriaDAO.js            # Acceso a datos SQL de categorías
+│   ├── clienteDAO.js              # Acceso a datos SQL de clientes
+│   ├── configuracionDAO.js        # Acceso a datos SQL de configuración
+│   ├── dashboardDAO.js            # Consultas SQL estadísticas del dashboard
+│   ├── insumoDAO.js               # Acceso a datos SQL de insumos
+│   ├── inventarioDAO.js           # Acceso a datos SQL de movimientos de inventario
+│   ├── pedidoDAO.js               # Acceso a datos SQL de pedidos, detalles y facturas
+│   ├── productoDAO.js             # Acceso a datos SQL de productos y recetas
+│   └── usuarioDAO.js              # Acceso a datos SQL de usuarios
 ├── middlewares/
 │   └── verificarToken.js          # Middleware de validación de JWT para rutas protegidas
 ├── models/
-│   ├── categoriaModel.js
-│   ├── clienteModel.js
-│   ├── configuracionModel.js
-│   ├── dashboardModel.js
-│   ├── insumoModel.js
-│   ├── inventarioModel.js
-│   ├── pedidoModel.js
-│   ├── productoModel.js
-│   └── usuarioModel.js
+│   ├── categoriaModel.js          # Modelo de dominio de categorías
+│   ├── clienteModel.js            # Modelo de dominio de clientes
+│   ├── configuracionModel.js      # Modelo de dominio de configuración
+│   ├── dashboardModel.js          # Modelo de dominio del dashboard
+│   ├── insumoModel.js             # Modelo de dominio de insumos
+│   ├── inventarioModel.js         # Modelo de dominio de inventario
+│   ├── pedidoModel.js             # Modelo de dominio de pedidos y facturación
+│   ├── productoModel.js           # Modelo de dominio de productos
+│   └── usuarioModel.js            # Modelo de dominio de usuarios
 ├── routes/
 │   ├── authRoutes.js
 │   ├── categoriaRoutes.js

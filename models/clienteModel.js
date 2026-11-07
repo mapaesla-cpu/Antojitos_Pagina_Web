@@ -1,13 +1,13 @@
 /**
  * @file clienteModel.js
- * @description Modelo de clientes. Contiene las consultas SQL de la tabla `clientes`.
- *              Todas las funciones retornan Promesas.
+ * @description Modelo de clientes. Define las reglas de creación de clientes
+ *              y delega la persistencia en base de datos a `clienteDAO`.
  */
 
-const db = require('../db');
+const clienteDAO = require('../dao/clienteDAO');
 
 /**
- * Registra un nuevo cliente en la base de datos.
+ * Registra un nuevo cliente asignando su fecha de registro actual.
  *
  * @param {string} nombre - Nombre completo del cliente.
  * @param {string} telefono - Número de teléfono del cliente.
@@ -16,14 +16,8 @@ const db = require('../db');
  * @returns {Promise<Object>} Resultado de la inserción (incluye `insertId` con el nuevo ID).
  */
 const agregar = (nombre, telefono, direccion, correo) => {
-    return new Promise((resolve, reject) => {
-        const fecha_registro = new Date();
-        const sql = 'INSERT INTO clientes (nombre, telefono, direccion, correo, fecha_registro) VALUES (?, ?, ?, ?, ?)';
-        db.query(sql, [nombre, telefono, direccion, correo, fecha_registro], (err, result) => {
-            if (err) return reject(err);
-            resolve(result);
-        });
-    });
+    const fecha_registro = new Date();
+    return clienteDAO.agregar(nombre, telefono, direccion, correo, fecha_registro);
 };
 
 module.exports = {

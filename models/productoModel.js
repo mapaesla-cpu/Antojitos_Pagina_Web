@@ -1,11 +1,10 @@
 /**
  * @file productoModel.js
- * @description Modelo de productos. Contiene las consultas SQL de la tabla `productos`
- *              y de la tabla intermedia `producto_insumos`.
- *              Todas las funciones retornan Promesas.
+ * @description Modelo de productos. Gestiona el catálogo de productos y sus recetas
+ *              (`producto_insumos`) delegando las consultas SQL a `productoDAO`.
  */
 
-const db = require('../db');
+const productoDAO = require('../dao/productoDAO');
 
 /**
  * Inserta un nuevo producto en la base de datos.
@@ -19,13 +18,7 @@ const db = require('../db');
  * @returns {Promise<Object>} Resultado de la inserción.
  */
 const agregar = (id_categoria, nombre, descripcion, precio, imagen, disponible) => {
-    return new Promise((resolve, reject) => {
-        const sql = 'INSERT INTO productos (id_categoria, nombre, descripcion, precio, imagen, disponible) VALUES (?, ?, ?, ?, ?, ?)';
-        db.query(sql, [id_categoria, nombre, descripcion, precio, imagen, disponible], (err, result) => {
-            if (err) return reject(err);
-            resolve(result);
-        });
-    });
+    return productoDAO.agregar(id_categoria, nombre, descripcion, precio, imagen, disponible);
 };
 
 /**
@@ -34,15 +27,7 @@ const agregar = (id_categoria, nombre, descripcion, precio, imagen, disponible) 
  * @returns {Promise<Array>} Lista de productos con nombre de categoría incluido.
  */
 const consultarTodos = () => {
-    return new Promise((resolve, reject) => {
-        const sql = `SELECT p.*, c.nombre AS nombre_categoria
-                     FROM productos p
-                     JOIN categorias c ON p.id_categoria = c.id_categoria`;
-        db.query(sql, (err, results) => {
-            if (err) return reject(err);
-            resolve(results);
-        });
-    });
+    return productoDAO.consultarTodos();
 };
 
 /**
@@ -51,16 +36,7 @@ const consultarTodos = () => {
  * @returns {Promise<Array>} Lista de productos disponibles con nombre de categoría.
  */
 const consultarMenu = () => {
-    return new Promise((resolve, reject) => {
-        const sql = `SELECT p.*, c.nombre AS nombre_categoria
-                     FROM productos p
-                     JOIN categorias c ON p.id_categoria = c.id_categoria
-                     WHERE p.disponible = 1`;
-        db.query(sql, (err, results) => {
-            if (err) return reject(err);
-            resolve(results);
-        });
-    });
+    return productoDAO.consultarMenu();
 };
 
 /**
@@ -76,21 +52,7 @@ const consultarMenu = () => {
  * @returns {Promise<Object>} Resultado de la actualización.
  */
 const actualizar = (id, id_categoria, nombre, descripcion, precio, imagen, disponible) => {
-    return new Promise((resolve, reject) => {
-        // CORRECCIÓN: WHERE separado en nueva línea para evitar error SQL silencioso
-        const sql = `UPDATE productos SET
-            id_categoria = ?,
-            nombre = ?,
-            descripcion = ?,
-            precio = ?,
-            imagen = ?,
-            disponible = ?
-            WHERE id_producto = ?`;
-        db.query(sql, [id_categoria, nombre, descripcion, precio, imagen, disponible, id], (err, result) => {
-            if (err) return reject(err);
-            resolve(result);
-        });
-    });
+    return productoDAO.actualizar(id, id_categoria, nombre, descripcion, precio, imagen, disponible);
 };
 
 /**
@@ -101,13 +63,7 @@ const actualizar = (id, id_categoria, nombre, descripcion, precio, imagen, dispo
  * @returns {Promise<Object>} Resultado de la actualización.
  */
 const cambiarDisponibilidad = (id, disponible) => {
-    return new Promise((resolve, reject) => {
-        const sql = 'UPDATE productos SET disponible = ? WHERE id_producto = ?';
-        db.query(sql, [disponible, id], (err, result) => {
-            if (err) return reject(err);
-            resolve(result);
-        });
-    });
+    return productoDAO.cambiarDisponibilidad(id, disponible);
 };
 
 // ── Relación Producto ↔ Insumos ────────────────────────────────────────────
@@ -119,16 +75,7 @@ const cambiarDisponibilidad = (id, disponible) => {
  * @returns {Promise<Array>} Lista de insumos requeridos por el producto.
  */
 const consultarInsumos = (id_producto) => {
-    return new Promise((resolve, reject) => {
-        const sql = `SELECT pi.*, i.nombre AS nombre_insumo
-                     FROM producto_insumos pi
-                     JOIN insumos i ON pi.id_insumo = i.id_insumo
-                     WHERE pi.id_producto = ?`;
-        db.query(sql, [id_producto], (err, results) => {
-            if (err) return reject(err);
-            resolve(results);
-        });
-    });
+    return productoDAO.consultarInsumos(id_producto);
 };
 
 /**
@@ -140,13 +87,7 @@ const consultarInsumos = (id_producto) => {
  * @returns {Promise<Object>} Resultado de la inserción.
  */
 const agregarInsumo = (id_producto, id_insumo, cantidad_requerida) => {
-    return new Promise((resolve, reject) => {
-        const sql = 'INSERT INTO producto_insumos (id_producto, id_insumo, cantidad_requerida) VALUES (?, ?, ?)';
-        db.query(sql, [id_producto, id_insumo, cantidad_requerida], (err, result) => {
-            if (err) return reject(err);
-            resolve(result);
-        });
-    });
+    return productoDAO.agregarInsumo(id_producto, id_insumo, cantidad_requerida);
 };
 
 /**
@@ -157,13 +98,7 @@ const agregarInsumo = (id_producto, id_insumo, cantidad_requerida) => {
  * @returns {Promise<Object>} Resultado de la eliminación.
  */
 const eliminarInsumo = (id_producto, id_insumo) => {
-    return new Promise((resolve, reject) => {
-        const sql = 'DELETE FROM producto_insumos WHERE id_producto = ? AND id_insumo = ?';
-        db.query(sql, [id_producto, id_insumo], (err, result) => {
-            if (err) return reject(err);
-            resolve(result);
-        });
-    });
+    return productoDAO.eliminarInsumo(id_producto, id_insumo);
 };
 
 module.exports = {

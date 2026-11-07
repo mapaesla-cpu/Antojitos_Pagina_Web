@@ -1,11 +1,10 @@
 /**
  * @file inventarioModel.js
- * @description Modelo de inventario. Contiene las consultas SQL para movimientos
- *              de inventario y el descuento automático de insumos al completar pedidos.
- *              Todas las funciones retornan Promesas.
+ * @description Modelo de inventario. Gestiona los movimientos de inventario y el
+ *              descuento automático de insumos delegando el acceso a datos a `inventarioDAO`.
  */
 
-const db = require('../db');
+const inventarioDAO = require('../dao/inventarioDAO');
 
 /**
  * Registra un movimiento (entrada o salida) en el historial de inventario.
@@ -18,13 +17,7 @@ const db = require('../db');
  * @returns {Promise<Object>} Resultado de la inserción.
  */
 const registrarMovimiento = (id_insumo, tipo_movimiento, cantidad, motivo, id_usuario) => {
-    return new Promise((resolve, reject) => {
-        const sql = 'INSERT INTO movimientos_inventario (id_insumo, tipo_movimiento, cantidad, motivo, id_usuario) VALUES (?, ?, ?, ?, ?)';
-        db.query(sql, [id_insumo, tipo_movimiento, cantidad, motivo, id_usuario], (err, result) => {
-            if (err) return reject(err);
-            resolve(result);
-        });
-    });
+    return inventarioDAO.registrarMovimiento(id_insumo, tipo_movimiento, cantidad, motivo, id_usuario);
 };
 
 /**
@@ -34,13 +27,7 @@ const registrarMovimiento = (id_insumo, tipo_movimiento, cantidad, motivo, id_us
  * @returns {Promise<Array>} Lista de {id_producto, cantidad}.
  */
 const obtenerDetallePedido = (id_pedido) => {
-    return new Promise((resolve, reject) => {
-        const sql = 'SELECT id_producto, cantidad FROM detalle_pedidos WHERE id_pedido = ?';
-        db.query(sql, [id_pedido], (err, results) => {
-            if (err) return reject(err);
-            resolve(results);
-        });
-    });
+    return inventarioDAO.obtenerDetallePedido(id_pedido);
 };
 
 /**
@@ -50,13 +37,7 @@ const obtenerDetallePedido = (id_pedido) => {
  * @returns {Promise<Array>} Lista de {id_insumo, cantidad_requerida}.
  */
 const obtenerInsumosPorProducto = (id_producto) => {
-    return new Promise((resolve, reject) => {
-        const sql = 'SELECT id_insumo, cantidad_requerida FROM producto_insumos WHERE id_producto = ?';
-        db.query(sql, [id_producto], (err, results) => {
-            if (err) return reject(err);
-            resolve(results);
-        });
-    });
+    return inventarioDAO.obtenerInsumosPorProducto(id_producto);
 };
 
 /**
@@ -67,13 +48,7 @@ const obtenerInsumosPorProducto = (id_producto) => {
  * @returns {Promise<Object>} Resultado de la actualización.
  */
 const descontarInsumo = (id_insumo, cantidad) => {
-    return new Promise((resolve, reject) => {
-        const sql = 'UPDATE insumos SET cantidad_disponible = cantidad_disponible - ? WHERE id_insumo = ?';
-        db.query(sql, [cantidad, id_insumo], (err, result) => {
-            if (err) return reject(err);
-            resolve(result);
-        });
-    });
+    return inventarioDAO.descontarInsumo(id_insumo, cantidad);
 };
 
 module.exports = {
@@ -81,5 +56,4 @@ module.exports = {
     obtenerDetallePedido,
     obtenerInsumosPorProducto,
     descontarInsumo
-    
 };

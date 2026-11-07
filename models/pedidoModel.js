@@ -1,16 +1,16 @@
 /**
  * @file pedidoModel.js
- * @description Modelo de pedidos y facturas. Contiene las consultas SQL de las tablas
- *              `pedidos`, `detalle_pedidos` y `facturas`.
- *              Todas las funciones retornan Promesas.
+ * @description Modelo de pedidos y facturas. Contiene las reglas de negocio (como el
+ *              estado inicial del pedido y el cálculo de IVA de facturación) y delega
+ *              la persistencia SQL a `pedidoDAO`.
  */
 
-const db = require('../db');
+const pedidoDAO = require('../dao/pedidoDAO');
 
 // ── Pedidos ────────────────────────────────────────────────────────────────
 
 /**
- * Inserta un nuevo pedido en la base de datos.
+ * Crea un nuevo pedido asignando fecha actual y estado inicial 'pendiente'.
  *
  * @param {number} id_cliente - ID del cliente que realiza el pedido.
  * @param {string} tipo_entrega - Modalidad de entrega ('domicilio' | 'local').
@@ -20,15 +20,9 @@ const db = require('../db');
  * @returns {Promise<Object>} Resultado con `insertId` del nuevo pedido.
  */
 const agregar = (id_cliente, tipo_entrega, metodo_pago, total, notas) => {
-    return new Promise((resolve, reject) => {
-        const fecha_pedido = new Date();
-        const estado = 'pendiente';
-        const sql = 'INSERT INTO pedidos (id_cliente, fecha_pedido, estado, tipo_entrega, metodo_pago, total, notas) VALUES (?, ?, ?, ?, ?, ?, ?)';
-        db.query(sql, [id_cliente, fecha_pedido, estado, tipo_entrega, metodo_pago, total, notas], (err, result) => {
-            if (err) return reject(err);
-            resolve(result);
-        });
-    });
+    const fecha_pedido = new Date();
+    const estado = 'pendiente';
+    return pedidoDAO.agregar(id_cliente, fecha_pedido, estado, tipo_entrega, metodo_pago, total, notas);
 };
 
 /**
@@ -37,33 +31,18 @@ const agregar = (id_cliente, tipo_entrega, metodo_pago, total, notas) => {
  * @returns {Promise<Array>} Lista de pedidos con nombre y teléfono del cliente.
  */
 const consultarTodos = () => {
-    return new Promise((resolve, reject) => {
-        const sql = `SELECT p.*, c.nombre AS nombre_cliente, c.telefono
-                     FROM pedidos p
-                     JOIN clientes c ON p.id_cliente = c.id_cliente
-                     ORDER BY p.fecha_pedido DESC`;
-        db.query(sql, (err, results) => {
-            if (err) return reject(err);
-            resolve(results);
-        });
-    });
+    return pedidoDAO.consultarTodos();
 };
 
 /**
- * Cambia el estado de un pedido (pendiente → preparando → listo → entregado | cancelado).
+ * Cambia el estado de un pedido (pendiente → en preparacion → listo → entregado | cancelado).
  *
  * @param {number} id - ID del pedido.
  * @param {string} estado - Nuevo estado del pedido.
  * @returns {Promise<Object>} Resultado de la actualización.
  */
 const cambiarEstado = (id, estado) => {
-    return new Promise((resolve, reject) => {
-        const sql = 'UPDATE pedidos SET estado = ? WHERE id_pedido = ?';
-        db.query(sql, [estado, id], (err, result) => {
-            if (err) return reject(err);
-            resolve(result);
-        });
-    });
+    return pedidoDAO.cambiarEstado(id, estado);
 };
 
 /**
@@ -73,25 +52,7 @@ const cambiarEstado = (id, estado) => {
  * @returns {Promise<Object>} Objeto con `pedido` (cabecera) y `detalle` (productos).
  */
 const verDetalle = (id) => {
-    return new Promise((resolve, reject) => {
-        const sqlPedido = `SELECT p.*, c.nombre AS nombre_cliente, c.telefono
-                           FROM pedidos p
-                           JOIN clientes c ON p.id_cliente = c.id_cliente
-                           WHERE p.id_pedido = ?`;
-
-        const sqlDetalle = `SELECT d.*, pr.nombre AS nombre_producto
-                            FROM detalle_pedidos d
-                            JOIN productos pr ON d.id_producto = pr.id_producto
-                            WHERE d.id_pedido = ?`;
-
-        db.query(sqlPedido, [id], (err, pedido) => {
-            if (err) return reject(err);
-            db.query(sqlDetalle, [id], (err, detalle) => {
-                if (err) return reject(err);
-                resolve({ pedido: pedido[0], detalle });
-            });
-        });
-    });
+    return pedidoDAO.verDetalle(id);
 };
 
 /**
@@ -101,13 +62,7 @@ const verDetalle = (id) => {
  * @returns {Promise<Object|null>} Objeto con `id_pedido` y `estado`, o null si no existe.
  */
 const consultarEstadoPublico = (id_pedido) => {
-    return new Promise((resolve, reject) => {
-        const sql = 'SELECT id_pedido, estado FROM pedidos WHERE id_pedido = ?';
-        db.query(sql, [id_pedido], (err, result) => {
-            if (err) return reject(err);
-            resolve(result.length > 0 ? result[0] : null);
-        });
-    });
+    return pedidoDAO.consultarEstadoPublico(id_pedido);
 };
 
 // ── Detalle de pedidos ─────────────────────────────────────────────────────
@@ -123,13 +78,7 @@ const consultarEstadoPublico = (id_pedido) => {
  * @returns {Promise<Object>} Resultado de la inserción.
  */
 const agregarDetalle = (id_pedido, id_producto, cantidad, precio_unitario, subtotal) => {
-    return new Promise((resolve, reject) => {
-        const sql = 'INSERT INTO detalle_pedidos (id_pedido, id_producto, cantidad, precio_unitario, subtotal) VALUES (?, ?, ?, ?, ?)';
-        db.query(sql, [id_pedido, id_producto, cantidad, precio_unitario, subtotal], (err, result) => {
-            if (err) return reject(err);
-            resolve(result);
-        });
-    });
+    return pedidoDAO.agregarDetalle(id_pedido, id_producto, cantidad, precio_unitario, subtotal);
 };
 
 // ── Facturas ───────────────────────────────────────────────────────────────
@@ -142,19 +91,21 @@ const agregarDetalle = (id_pedido, id_producto, cantidad, precio_unitario, subto
  * @returns {Promise<Object>} Resultado de la inserción.
  */
 const crearFactura = (id_pedido, total) => {
-    return new Promise((resolve, reject) => {
-        const numero_factura = `FAC-${Date.now()}`;
-        const subtotal = total / 1.19;       // Precio sin IVA
-        const impuesto = total - subtotal;   // IVA del 19%
-        const fecha_emision = new Date();
-        const estado = 'emitida';
+    const numero_factura = `FAC-${Date.now()}`;
+    const subtotal = total / 1.19;       // Precio sin IVA
+    const impuesto = total - subtotal;   // IVA del 19%
+    const fecha_emision = new Date();
+    const estado = 'emitida';
 
-        const sql = 'INSERT INTO facturas (id_pedido, numero_factura, fecha_emision, subtotal, impuesto, total, estado) VALUES (?, ?, ?, ?, ?, ?, ?)';
-        db.query(sql, [id_pedido, numero_factura, fecha_emision, subtotal.toFixed(2), impuesto.toFixed(2), total, estado], (err, result) => {
-            if (err) return reject(err);
-            resolve(result);
-        });
-    });
+    return pedidoDAO.crearFactura(
+        id_pedido,
+        numero_factura,
+        fecha_emision,
+        subtotal.toFixed(2),
+        impuesto.toFixed(2),
+        total,
+        estado
+    );
 };
 
 /**
@@ -163,17 +114,7 @@ const crearFactura = (id_pedido, total) => {
  * @returns {Promise<Array>} Lista de facturas.
  */
 const consultarFacturas = () => {
-    return new Promise((resolve, reject) => {
-        const sql = `SELECT f.*, c.nombre AS nombre_cliente, c.telefono
-                     FROM facturas f
-                     JOIN pedidos p ON f.id_pedido = p.id_pedido
-                     JOIN clientes c ON p.id_cliente = c.id_cliente
-                     ORDER BY f.fecha_emision DESC`;
-        db.query(sql, (err, results) => {
-            if (err) return reject(err);
-            resolve(results);
-        });
-    });
+    return pedidoDAO.consultarFacturas();
 };
 
 /**
@@ -183,27 +124,7 @@ const consultarFacturas = () => {
  * @returns {Promise<Object>} Objeto con `factura` (datos) y `detalle` (productos).
  */
 const verFactura = (id) => {
-    return new Promise((resolve, reject) => {
-        const sqlFactura = `SELECT f.*, c.nombre AS nombre_cliente, c.telefono,
-                            p.tipo_entrega, p.notas
-                            FROM facturas f
-                            JOIN pedidos p ON f.id_pedido = p.id_pedido
-                            JOIN clientes c ON p.id_cliente = c.id_cliente
-                            WHERE f.id_factura = ?`;
-
-        const sqlDetalle = `SELECT d.*, pr.nombre AS nombre_producto
-                            FROM detalle_pedidos d
-                            JOIN productos pr ON d.id_producto = pr.id_producto
-                            WHERE d.id_pedido = (SELECT id_pedido FROM facturas WHERE id_factura = ?)`;
-
-        db.query(sqlFactura, [id], (err, factura) => {
-            if (err) return reject(err);
-            db.query(sqlDetalle, [id], (err, detalle) => {
-                if (err) return reject(err);
-                resolve({ factura: factura[0], detalle });
-            });
-        });
-    });
+    return pedidoDAO.verFactura(id);
 };
 
 module.exports = {
